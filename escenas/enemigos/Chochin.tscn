@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://w5jjfmrpxs4f"]
+
+[ext_resource type="Script" uid="uid://bux1jmov0n1xo" path="res://escenas/enemigos/chochin.gd" id="1_vfiqp"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m7b3v"]
+radius = 6.0
+
+[node name="Chochin" type="CharacterBody2D" unique_id=6559204]
+light_mask = 0
+visibility_layer = 2
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_vfiqp")
+velocidad = 45.0
+
+[node name="cuadro" type="ColorRect" parent="." unique_id=1316555562]
+offset_left = -6.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 6.0
+color = Color(1, 0.7019608, 0.3764706, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1931583989]
+shape = SubResource("CircleShape2D_m7b3v")
