@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://qojoxngeo0sy"]
+
+[ext_resource type="Script" uid="uid://b3iemlces2gy7" path="res://escenas/pruebas/miguel/enemigo_prueba.gd" id="1_afftj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_71m53"]
+radius = 7.0
+
+[node name="EnemigoPrueba" type="CharacterBody2D" unique_id=1872060546]
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_afftj")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=574472819]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.10980392, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1966515804]
+shape = SubResource("CircleShape2D_71m53")

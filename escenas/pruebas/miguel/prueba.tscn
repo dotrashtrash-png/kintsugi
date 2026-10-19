@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://wnrpkhta5dwb"]
+
+[ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_hhrgx"]
+[ext_resource type="PackedScene" uid="uid://qojoxngeo0sy" path="res://escenas/pruebas/miguel/EnemigoPrueba.tscn" id="2_s7vhj"]
+
+[node name="Prueba" type="Node2D" unique_id=1672987675]
+
+[node name="Heroe" parent="." unique_id=1937584079 instance=ExtResource("1_hhrgx")]
+
+[node name="EnemigoPrueba" parent="." unique_id=1872060546 instance=ExtResource("2_s7vhj")]
+position = Vector2(100, 0)
+
+[node name="EnemigoPrueba2" parent="." unique_id=894746891 instance=ExtResource("2_s7vhj")]
+position = Vector2(-100, 0)
+
+[node name="EnemigoPrueba3" parent="." unique_id=1283494576 instance=ExtResource("2_s7vhj")]
+position = Vector2(0, 100)
+
+[node name="EnemigoPrueba4" parent="." unique_id=212029438 instance=ExtResource("2_s7vhj")]
+position = Vector2(0, -100)
