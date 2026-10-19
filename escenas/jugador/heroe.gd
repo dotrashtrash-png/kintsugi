@@ -67,3 +67,4 @@ func mejorar(nombre: String) -> void:
 				armas.get_node(nombre).subir_nivel()
 			else:
 				agregar_arma(nombre)
+				

@@ -15,9 +15,9 @@ position = Vector2(20, 0)
 shape = SubResource("RectangleShape2D_71m53")
 
 [node name="Visual" type="ColorRect" parent="." unique_id=1909819520]
-offset_left = 28.0
+offset_left = 8.0
 offset_top = -12.0
-offset_right = 52.0
+offset_right = 32.0
 offset_bottom = 12.0
 
 [node name="Timer" type="Timer" parent="." unique_id=1996982781]
