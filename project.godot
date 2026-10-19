@@ -16,8 +16,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Estado="*uid://bja6hn013ofjh"
 Audio="*uid://dpb5i64t6fgcb"
+Estado="*uid://bja6hn013ofjh"
 
 [display]
 
