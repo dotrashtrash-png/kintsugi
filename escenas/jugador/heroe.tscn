@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d05nvof33o5rk"]
+
+[ext_resource type="Script" uid="uid://bkmydxwp4ph3r" path="res://escenas/jugador/heroe.gd" id="1_y500g"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_71m53"]
+radius = 7.0
+
+[node name="Heroe" type="CharacterBody2D" unique_id=1937584079]
+collision_mask = 0
+script = ExtResource("1_y500g")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=806146507]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0, 0.5058824, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=199464580]
+shape = SubResource("CircleShape2D_71m53")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1326315235]
+enabled = false
+zoom = Vector2(3, 3)
