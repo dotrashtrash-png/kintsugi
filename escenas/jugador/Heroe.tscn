@@ -22,3 +22,5 @@ shape = SubResource("CircleShape2D_71m53")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1326315235]
 zoom = Vector2(3, 3)
+
+[node name="Armas" type="Node2D" parent="." unique_id=601374330]
