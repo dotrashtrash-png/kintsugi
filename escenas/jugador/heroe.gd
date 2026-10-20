@@ -15,7 +15,7 @@ var muerto := false
 func _ready() -> void:
 	add_to_group("jugador")
 	var datos: Dictionary = Heroes.LISTA[Estado.heroe_elegido]
-	vida_maxima = datos["vida"]
+	vida_maxima = int(datos["vida"] * (1.0 + Estado.bono_vida()))
 	vida = vida_maxima
 	velocidad = datos["velocidad"]
 	radio_recoger = datos["radio"]
