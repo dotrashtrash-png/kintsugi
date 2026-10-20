@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://66bclt7nfesy"]
+
+[sub_resource type="GDScript" id="GDScript_tjlrx"]
+script/source = "extends Node
+
+# Va como hijo de cualquier yokai y se tiene que llamar \"Golpe\".
+@export var empuje := 6.0 # píxeles que se aleja del héroe. Para el Tengu, 0.
+@export var duracion_parpadeo := 0.12
+
+@onready var cuerpo: Node2D = get_parent()
+var color_original := Color.WHITE
+var tween: Tween
+
+func _ready() -> void:
+	color_original = cuerpo.modulate
+
+func recibir() -> void:
+	# Si lo golpean dos veces seguidas, se corta el parpadeo anterior.
+	if tween:
+		tween.kill()
+	# Multiplicar el color por 3 lo vuelve casi blanco.
+	cuerpo.modulate = Color(3, 3, 3)
+	tween = create_tween()
+	tween.tween_property(cuerpo, \"modulate\", color_original, duracion_parpadeo)
+	var heroe := get_tree().get_first_node_in_group(\"jugador\") as Node2D
+	if heroe:
+		cuerpo.global_position += heroe.global_position.direction_to(cuerpo.global_position) * empuje
+"
+
+[node name="Golpe" type="Node2D" unique_id=1831681398]
+script = SubResource("GDScript_tjlrx")

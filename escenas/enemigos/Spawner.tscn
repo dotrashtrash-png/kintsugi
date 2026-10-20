@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bo2usy14xe3vl"]
+
+[ext_resource type="Script" uid="uid://c8qsawv06kru0" path="res://escenas/enemigos/spawner.gd" id="1_ue853"]
+
+[node name="Spawner" type="Node2D" unique_id=1972774240]
+script = ExtResource("1_ue853")
+
+[node name="TimerOleada" type="Timer" parent="." unique_id=2079397531]
+wait_time = 1.2
+autostart = true
+
+[node name="TimerRescate" type="Timer" parent="." unique_id=720429495]
+wait_time = 40.0
+autostart = true
