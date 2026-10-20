@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dwpaygw7hhvtn"]
+
+[ext_resource type="Script" path="res://escenas/run/material.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mat"]
+radius = 5.0
+
+[node name="Material" type="Area2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mat")
+
+[node name="Cuadro" type="ColorRect" parent="."]
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+mouse_filter = 2
