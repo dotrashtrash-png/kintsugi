@@ -7,9 +7,9 @@ radius = 6.0
 
 [node name="Chochin" type="CharacterBody2D" unique_id=6559204]
 light_mask = 0
-visibility_layer = 2
 collision_layer = 2
 collision_mask = 0
+motion_mode = 1
 script = ExtResource("1_vfiqp")
 velocidad = 45.0
 
