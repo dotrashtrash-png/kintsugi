@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://d1jjywxs00c1h"]
+
+[ext_resource type="Script" uid="uid://c3ptscv3df3gw" path="res://escenas/base/Aldea.gd" id="1_movyn"]
+
+[node name="Aldea" type="Node2D" unique_id=1120546708]
+script = ExtResource("1_movyn")
+
+[node name="Fondo" type="ColorRect" parent="." unique_id=281360401]
+offset_right = 640.0
+offset_bottom = 360.0
+color = Color(0.63920635, 0.63920635, 0.6392063, 1)
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=2122045962]
+
+[node name="BotonSalir" type="Button" parent="UI" unique_id=29549324]
+offset_left = 500.0
+offset_top = 500.0
+offset_right = 635.0
+offset_bottom = 531.0
+text = "Salir a las ruinas"
