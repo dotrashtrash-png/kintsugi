@@ -10,5 +10,5 @@ wait_time = 1.2
 autostart = true
 
 [node name="TimerRescate" type="Timer" parent="." unique_id=720429495]
-wait_time = 40.0
+wait_time = 7.0
 autostart = true
