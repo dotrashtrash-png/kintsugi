@@ -51,4 +51,3 @@ func generar_rescate() -> void:
 	# Cerca del héroe, dentro de la pantalla, para que se vea.
 	var angulo := randf() * TAU
 	rescate.global_position = heroe.global_position + Vector2.RIGHT.rotated(angulo) * randf_range(90.0, 150.0)
-	$TimerRescate.start()

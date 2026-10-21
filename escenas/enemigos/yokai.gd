@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var velocidad := 60.0
 @export var vida := 10
 @export var dano := 5
-@export var probabilidad_material := 1.0 # 0.1 = 1 de cada 10 suelta material
+@export var probabilidad_material := 0.1 # 0.1 = 1 de cada 10 suelta material
 @export var distancia_contacto := 14.0 # qué tan cerca tiene que estar para pegar
 
 const RUTA_LUZ := "res://escenas/run/Luz.tscn"
