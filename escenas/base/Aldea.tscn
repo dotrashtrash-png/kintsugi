@@ -54,10 +54,11 @@ offset_bottom = 611.0
 text = "Salir a las ruinas"
 
 [node name="BotonPrueba" type="Button" parent="UI" unique_id=17494252]
-offset_left = 8.0
-offset_top = 580.0
-offset_right = 16.0
-offset_bottom = 588.0
+offset_left = 960.0
+offset_top = 6.0
+offset_right = 1134.0
+offset_bottom = 37.0
+text = "+ materiales (prueba)"
 
 [node name="Heroes" type="HBoxContainer" parent="UI" unique_id=653409733]
 offset_left = 8.0
