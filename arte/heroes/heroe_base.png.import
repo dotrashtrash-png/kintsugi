@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfkoc6jej4iur"
-path="res://.godot/imported/modelo.posicion.bodi.animation.png-de26752c5d44eec3cb1101fccb043b0e.ctex"
+uid="uid://ck08etopyi4x4"
+path="res://.godot/imported/heroe_base.png-924bd8c5b645e8a2249ab516750de75c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arte/heroes/heroes/modelo.posicion.bodi.animation.png"
-dest_files=["res://.godot/imported/modelo.posicion.bodi.animation.png-de26752c5d44eec3cb1101fccb043b0e.ctex"]
+source_file="res://arte/heroes/heroe_base.png"
+dest_files=["res://.godot/imported/heroe_base.png-924bd8c5b645e8a2249ab516750de75c.ctex"]
 
 [params]
 

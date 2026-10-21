@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qdk6kwhckpn0"
-path="res://.godot/imported/omyoj_quietoi.png-6b0676a181a07136a639aec08fd34015.ctex"
+uid="uid://bi1mg2xg4e4fw"
+path="res://.godot/imported/miko_quieto.png-371c9cfe7b2cd315992c87fbe56b4ca2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arte/heroes/heroes/omyoj_quietoi.png"
-dest_files=["res://.godot/imported/omyoj_quietoi.png-6b0676a181a07136a639aec08fd34015.ctex"]
+source_file="res://arte/heroes/miko_quieto.png"
+dest_files=["res://.godot/imported/miko_quieto.png-371c9cfe7b2cd315992c87fbe56b4ca2.ctex"]
 
 [params]
 
