@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bdtn7iwpsb18l"]
+
+[ext_resource type="PackedScene" uid="uid://66bclt7nfesy" path="res://escenas/jugador/golpe.tscn" id="1_83tfw"]
+[ext_resource type="Script" uid="uid://cvhkkwogukdei" path="res://escenas/enemigos/Tengu.gd" id="1_tyjl2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4cyrx"]
+size = Vector2(32, 32)
+
+[node name="Tengu" type="CharacterBody2D" unique_id=1488608542]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_tyjl2")
+
+[node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("1_83tfw")]
+empuje = 0.0
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1255506056]
+custom_maximum_size = Vector2(32, 32)
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(1, 0.55, 0.55, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2059299956]
+shape = SubResource("RectangleShape2D_4cyrx")

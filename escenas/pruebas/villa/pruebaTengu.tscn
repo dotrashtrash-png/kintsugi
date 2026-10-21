@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://exqg68q0fay4"]
+
+[ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_l0rxc"]
+[ext_resource type="PackedScene" uid="uid://bdtn7iwpsb18l" path="res://escenas/enemigos/Tengu.tscn" id="2_1m3ir"]
+
+[node name="PruebaTengu" type="Node2D" unique_id=1397439202]
+
+[node name="Heroe" parent="." unique_id=1937584079 instance=ExtResource("1_l0rxc")]
+position = Vector2(191, 111)
+
+[node name="Tengu" parent="." unique_id=1488608542 instance=ExtResource("2_1m3ir")]
+position = Vector2(325, 112)
+collision_mask = 0
+vida = 40

@@ -82,7 +82,7 @@ func mejoras_posibles() -> Array:
 	# Hoy MEJORAS es una lista; la guía dice que Miguel la puede volver un diccionario.
 	# "lista" va sin tipo a propósito, para que este código sirva en los dos casos.
 	var lista = Heroes.MEJORAS
-	var todas: Array = []
+	var todas = []
 	if lista is Dictionary:
 		todas = lista.keys()
 	else:

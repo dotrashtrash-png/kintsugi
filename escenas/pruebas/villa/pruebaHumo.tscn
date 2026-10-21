@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d3a23mlwbke77"]
+
+[ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_srsfq"]
+[ext_resource type="PackedScene" uid="uid://w5jjfmrpxs4f" path="res://escenas/enemigos/Chochin.tscn" id="2_6033o"]
+
+[node name="PruebaHumo" type="Node2D" unique_id=1616880000]
+
+[node name="Heroe" parent="." unique_id=1937584079 instance=ExtResource("1_srsfq")]
+position = Vector2(191, 107)
+
+[node name="Chochin" parent="." unique_id=6559204 instance=ExtResource("2_6033o")]
+position = Vector2(375, 105)
+
+[node name="Chochin2" parent="." unique_id=957963826 instance=ExtResource("2_6033o")]
+position = Vector2(196, 207)
+
+[node name="Chochin3" parent="." unique_id=1162989790 instance=ExtResource("2_6033o")]
+position = Vector2(8, 108)
+
+[node name="Chochin4" parent="." unique_id=899941659 instance=ExtResource("2_6033o")]
+position = Vector2(191, 10)
