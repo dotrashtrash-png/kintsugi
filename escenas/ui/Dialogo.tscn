@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://2hy01rpuidop"]
+
+[ext_resource type="Script" path="res://escenas/ui/dialogo.gd" id="1_dlg"]
+
+[node name="Dialogo" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_dlg")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -100.0
+offset_right = -20.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Retrato" type="ColorRect" parent="Panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 76.0
+offset_bottom = 76.0
+mouse_filter = 2
+color = Color(0.75, 0.6, 0.45, 1)
+
+[node name="Nombre" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 6.0
+offset_right = 400.0
+offset_bottom = 26.0
+theme_override_font_sizes/font_size = 14
+text = "Abuela Haru"
+
+[node name="Texto" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 88.0
+offset_top = 28.0
+offset_right = -12.0
+offset_bottom = 78.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 12
+text = "Texto de prueba."
+autowrap_mode = 3

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c6q54lmouwhig"]
+
+[ext_resource type="Script" path="res://escenas/pruebas/juanmarin/prueba_dialogo.gd" id="1_p"]
+[ext_resource type="PackedScene" path="res://escenas/ui/Dialogo.tscn" id="2_d"]
+
+[node name="PruebaDialogo" type="Node2D"]
+script = ExtResource("1_p")
+
+[node name="Dialogo" parent="." instance=ExtResource("2_d")]
