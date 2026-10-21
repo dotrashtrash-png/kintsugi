@@ -6,9 +6,11 @@ var velocidad := 110.0
 var vida := 100
 var vida_maxima := 100
 var radio_recoger := 40.0 # lo usa la Luz de Juan Marin
+var regen := 0.0 # vida por segundo (la Miko)
 var direccion := Vector2.RIGHT # hacia donde mira; la katana la usa
 var empuje := Vector2.ZERO # lo usan el viento del Tengu y el Nurikabe
 var muerto := false
+var regen_acumulada := 0.0
 
 @onready var armas: Node2D = $Armas
 
@@ -19,25 +21,42 @@ func _ready() -> void:
 	vida = vida_maxima
 	velocidad = datos["velocidad"]
 	radio_recoger = datos["radio"]
+	regen = datos.get("regen", 0.0)
 	agregar_arma(datos["arma"])
 
 func _physics_process(delta: float) -> void:
+	if muerto:
+		return
 	var dir := Input.get_vector("izquierda", "derecha", "arriba", "abajo")
 	velocity = dir * velocidad + empuje
 	empuje = empuje.move_toward(Vector2.ZERO, 600.0 * delta)
 	move_and_slide()
 	if dir != Vector2.ZERO:
 		direccion = dir
+	# Cuando Matta entregue el sprite (nodo "Sprite"), mira hacia donde camina
+	if dir.x != 0.0 and has_node("Sprite"):
+		$Sprite.flip_h = dir.x < 0.0
+	_regenerar(delta)
+
+func _regenerar(delta: float) -> void:
+	if regen <= 0.0 or vida >= vida_maxima:
+		return
+	regen_acumulada += regen * delta
+	if regen_acumulada >= 1.0:
+		vida = mini(vida_maxima, vida + 1)
+		regen_acumulada -= 1.0
 
 func recibir_dano(cantidad: int) -> void:
 	if muerto:
 		return
 	vida -= cantidad
-	print("Vida del heroe: ", vida)
+	Audio.sfx("dano")
+	modulate = Color(1, 0.4, 0.4) # parpadeo rojo
+	create_tween().tween_property(self, "modulate", Color.WHITE, 0.15)
 	if vida <= 0:
+		vida = 0
 		muerto = true
 		murio.emit()
-		print("El heroe murio")
 
 func empujar(fuerza: Vector2) -> void:
 	empuje += fuerza
@@ -52,7 +71,7 @@ func agregar_arma(nombre: String) -> void:
 	arma.name = nombre
 	armas.add_child(arma)
 
-# Juan Marin la llama desde el menu de mejoras con un nombre de Heroes.MEJORAS
+# Juan Marin la llama desde el menu de mejoras con una clave de Heroes.MEJORAS
 func mejorar(nombre: String) -> void:
 	match nombre:
 		"waraji":
@@ -67,4 +86,3 @@ func mejorar(nombre: String) -> void:
 				armas.get_node(nombre).subir_nivel()
 			else:
 				agregar_arma(nombre)
-				

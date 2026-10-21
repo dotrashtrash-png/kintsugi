@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://6tt0v8o7mlrq"]
+
+[ext_resource type="Script" uid="uid://dyocxrv4kb64y" path="res://escenas/jugador/ofuda.gd" id="1_gv2l1"]
+
+[node name="Ofuda" type="Node2D" unique_id=399301442]
+script = ExtResource("1_gv2l1")
+
+[node name="Timer" type="Timer" parent="." unique_id=1473834476]
+wait_time = 1.2
+autostart = true
