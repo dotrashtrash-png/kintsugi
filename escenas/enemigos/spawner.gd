@@ -5,7 +5,7 @@ extends Node2D
 @export var escena_kasa: PackedScene
 @export var escena_rescate: PackedScene
 @export var tope := 150 # máximo de yokais vivos a la vez (la Web se traba con más)
-@export var distancia := 380.0 # a qué distancia del héroe aparecen: fuera de la pantalla
+@export var distancia := 260.0 # a qué distancia del héroe aparecen: fuera de la pantalla
 
 var tiempo := 0.0
 var heroe
@@ -51,4 +51,3 @@ func generar_rescate() -> void:
 	# Cerca del héroe, dentro de la pantalla, para que se vea.
 	var angulo := randf() * TAU
 	rescate.global_position = heroe.global_position + Vector2.RIGHT.rotated(angulo) * randf_range(90.0, 150.0)
-	$TimerRescate.start()

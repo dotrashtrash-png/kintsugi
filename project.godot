@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="kintsugi"
-run/main_scene="uid://b2myktb85emep"
+run/main_scene="uid://d1jjywxs00c1h"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 

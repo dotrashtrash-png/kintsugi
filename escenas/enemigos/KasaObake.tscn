@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cli0ons300fe0"]
 
 [ext_resource type="Script" uid="uid://ccwt27lh0x8ck" path="res://escenas/enemigos/kasa_obake.gd" id="1_nil62"]
+[ext_resource type="PackedScene" uid="uid://66bclt7nfesy" path="res://escenas/jugador/golpe.tscn" id="2_ef7r4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m7b3v"]
 radius = 6.0
@@ -14,6 +15,8 @@ script = ExtResource("1_nil62")
 velocidad = 140.0
 vida = 5
 dano = 4
+
+[node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("2_ef7r4")]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=977434809]
 offset_left = -6.0
