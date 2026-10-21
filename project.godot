@@ -23,7 +23,6 @@ Estado="*uid://bja6hn013ofjh"
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
 
 [input]
 

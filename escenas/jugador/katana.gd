@@ -22,8 +22,7 @@ func _atacar() -> void:
 			cuerpo.recibir_dano(dano)
 	Audio.sfx("katana")
 	visual.visible = true
-	await get_tree().create_timer(0.1).timeout
-	visual.visible = false
+	create_tween().tween_callback(visual.hide).set_delay(0.1)
 
 # La llama el heroe cuando eligen la katana en el menu de mejoras
 func subir_nivel() -> void:
