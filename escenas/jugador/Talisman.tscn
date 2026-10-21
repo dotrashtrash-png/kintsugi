@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cuu2jrjbqmj4w"]
+
+[ext_resource type="Script" uid="uid://bpgwpojbgir5" path="res://escenas/jugador/talisman.gd" id="1_ghfno"]
+
+[node name="Talisman" type="Node2D" unique_id=1579794200]
+script = ExtResource("1_ghfno")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1394891853]
+offset_left = -5.0
+offset_top = -3.0
+offset_right = 5.0
+offset_bottom = 3.0
+color = Color(1, 0.8784314, 0.5411765, 1)
