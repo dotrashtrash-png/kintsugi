@@ -7,29 +7,29 @@
 script = ExtResource("1_movyn")
 
 [node name="Fondo" type="ColorRect" parent="." unique_id=281360401]
-offset_right = 640.0
-offset_bottom = 360.0
+offset_right = 1152.0
+offset_bottom = 648.0
 color = Color(0.63920635, 0.63920635, 0.6392063, 1)
 
 [node name="Edificios" type="Node2D" parent="." unique_id=934687619]
 
 [node name="Santuario" parent="Edificios" unique_id=685525046 instance=ExtResource("2_lkqpu")]
-position = Vector2(320, 60)
+position = Vector2(572, 108)
 id = "santuario"
 
 [node name="Torii" parent="Edificios" unique_id=759179646 instance=ExtResource("2_lkqpu")]
-position = Vector2(320, 150)
+position = Vector2(572, 270)
 id = "torii"
 
 [node name="Onsen" parent="Edificios" unique_id=1864807790 instance=ExtResource("2_lkqpu")]
-position = Vector2(120, 170)
+position = Vector2(216, 306)
 
 [node name="Biblioteca" parent="Edificios" unique_id=133562056 instance=ExtResource("2_lkqpu")]
-position = Vector2(520, 170)
+position = Vector2(936, 306)
 id = "biblioteca"
 
 [node name="Puente" parent="Edificios" unique_id=782062986 instance=ExtResource("2_lkqpu")]
-position = Vector2(320, 250)
+position = Vector2(576, 450)
 id = "puente"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=2122045962]
@@ -41,20 +41,26 @@ offset_right = 48.0
 offset_bottom = 29.0
 
 [node name="LabelMensaje" type="Label" parent="UI" unique_id=390730983]
-offset_left = 6.0
-offset_top = 330.0
-offset_right = 630.0
-offset_bottom = 354.0
+offset_left = 8.0
+offset_top = 610.0
+offset_right = 1108.0
+offset_bottom = 640.0
 
 [node name="BotonSalir" type="Button" parent="UI" unique_id=29549324]
-offset_left = 500.0
-offset_top = 300.0
-offset_right = 635.0
-offset_bottom = 331.0
+offset_left = 900.0
+offset_top = 580.0
+offset_right = 1035.0
+offset_bottom = 611.0
 text = "Salir a las ruinas"
 
 [node name="BotonPrueba" type="Button" parent="UI" unique_id=17494252]
-offset_left = 6.0
-offset_top = 330.0
-offset_right = 14.0
-offset_bottom = 338.0
+offset_left = 8.0
+offset_top = 580.0
+offset_right = 16.0
+offset_bottom = 588.0
+
+[node name="Heroes" type="HBoxContainer" parent="UI" unique_id=653409733]
+offset_left = 8.0
+offset_top = 520.0
+offset_right = 48.0
+offset_bottom = 560.0

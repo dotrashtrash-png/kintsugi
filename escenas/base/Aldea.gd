@@ -19,6 +19,7 @@ func actualizar() -> void:
 	$UI/LabelMateriales.text = "Madera %d · Tejas %d · Oro %d · Aldeanos %d" % [m["madera"], m["tejas"], m["oro"], Estado.aldeanos]
 	for edificio in $Edificios.get_children():
 		edificio.actualizar()
+	actualizar_heroes()
 
 func mostrar_ultima_salida() -> void:
 	var s: Dictionary = Estado.ultima_salida
@@ -57,3 +58,26 @@ func _on_prueba() -> void:
 	Estado.agregar("oro", 10)
 	Estado.aldeanos += 5
 	Estado.cambio.emit()
+	
+const NOMBRES_HEROES := {
+	"ronin": "Ronin · katana",
+	"miko": "Miko · campana",
+	"onmyoji": "Onmyōji · ofuda",
+	"kunoichi": "Kunoichi · kunai",
+}
+
+func actualizar_heroes() -> void:
+	for hijo in $UI/Heroes.get_children():
+		hijo.queue_free()
+	for id in Estado.heroes_desbloqueados:
+		var boton := Button.new()
+		var texto: String = NOMBRES_HEROES.get(id, id)
+		if id == Estado.heroe_elegido:
+			texto = "> " + texto + " <"
+		boton.text = texto
+		boton.pressed.connect(_on_heroe_elegido.bind(id))
+		$UI/Heroes.add_child(boton)
+
+func _on_heroe_elegido(id: String) -> void:
+	Estado.heroe_elegido = id
+	actualizar_heroes()
