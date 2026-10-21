@@ -19,5 +19,3 @@ color = Color(0.29440817, 0.3862801, 0.37896043, 1)
 [node name="Spawner" parent="." unique_id=1972774240 instance=ExtResource("2_05qeo")]
 escena_chochin = ExtResource("2_8cn0w")
 escena_kasa = ExtResource("3_8cn0w")
-
-[node name="KasaObake" parent="." unique_id=1983163594 instance=ExtResource("3_8cn0w")]

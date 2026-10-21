@@ -14,7 +14,7 @@ color = Color(0.63920635, 0.63920635, 0.6392063, 1)
 
 [node name="BotonSalir" type="Button" parent="UI" unique_id=29549324]
 offset_left = 500.0
-offset_top = 500.0
+offset_top = 300.0
 offset_right = 635.0
-offset_bottom = 531.0
+offset_bottom = 331.0
 text = "Salir a las ruinas"

@@ -5,7 +5,7 @@ extends Node2D
 @export var escena_kasa: PackedScene
 @export var escena_rescate: PackedScene
 @export var tope := 150 # máximo de yokais vivos a la vez (la Web se traba con más)
-@export var distancia := 380.0 # a qué distancia del héroe aparecen: fuera de la pantalla
+@export var distancia := 260.0 # a qué distancia del héroe aparecen: fuera de la pantalla
 
 var tiempo := 0.0
 var heroe

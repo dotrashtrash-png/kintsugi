@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://g8r1xpqxxpuq"]
+
+[ext_resource type="Script" uid="uid://b0pq7ibkcacy1" path="res://escenas/enemigos/Rescate.gd" id="1_pfrv1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i5e20"]
+radius = 28.0
+
+[node name="Rescate" type="Area2D" unique_id=101728606 groups=["rescates"]]
+visibility_layer = 4
+collision_layer = 4
+script = ExtResource("1_pfrv1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1540372822]
+shape = SubResource("CircleShape2D_i5e20")
+
+[node name="Niebla" type="ColorRect" parent="." unique_id=1208949532]
+offset_left = -28.0
+offset_top = -28.0
+offset_right = 28.0
+offset_bottom = 28.0
+color = Color(0.7058824, 0.69803923, 0.7019608, 0.39215687)
+
+[node name="Aldeano" type="ColorRect" parent="." unique_id=445507524]
+offset_left = -4.0
+offset_top = -5.0
+offset_right = 4.0
+offset_bottom = 5.0
+color = Color(0.83969194, 0.7266488, 0.129183, 1)
+
+[node name="Barra" type="ProgressBar" parent="." unique_id=1529351991]
+offset_left = -20.0
+offset_top = -38.0
+offset_right = 20.0
+offset_bottom = -32.0
+show_percentage = false
