@@ -1,9 +1,11 @@
 [gd_scene format=3 uid="uid://wnrpkhta5dwb"]
 
 [ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_hhrgx"]
+[ext_resource type="Script" uid="uid://b7xcl3ei7o7n7" path="res://escenas/pruebas/miguel/prueba.gd" id="1_s7vhj"]
 [ext_resource type="PackedScene" uid="uid://qojoxngeo0sy" path="res://escenas/pruebas/miguel/EnemigoPrueba.tscn" id="2_s7vhj"]
 
 [node name="Prueba" type="Node2D" unique_id=1672987675]
+script = ExtResource("1_s7vhj")
 
 [node name="Heroe" parent="." unique_id=1937584079 instance=ExtResource("1_hhrgx")]
 

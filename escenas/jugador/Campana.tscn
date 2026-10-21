@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ojc5pyo4m70t"]
+
+[ext_resource type="Script" uid="uid://bl6nu7p3ascxb" path="res://escenas/jugador/campana.gd" id="1_hbfm5"]
+
+[node name="Campana" type="Node2D" unique_id=1552212899]
+script = ExtResource("1_hbfm5")
+
+[node name="Timer" type="Timer" parent="." unique_id=1314885454]
+wait_time = 1.5
+autostart = true
