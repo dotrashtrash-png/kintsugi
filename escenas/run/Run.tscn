@@ -1,17 +1,17 @@
 [gd_scene format=3 uid="uid://cl8virbrpfdxj"]
 
-[ext_resource type="Script" path="res://escenas/run/run.gd" id="1"]
-[ext_resource type="PackedScene" path="res://escenas/jugador/Heroe.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://escenas/enemigos/Spawner.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://escenas/enemigos/Chochin.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://escenas/enemigos/KasaObake.tscn" id="5"]
-[ext_resource type="PackedScene" path="res://escenas/run/HUD.tscn" id="6"]
-[ext_resource type="PackedScene" path="res://escenas/run/MenuMejoras.tscn" id="7"]
+[ext_resource type="Script" uid="uid://dgrvenvqgix3b" path="res://escenas/run/run.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://bo2usy14xe3vl" path="res://escenas/enemigos/Spawner.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://w5jjfmrpxs4f" path="res://escenas/enemigos/Chochin.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://cli0ons300fe0" path="res://escenas/enemigos/KasaObake.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://op7m5wi0gjo8" path="res://escenas/run/HUD.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://ckj3vessa18hn" path="res://escenas/run/MenuMejoras.tscn" id="7"]
 
-[node name="Run" type="Node2D"]
+[node name="Run" type="Node2D" unique_id=1129077559]
 script = ExtResource("1")
 
-[node name="SueloProvisional" type="ColorRect" parent="."]
+[node name="SueloProvisional" type="ColorRect" parent="." unique_id=2106102294]
 offset_left = -1500.0
 offset_top = -1500.0
 offset_right = 1500.0
@@ -19,12 +19,12 @@ offset_bottom = 1500.0
 mouse_filter = 2
 color = Color(0.25, 0.32, 0.28, 1)
 
-[node name="Heroe" parent="." instance=ExtResource("2")]
+[node name="Heroe" parent="." unique_id=613786250 instance=ExtResource("2")]
 
-[node name="Spawner" parent="." instance=ExtResource("3")]
+[node name="Spawner" parent="." unique_id=437718539 instance=ExtResource("3")]
 escena_chochin = ExtResource("4")
 escena_kasa = ExtResource("5")
 
-[node name="HUD" parent="." instance=ExtResource("6")]
+[node name="HUD" parent="." unique_id=1799677278 instance=ExtResource("6")]
 
-[node name="MenuMejoras" parent="." instance=ExtResource("7")]
+[node name="MenuMejoras" parent="." unique_id=541475927 instance=ExtResource("7")]
