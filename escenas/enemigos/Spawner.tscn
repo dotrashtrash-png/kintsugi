@@ -1,18 +1,9 @@
 [gd_scene format=3 uid="uid://bo2usy14xe3vl"]
 
 [ext_resource type="Script" uid="uid://c8qsawv06kru0" path="res://escenas/enemigos/spawner.gd" id="1_ue853"]
-[ext_resource type="PackedScene" uid="uid://w5jjfmrpxs4f" path="res://escenas/enemigos/Chochin.tscn" id="2_rg8q8"]
-[ext_resource type="PackedScene" uid="uid://cli0ons300fe0" path="res://escenas/enemigos/KasaObake.tscn" id="3_4ttop"]
-[ext_resource type="PackedScene" uid="uid://g8r1xpqxxpuq" path="res://escenas/enemigos/Rescate.tscn" id="4_v3vs1"]
 
 [node name="Spawner" type="Node2D" unique_id=1972774240]
 script = ExtResource("1_ue853")
-
-[node name="Chochin" parent="." unique_id=6559204 instance=ExtResource("2_rg8q8")]
-
-[node name="KasaObake" parent="." unique_id=1302315464 instance=ExtResource("3_4ttop")]
-
-[node name="Rescate" parent="." unique_id=101728606 instance=ExtResource("4_v3vs1")]
 
 [node name="TimerOleada" type="Timer" parent="." unique_id=2079397531]
 wait_time = 1.2
