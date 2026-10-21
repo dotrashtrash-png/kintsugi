@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bj67h4t54cf1o"]
+
+[ext_resource type="Script" uid="uid://c0ttomnlx5ivh" path="res://escenas/base/edificio.gd" id="1_rfeqr"]
+
+[node name="Edificio" type="Node2D" unique_id=685525046]
+script = ExtResource("1_rfeqr")
+
+[node name="Cuadro" type="ColorRect" parent="." unique_id=569693440]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+
+[node name="Nombre" type="Label" parent="." unique_id=132172186]
+custom_minimum_size = Vector2(120, 0)
+offset_left = -60.0
+offset_top = 26.0
+offset_right = 60.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Boton" type="Button" parent="." unique_id=1774490671]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+flat = true
