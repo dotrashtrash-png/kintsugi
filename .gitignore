@@ -1,4 +1,29 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Exportaciones
+export_presets.cfg
+export_credentials.cfg
+/build/
+/export/
+*.apk
+*.aab
+*.exe
+*.pck
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Sistema
 .DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporales
+*.tmp
+*.bak
+*.translation
