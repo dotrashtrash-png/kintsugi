@@ -1,9 +1,9 @@
 extends Node2D
 
 # Arrastra cada tscn desde Sistema de archivos a estos campos del Inspector.
-@export var escena_chochin: PackedScene
-@export var escena_kasa: PackedScene
-@export var escena_rescate: PackedScene
+@export var escena_chochin: PackedScene = preload("res://escenas/enemigos/Chochin.tscn")
+@export var escena_kasa: PackedScene = preload("res://escenas/enemigos/KasaObake.tscn")
+@export var escena_rescate: PackedScene = preload("res://escenas/enemigos/Rescate.tscn")
 @export var tope := 150 # máximo de yokais vivos a la vez (la Web se traba con más)
 @export var distancia := 260.0 # a qué distancia del héroe aparecen: fuera de la pantalla
 
