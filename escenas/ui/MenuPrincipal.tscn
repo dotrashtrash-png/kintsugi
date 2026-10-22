@@ -74,5 +74,10 @@ offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 12
-text = "Hecho por el equipo KINTSUGI · Arte base: Ninja Adventure (CC0)"
+text = "KINTSUGI · Cali Game Jam #4, Edición Colombia Solidaria
+Código: Miguel Cano, Miller, Juan Marín, Juan Cadavid, Villa, Lopez
+Arte: Matta, Juan Marín
+Arte base: Ninja Adventure de Pixel-boy (CC0)
+Música: Free Music : MOMIZizm MUSiC (music.storyinvention.com/en/)
+Efectos de sonido: creados para el juego"
 horizontal_alignment = 1

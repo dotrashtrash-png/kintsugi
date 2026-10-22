@@ -7,17 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://cli0ons300fe0" path="res://escenas/enemigos/KasaObake.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://op7m5wi0gjo8" path="res://escenas/run/HUD.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://ckj3vessa18hn" path="res://escenas/run/MenuMejoras.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://c4ykbt2gc7irw" path="res://escenas/mapas/Zona.tscn" id="8"]
 
 [node name="Run" type="Node2D" unique_id=1129077559]
 script = ExtResource("1")
 
-[node name="SueloProvisional" type="ColorRect" parent="." unique_id=2106102294]
-offset_left = -1500.0
-offset_top = -1500.0
-offset_right = 1500.0
-offset_bottom = 1500.0
-mouse_filter = 2
-color = Color(0.25, 0.32, 0.28, 1)
+[node name="Zona" parent="." unique_id=1876543210 instance=ExtResource("8")]
 
 [node name="Heroe" parent="." unique_id=613786250 instance=ExtResource("2")]
 

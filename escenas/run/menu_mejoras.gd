@@ -1,10 +1,12 @@
 extends CanvasLayer
 
-# Menú que sale al subir de nivel: pausa el juego y muestra hasta 3 mejoras.
-# Truco: este nodo tiene Process > Mode = "When Paused", así que es lo único
-# que sigue funcionando mientras todo lo demás está congelado.
+# Menu que sale al subir de nivel: pausa el juego y muestra hasta 3 mejoras,
+# cada una con su icono, su nivel y su texto.
+# Process > Mode = "When Paused": es lo unico que funciona con el juego congelado.
 
 signal mejora_elegida(nombre: String)
+
+const RUTA_ICONO := "res://arte/ui/icono_%s.png"
 
 var opciones: Array = []
 @onready var botones := [$Panel/VBox/Boton1, $Panel/VBox/Boton2, $Panel/VBox/Boton3]
@@ -13,32 +15,42 @@ var opciones: Array = []
 func _ready() -> void:
 	visible = false
 	for i in botones.size():
-		# bind(i) hace que cada botón diga cuál es: 0, 1 o 2.
 		botones[i].pressed.connect(_on_boton.bind(i))
+		botones[i].expand_icon = true # el icono crece con el boton (se ve grande y nitido)
+		botones[i].custom_minimum_size = Vector2(0, 52)
+		botones[i].alignment = HORIZONTAL_ALIGNMENT_LEFT
 
 
-# El Run llama esto con 1 a 3 nombres, por ejemplo ["katana", "waraji", "omamori"].
+# El Run llama esto con 1 a 3 claves, por ejemplo ["katana", "waraji", "kunai"].
 func mostrar(nuevas_opciones: Array) -> void:
 	opciones = nuevas_opciones
+	var heroe = get_tree().get_first_node_in_group("jugador")
 	for i in botones.size():
 		if i >= opciones.size():
 			botones[i].visible = false
 			continue
-		botones[i].text = texto_de(opciones[i])
+		var nombre: String = opciones[i]
+		botones[i].text = texto_de(nombre, heroe)
+		var ruta := RUTA_ICONO % nombre
+		botones[i].icon = load(ruta) if ResourceLoader.exists(ruta) else null
 		botones[i].visible = true
 	visible = true
 	get_tree().paused = true
-	botones[0].grab_focus() # también se elige con flechas y Enter
+	botones[0].grab_focus() # tambien se elige con flechas y Enter
 
 
-# Hoy Heroes.MEJORAS es solo una lista de nombres. Si Miguel la cambia por un
-# diccionario con "nombre" y "texto", el menú los usa solo.
-func texto_de(nombre: String) -> String:
-	var lista = Heroes.MEJORAS # sin tipo a propósito (puede ser lista o diccionario)
-	if lista is Dictionary and lista.has(nombre):
-		var datos: Dictionary = lista[nombre]
-		return "%s\n%s" % [datos.get("nombre", nombre), datos.get("texto", "")]
-	return nombre.capitalize()
+# "Kunai (nueva)" o "Katana Nv. 2 -> 3", y abajo el texto de la mejora
+func texto_de(nombre: String, heroe) -> String:
+	var datos: Dictionary = Heroes.MEJORAS.get(nombre, {})
+	var titulo: String = datos.get("nombre", nombre.capitalize())
+	var nivel_actual := 0
+	if heroe and heroe.has_method("nivel_de"):
+		nivel_actual = heroe.nivel_de(nombre)
+	if nivel_actual == 0:
+		titulo += " (nueva)"
+	else:
+		titulo += " Nv. %d → %d" % [nivel_actual, nivel_actual + 1]
+	return titulo + "\n" + str(datos.get("texto", ""))
 
 
 func _on_boton(indice: int) -> void:
