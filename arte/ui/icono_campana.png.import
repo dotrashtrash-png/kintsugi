@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iq5o03o7r1g6"
-path="res://.godot/imported/onmyoji_caminar.png-1bf172c7393673600a783cabf6c6de7f.ctex"
+uid="uid://carmr4xhs6f6y"
+path="res://.godot/imported/icono_campana.png-5df910afb8bb3ff480ea511a288127c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arte/heroes/onmyoji_caminar.png"
-dest_files=["res://.godot/imported/onmyoji_caminar.png-1bf172c7393673600a783cabf6c6de7f.ctex"]
+source_file="res://arte/ui/icono_campana.png"
+dest_files=["res://.godot/imported/icono_campana.png-5df910afb8bb3ff480ea511a288127c2.ctex"]
 
 [params]
 

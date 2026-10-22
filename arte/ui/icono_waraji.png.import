@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dklupnkfjdp5q"
-path="res://.godot/imported/onmyoji_quieto.png-9f4bf37a66fd82ecad6a8b8b18066580.ctex"
+uid="uid://c3c3yuqi1bm2g"
+path="res://.godot/imported/icono_waraji.png-720a0b3e3963be5c96cbb5a181de294d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arte/heroes/onmyoji_quieto.png"
-dest_files=["res://.godot/imported/onmyoji_quieto.png-9f4bf37a66fd82ecad6a8b8b18066580.ctex"]
+source_file="res://arte/ui/icono_waraji.png"
+dest_files=["res://.godot/imported/icono_waraji.png-720a0b3e3963be5c96cbb5a181de294d.ctex"]
 
 [params]
 
