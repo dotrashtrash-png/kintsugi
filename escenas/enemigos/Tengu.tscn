@@ -21,5 +21,31 @@ offset_right = 16.0
 offset_bottom = 16.0
 color = Color(1, 0.55, 0.55, 1)
 
+[node name="Sprite" type="Sprite2D" parent="." unique_id=49992132]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2059299956]
 shape = SubResource("RectangleShape2D_4cyrx")
+
+[node name="BarraJefe" type="CanvasLayer" parent="." unique_id=1283516151]
+layer = 4
+
+[node name="Nombre" type="Label" parent="BarraJefe" unique_id=77516153]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.5
+offset_right = 50.5
+offset_bottom = 26.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 18
+text = "Gran Tengu"
+
+[node name="Barra" type="ProgressBar" parent="BarraJefe" unique_id=1973604316]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -210.0
+offset_right = 210.0
+offset_bottom = 27.0
+grow_horizontal = 2
+show_percentage = false
