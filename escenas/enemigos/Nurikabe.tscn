@@ -27,6 +27,6 @@ shape = SubResource("CircleShape2D_rk0f8")
 [node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("1_whi3s")]
 empuje = 1.0
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=183407111]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=183407111]
 texture = ExtResource("2_ddx4r")
 hframes = 2
