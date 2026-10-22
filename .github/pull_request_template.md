@@ -12,4 +12,4 @@
 - [ ] Incluí los `.uid` y `.import` de los archivos nuevos.
 - [ ] No toqué escenas de otra persona (o la avisé).
 - [ ] Mis escenas de prueba están en `escenas/pruebas/<mi-nombre>/`.
-- [ ] El PR apunta a `dev`, no a `main`.
+- [ ] Vengo de mi rama personal y el PR apunta a `main`.

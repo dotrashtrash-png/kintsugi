@@ -2,15 +2,14 @@
 
 ## Flujo
 
-1. Actualiza `dev`: `git checkout dev && git pull`.
-2. Crea tu rama: `git checkout -b feature/<tema>` (o `fix/<tema>`).
-3. Trabaja y haz commits pequeños.
-4. Antes de empujar, trae lo nuevo de `dev` (`git pull origin dev`) y abre el proyecto en Godot para comprobar que corre.
-5. Empuja y abre un pull request hacia `dev`.
-6. Otra persona lo revisa y lo aprueba. No te apruebes tus propios PR.
-7. Cuando `dev` esté estable, se hace un PR de `dev` a `main`.
+1. Trabaja siempre en **tu rama** (`miller`, `juancadavid`, `juanmarin`, `villa`, `lopez` o `miguel`). Si aún no existe, créala desde `main`: `git checkout main && git pull && git checkout -b tu-nombre`.
+2. Antes de empezar cada día, trae lo nuevo: `git pull origin main` desde tu rama.
+3. Haz commits pequeños y empuja tu rama.
+4. Abre un pull request de tu rama hacia `main`. Abre el proyecto en Godot antes para comprobar que corre.
+5. Lopez revisa y mezcla (en las revisiones: arte con nombre en la lista, PNG transparente, tamaño exacto y en `arte/<carpeta>/`).
+6. Si tienes cambios a medias y vas a cambiar de rama, súbelos antes.
 
-No hagas push directo a `main` ni a `dev`.
+No hagas push directo a `main` ni force push.
 
 ## Commits
 

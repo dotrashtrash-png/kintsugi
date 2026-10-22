@@ -28,12 +28,11 @@ Controles: `WASD` o flechas para moverte.
 
 ## Ramas
 
-- `main`: siempre abre y corre. Solo entra por pull request.
-- `dev`: integración. Aquí se juntan las ramas de trabajo antes de pasar a `main`.
-- `feature/<tema>` o `fix/<tema>`: una por tarea, creada desde `dev`. Ejemplo: `feature/tengu`.
+- `main`: siempre abre y corre. Está protegida: solo entra por pull request.
+- Una rama por persona: `miller`, `juancadavid`, `juanmarin`, `villa`, `lopez`, `miguel`. Trabajas siempre en la tuya y la subes a `main` con un PR.
 
 Mira [CONTRIBUTING.md](CONTRIBUTING.md) para el flujo completo.
 
 ## Ramas antiguas
 
-- `origin/miller` (aparece en algunas vistas como `origin/origin/miller`): rama heredada con trabajo que aún no está en `main`. **Se va a eliminar.** Si algo de ahí sirve, pásalo a `dev` antes.
+- `origin/miller` (aparece en algunas vistas como `origin/origin/miller`): rama heredada, **se va a eliminar**. Lo útil (mapa Zona y arreglo del Spawner) ya se rescató. No la confundas con tu rama personal `miller`.
