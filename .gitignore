@@ -2,8 +2,7 @@
 .godot/
 /android/
 
-# Exportaciones
-export_presets.cfg
+# Exportaciones (export_presets.cfg SI se sube: lo necesita el build Web)
 export_credentials.cfg
 /build/
 /export/
