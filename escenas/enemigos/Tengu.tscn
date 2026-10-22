@@ -8,7 +8,7 @@ size = Vector2(32, 32)
 
 [node name="Tengu" type="CharacterBody2D" unique_id=1488608542]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 0
 script = ExtResource("1_tyjl2")
 
 [node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("1_83tfw")]
