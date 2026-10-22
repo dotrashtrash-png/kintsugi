@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bsr1jcdjuap3h"]
+
+[ext_resource type="Script" uid="uid://cy73o1gwsxq28" path="res://escenas/enemigos/Cuervo.gd" id="1_5uril"]
+[ext_resource type="PackedScene" uid="uid://66bclt7nfesy" path="res://escenas/jugador/golpe.tscn" id="1_qb0eh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4cyrx"]
+size = Vector2(10, 8)
+
+[node name="Cuervo" type="CharacterBody2D" unique_id=470651359]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_5uril")
+velocidad = 95.0
+vida = 5
+dano = 3
+probabilidad_material = 0.0
+fps = 6.0
+
+[node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("1_qb0eh")]
+empuje = 0.0
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1676617996]
+offset_left = -5.0
+offset_top = -4.0
+offset_right = 5.0
+offset_bottom = 4.0
+color = Color(0.55, 0.55, 0.7, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=940183086]
+shape = SubResource("RectangleShape2D_4cyrx")
