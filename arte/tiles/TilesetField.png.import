@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://e70vtv4g5gm2"
-path="res://.godot/imported/TilesetField.png-4e26c0289cf473b99b11c9acd3b0e167.ctex"
+path="res://.godot/imported/TilesetField.png-1c435f714a07e6e9341aa1f5c60f1058.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://arte/tiles/TilesetField.png"
-dest_files=["res://.godot/imported/TilesetField.png-4e26c0289cf473b99b11c9acd3b0e167.ctex"]
+dest_files=["res://.godot/imported/TilesetField.png-1c435f714a07e6e9341aa1f5c60f1058.ctex"]
 
 [params]
 
