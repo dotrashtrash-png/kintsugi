@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://xy17twcjdigl"]
+
+[ext_resource type="Script" uid="uid://cohyof7j4c2ws" path="res://escenas/enemigos/nurikabe.gd" id="1_ddx4r"]
+[ext_resource type="PackedScene" uid="uid://66bclt7nfesy" path="res://escenas/jugador/golpe.tscn" id="1_whi3s"]
+[ext_resource type="Texture2D" uid="uid://bxshjtwe8ypds" path="res://arte/yokais/nurikabe.png" id="2_ddx4r"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rk0f8"]
+radius = 13.0
+
+[node name="Nurikabe" type="CharacterBody2D" unique_id=36141279]
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_ddx4r")
+velocidad = 28.0
+vida = 90
+dano = 8
+probabilidad_material = 0.5
+distancia_contacto = 22.0
+fps = 2.0
+voltear = false
+valor_luz = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1914081639]
+shape = SubResource("CircleShape2D_rk0f8")
+
+[node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("1_whi3s")]
+empuje = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=183407111]
+texture = ExtResource("2_ddx4r")
+hframes = 2

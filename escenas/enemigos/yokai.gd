@@ -6,16 +6,20 @@ extends CharacterBody2D
 @export var vida := 10
 @export var dano := 5
 @export var probabilidad_material := 0.1 # 0.1 = 1 de cada 10 suelta material
-@export var distancia_contacto := 14.0 # qué tan cerca tiene que estar para pegar
+@export var distancia_contacto := 14.0 # distancia minima para pegar
+@export var fps := 4.0 # cuadros por segundo de la animacion
+@export var voltear := true # voltea el dibujo cuando camina a la izquierda
+@export var valor_luz := 1 # experiencia que suelta al morir
 
 const RUTA_LUZ := "res://escenas/run/Luz.tscn"
 const RUTA_MATERIAL := "res://escenas/run/Material.tscn"
 const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
-const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al héroe, no cada cuadro
+const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
 var heroe
 var espera_dano := 0.0
 var muerto := false
+var reloj_anim := 0.0
 
 func _ready() -> void:
 	add_to_group("enemigos")
@@ -26,8 +30,8 @@ func _physics_process(delta: float) -> void:
 		return
 	mover(delta)
 	revisar_contacto(delta)
+	animar(delta)
 
-# Movimiento normal: ir derecho al héroe. La Kasa reemplaza esta función.
 func mover(_delta: float) -> void:
 	velocity = global_position.direction_to(heroe.global_position) * velocidad
 	move_and_slide()
@@ -40,11 +44,20 @@ func revisar_contacto(delta: float) -> void:
 		heroe.recibir_dano(dano)
 		espera_dano = PAUSA_DANO
 
+func animar(delta: float) -> void:
+	if not has_node("Sprite"):
+		return
+	var dibujo: Sprite2D = $Sprite
+	if dibujo.hframes > 1:
+		reloj_anim += delta
+		dibujo.frame = int(reloj_anim * fps) % dibujo.hframes
+	if voltear and absf(velocity.x) > 1.0:
+		dibujo.flip_h = velocity.x < 0.0
+
 func recibir_dano(cantidad: int) -> void:
 	if muerto:
 		return
 	vida -= cantidad
-	# Golpe es el componente de Villa: parpadeo blanco y empujón.
 	if has_node("Golpe"):
 		$Golpe.recibir()
 	if vida <= 0:
@@ -52,7 +65,9 @@ func recibir_dano(cantidad: int) -> void:
 
 func morir() -> void:
 	muerto = true
-	soltar(RUTA_LUZ)
+	var luz = soltar(RUTA_LUZ)
+	if luz:
+		luz.valor = valor_luz
 	if randf() < probabilidad_material:
 		var mat = soltar(RUTA_MATERIAL)
 		if mat:
@@ -61,17 +76,13 @@ func morir() -> void:
 	Audio.sfx("yokai_muere")
 	queue_free()
 
-# Chōchin y Kasa sueltan madera o tejas. El Nurikabe cambiará esto por oro.
 func elegir_material() -> String:
 	return "madera" if randf() < 0.6 else "tejas"
 
-# Crea una escena (luz, material o humo) donde murió el yokai.
-# Si la escena todavía no existe, no hace nada: así no dependes de que los demás terminen.
 func soltar(ruta: String):
 	if not ResourceLoader.exists(ruta):
 		return null
 	var cosa: Node2D = load(ruta).instantiate()
 	cosa.position = global_position
-	# call_deferred: se agrega al terminar el cuadro (Godot no deja agregar en medio de la física).
 	get_tree().current_scene.add_child.call_deferred(cosa)
 	return cosa

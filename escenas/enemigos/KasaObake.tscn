@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ccwt27lh0x8ck" path="res://escenas/enemigos/kasa_obake.gd" id="1_nil62"]
 [ext_resource type="PackedScene" uid="uid://66bclt7nfesy" path="res://escenas/jugador/golpe.tscn" id="2_ef7r4"]
+[ext_resource type="Texture2D" uid="uid://b8wssqwf550gl" path="res://arte/yokais/kasa.png" id="3_lq8ng"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m7b3v"]
 radius = 6.0
@@ -15,15 +16,13 @@ script = ExtResource("1_nil62")
 velocidad = 140.0
 vida = 5
 dano = 4
+fps = 8.0
 
 [node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("2_ef7r4")]
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=977434809]
-offset_left = -6.0
-offset_top = -6.0
-offset_right = 6.0
-offset_bottom = 6.0
-color = Color(0.90653765, 0.5583955, 0.9722362, 1)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2063352502]
 shape = SubResource("CircleShape2D_m7b3v")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1417763921]
+texture = ExtResource("3_lq8ng")
+hframes = 4

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bux1jmov0n1xo" path="res://escenas/enemigos/chochin.gd" id="1_vfiqp"]
 [ext_resource type="PackedScene" uid="uid://66bclt7nfesy" path="res://escenas/jugador/golpe.tscn" id="2_aw5jn"]
+[ext_resource type="Texture2D" uid="uid://dmtt187yjenmx" path="res://arte/yokais/chochin.png" id="3_o75se"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m7b3v"]
 radius = 6.0
@@ -13,15 +14,13 @@ collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_vfiqp")
 velocidad = 45.0
+fps = 3.0
 
 [node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("2_aw5jn")]
 
-[node name="cuadro" type="ColorRect" parent="." unique_id=1316555562]
-offset_left = -6.0
-offset_top = -6.0
-offset_right = 6.0
-offset_bottom = 6.0
-color = Color(1, 0.7019608, 0.3764706, 1)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1931583989]
 shape = SubResource("CircleShape2D_m7b3v")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=459177651]
+texture = ExtResource("3_o75se")
+hframes = 2
