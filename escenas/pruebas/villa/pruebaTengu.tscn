@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_l0rxc"]
 [ext_resource type="PackedScene" uid="uid://bdtn7iwpsb18l" path="res://escenas/enemigos/Tengu.tscn" id="2_1m3ir"]
+[ext_resource type="PackedScene" uid="uid://w5jjfmrpxs4f" path="res://escenas/enemigos/Chochin.tscn" id="3_1m3ir"]
 
 [node name="PruebaTengu" type="Node2D" unique_id=1397439202]
 
@@ -10,5 +11,19 @@ position = Vector2(191, 111)
 
 [node name="Tengu" parent="." unique_id=1488608542 instance=ExtResource("2_1m3ir")]
 position = Vector2(325, 112)
-collision_mask = 0
 vida = 40
+
+[node name="Chochin" parent="." unique_id=6559204 instance=ExtResource("3_1m3ir")]
+position = Vector2(216, 40)
+
+[node name="Chochin2" parent="." unique_id=1323690064 instance=ExtResource("3_1m3ir")]
+position = Vector2(278, 187)
+
+[node name="Chochin3" parent="." unique_id=88230245 instance=ExtResource("3_1m3ir")]
+position = Vector2(299, 63)
+
+[node name="Chochin4" parent="." unique_id=515046904 instance=ExtResource("3_1m3ir")]
+position = Vector2(356, 113)
+
+[node name="Chochin5" parent="." unique_id=1459473201 instance=ExtResource("3_1m3ir")]
+position = Vector2(354, 137)

@@ -15,7 +15,6 @@ script = ExtResource("1_tyjl2")
 empuje = 0.0
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1255506056]
-custom_maximum_size = Vector2(32, 32)
 offset_left = -16.0
 offset_top = -16.0
 offset_right = 16.0

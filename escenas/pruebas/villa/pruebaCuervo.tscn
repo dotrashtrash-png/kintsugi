@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cn5mxkoqogcf4"]
+
+[ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_h0u5o"]
+[ext_resource type="PackedScene" uid="uid://bsr1jcdjuap3h" path="res://escenas/enemigos/Cuervo.tscn" id="2_3f8vx"]
+
+[node name="Node2D" type="Node2D" unique_id=500441748]
+
+[node name="Heroe" parent="." unique_id=1937584079 instance=ExtResource("1_h0u5o")]
+position = Vector2(193, 111)
+
+[node name="Cuervo" parent="." unique_id=470651359 instance=ExtResource("2_3f8vx")]
+position = Vector2(99, 181)
+
+[node name="Cuervo2" parent="." unique_id=586372421 instance=ExtResource("2_3f8vx")]
+position = Vector2(192, 17)
+
+[node name="Cuervo3" parent="." unique_id=1418171777 instance=ExtResource("2_3f8vx")]
+position = Vector2(300, 176)
+
+[node name="Cuervo4" parent="." unique_id=1833242465 instance=ExtResource("2_3f8vx")]
+position = Vector2(195, 206)
+
+[node name="Cuervo5" parent="." unique_id=1560520949 instance=ExtResource("2_3f8vx")]
+position = Vector2(83, 65)
+
+[node name="Cuervo6" parent="." unique_id=74970005 instance=ExtResource("2_3f8vx")]
+position = Vector2(301, 52)
