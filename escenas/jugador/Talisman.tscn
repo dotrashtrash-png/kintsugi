@@ -1,13 +1,12 @@
 [gd_scene format=3 uid="uid://cuu2jrjbqmj4w"]
 
 [ext_resource type="Script" uid="uid://bpgwpojbgir5" path="res://escenas/jugador/talisman.gd" id="1_ghfno"]
+[ext_resource type="Texture2D" uid="uid://bm7j3p8xfbnls" path="res://arte/ui/icono_ofuda.png" id="2_eoc25"]
 
 [node name="Talisman" type="Node2D" unique_id=1579794200]
 script = ExtResource("1_ghfno")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1394891853]
-offset_left = -5.0
-offset_top = -3.0
-offset_right = 5.0
-offset_bottom = 3.0
-color = Color(1, 0.8784314, 0.5411765, 1)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=992057176]
+rotation = 1.5707964
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_eoc25")
