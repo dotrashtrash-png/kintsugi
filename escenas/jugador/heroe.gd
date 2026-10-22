@@ -3,6 +3,7 @@ extends CharacterBody2D
 signal murio
 
 const TIEMPO_INVULNERABLE := 0.4 # tras un golpe, un momento sin recibir dano
+const BORDE_MAPA := 1600.0 # mitad del tamano del mapa de Miller, en pixeles
 
 var velocidad := 110.0
 var vida := 100
@@ -29,6 +30,12 @@ func _ready() -> void:
 	regen = datos.get("regen", 0.0)
 	_cargar_sprite(datos.get("sprite", ""))
 	agregar_arma(datos["arma"])
+		# La camara se detiene en el borde del mapa y no muestra el vacio
+	var cam: Camera2D = $Camera2D
+	cam.limit_left = -int(BORDE_MAPA)
+	cam.limit_top = -int(BORDE_MAPA)
+	cam.limit_right = int(BORDE_MAPA)
+	cam.limit_bottom = int(BORDE_MAPA)
 
 # Hojas de Matta: 64x16, 4 cuadros = abajo, arriba, izquierda, derecha
 func _cargar_sprite(ruta: String) -> void:
@@ -49,6 +56,8 @@ func _physics_process(delta: float) -> void:
 	velocity = dir * velocidad + empuje
 	empuje = empuje.move_toward(Vector2.ZERO, 600.0 * delta)
 	move_and_slide()
+	var b := BORDE_MAPA - 12.0
+	global_position = global_position.clamp(Vector2(-b, -b), Vector2(b, b)) # no salir del mapa
 	if dir != Vector2.ZERO:
 		direccion = dir
 	_animar(dir, delta)
