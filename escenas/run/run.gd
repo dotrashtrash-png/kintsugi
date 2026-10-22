@@ -1,13 +1,15 @@
 extends Node2D
 
-# El Run es la partida: guarda lo que pasa (experiencia, nivel, botín, tiempo)
-# y junta las piezas de los demás (Heroe de Miguel, Spawner de Miller, Tengu de Villa).
+# El Run es la partida: guarda lo que pasa (experiencia, nivel, botin, tiempo)
+# y junta las piezas de los demas (Heroe, Spawner, Zona, Tengu).
 
-@export var duracion := 360.0 # 6 minutos. Al llegar, aparece el Gran Tengu.
+@export var duracion := 360.0 # 6 minutos
 
 const RUTA_TENGU := "res://escenas/enemigos/Tengu.tscn"
 const RUTA_ALDEA := "res://escenas/base/Aldea.tscn"
-const MEJORAS_QUE_NO_SON_ARMAS := ["waraji", "haori", "omamori"]
+const MEJORAS_QUE_NO_SON_ARMAS := ["waraji", "haori", "omamori", "hachimaki"]
+const NIVEL_MAXIMO := 8 # el mismo numero que en heroe.gd
+const MARGEN_BORDE := 24.0 # el heroe no se acerca mas que esto al borde del mapa
 
 var tiempo := 0.0
 var experiencia := 0
@@ -18,17 +20,34 @@ var recolectado := {"madera": 0, "tejas": 0, "oro": 0}
 var aldeanos_rescatados := 0
 var jefe_aparecio := false
 var terminado := false
+var limites := Rect2() # el rectangulo del mapa en pixeles (vacio si no hay Zona)
 
 @onready var heroe = $Heroe
 
 
 func _ready() -> void:
-	# Así la Luz, el Material y el Rescate encuentran el Run.
 	add_to_group("run")
 	heroe.murio.connect(_on_heroe_murio)
 	if has_node("MenuMejoras"):
 		$MenuMejoras.mejora_elegida.connect(_on_mejora_elegida)
+	calcular_limites()
 	Audio.musica("run")
+
+
+# Mide el mapa de Miller y le pone esos bordes a la camara del heroe.
+func calcular_limites() -> void:
+	if not has_node("Zona/Suelo"):
+		return
+	var suelo: TileMapLayer = $Zona/Suelo
+	var celdas: Rect2i = suelo.get_used_rect()
+	var tam := Vector2(suelo.tile_set.tile_size)
+	var esquina: Vector2 = suelo.to_global(Vector2(celdas.position) * tam)
+	limites = Rect2(esquina, Vector2(celdas.size) * tam)
+	var camara: Camera2D = heroe.get_node("Camera2D")
+	camara.limit_left = int(limites.position.x)
+	camara.limit_top = int(limites.position.y)
+	camara.limit_right = int(limites.end.x)
+	camara.limit_bottom = int(limites.end.y)
 
 
 func _process(delta: float) -> void:
@@ -39,14 +58,21 @@ func _process(delta: float) -> void:
 		aparecer_jefe()
 
 
-# ---------- Lo que llaman las demás piezas (contrato: no cambiar los nombres) ----------
+# El heroe no puede pasar del borde del mapa
+func _physics_process(_delta: float) -> void:
+	if limites.has_area():
+		var m := Vector2(MARGEN_BORDE, MARGEN_BORDE)
+		heroe.global_position = heroe.global_position.clamp(limites.position + m, limites.end - m)
+
+
+# ---------- Lo que llaman las demas piezas (contrato: no cambiar los nombres) ----------
 
 func agregar_experiencia(cantidad: int) -> void:
 	experiencia += cantidad
 	while experiencia >= experiencia_necesaria:
 		experiencia -= experiencia_necesaria
 		nivel += 1
-		experiencia_necesaria = 5 + nivel * 3 # cada nivel pide un poco más
+		experiencia_necesaria = 5 + nivel * 3 # cada nivel pide un poco mas
 		niveles_pendientes += 1
 	if niveles_pendientes > 0 and not get_tree().paused:
 		mostrar_menu()
@@ -73,25 +99,19 @@ func mostrar_menu() -> void:
 	if has_node("MenuMejoras"):
 		$MenuMejoras.mostrar(opciones)
 	else:
-		_on_mejora_elegida(opciones[0]) # todavía no hay menú: elige la primera
+		_on_mejora_elegida(opciones[0])
 
 
-# Lista de mejoras que se pueden ofrecer, sacada de Heroes.MEJORAS (de Miguel).
-# Salta las armas que todavía no existen (por ejemplo, si nadie ha subido Campana.tscn).
+# Mejoras que se pueden ofrecer: las que existen y no han llegado al nivel maximo.
 func mejoras_posibles() -> Array:
-	# Hoy MEJORAS es una lista; la guía dice que Miguel la puede volver un diccionario.
-	# "lista" va sin tipo a propósito, para que este código sirva en los dos casos.
-	var lista = Heroes.MEJORAS
-	var todas = []
-	if lista is Dictionary:
-		todas = lista.keys()
-	else:
-		todas = lista.duplicate() # copia: la original es const y no se puede mezclar
 	var posibles: Array = []
-	for nombre in todas:
+	for nombre in Heroes.MEJORAS.keys():
 		var ruta := "res://escenas/jugador/%s.tscn" % String(nombre).capitalize()
-		if nombre in MEJORAS_QUE_NO_SON_ARMAS or ResourceLoader.exists(ruta):
-			posibles.append(nombre)
+		if not (nombre in MEJORAS_QUE_NO_SON_ARMAS or ResourceLoader.exists(ruta)):
+			continue # el arma todavia no existe
+		if heroe.has_method("nivel_de") and heroe.nivel_de(nombre) >= NIVEL_MAXIMO:
+			continue # ya esta al maximo
+		posibles.append(nombre)
 	return posibles
 
 
@@ -106,12 +126,17 @@ func _on_mejora_elegida(nombre: String) -> void:
 
 func aparecer_jefe() -> void:
 	jefe_aparecio = true
-	if not ResourceLoader.exists(RUTA_TENGU):
-		terminar(true) # mientras Villa no lo suba, llegar al minuto 6 es ganar
+	# El Gran Tengu solo baja si el puente rojo esta reparado.
+	# Antes de eso, sobrevivir los 6 minutos es ganar.
+	if not Estado.esta_reparado("puente") or not ResourceLoader.exists(RUTA_TENGU):
+		terminar(true)
 		return
 	var tengu = load(RUTA_TENGU).instantiate()
 	add_child(tengu)
-	tengu.global_position = heroe.global_position + Vector2(200, 0)
+	var lugar: Vector2 = heroe.global_position + Vector2(200, 0)
+	if limites.has_area():
+		lugar = lugar.clamp(limites.position, limites.end)
+	tengu.global_position = lugar
 	tengu.vencido.connect(_on_tengu_vencido)
 
 
@@ -132,7 +157,7 @@ func terminar(sobrevivio: bool) -> void:
 		for tipo in botin:
 			botin[tipo] = botin[tipo] / 2 # si cae, trae la mitad de los materiales
 	Estado.recibir_botin(botin, aldeanos_rescatados, sobrevivio)
-	get_tree().paused = false # ¡nunca cambiar de escena en pausa!
+	get_tree().paused = false # nunca cambiar de escena en pausa
 	get_tree().change_scene_to_file.call_deferred(RUTA_ALDEA)
 
 
