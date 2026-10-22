@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iq5o03o7r1g6"
-path="res://.godot/imported/onmyoji_caminar.png-1bf172c7393673600a783cabf6c6de7f.ctex"
+uid="uid://bbjs2sicqcnnf"
+path="res://.godot/imported/kunoichi_quieto.png-4ac626949cee3ad9a3606f734de863be.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arte/heroes/onmyoji_caminar.png"
-dest_files=["res://.godot/imported/onmyoji_caminar.png-1bf172c7393673600a783cabf6c6de7f.ctex"]
+source_file="res://arte/heroes/kunoichi_quieto.png"
+dest_files=["res://.godot/imported/kunoichi_quieto.png-4ac626949cee3ad9a3606f734de863be.ctex"]
 
 [params]
 

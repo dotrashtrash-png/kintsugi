@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dklupnkfjdp5q"
-path="res://.godot/imported/onmyoji_quieto.png-9f4bf37a66fd82ecad6a8b8b18066580.ctex"
+uid="uid://y8jl8f2kco48"
+path="res://.godot/imported/ronin.png-3310d157b25360812626f5dabaf726a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arte/heroes/onmyoji_quieto.png"
-dest_files=["res://.godot/imported/onmyoji_quieto.png-9f4bf37a66fd82ecad6a8b8b18066580.ctex"]
+source_file="res://arte/heroes/ronin.png"
+dest_files=["res://.godot/imported/ronin.png-3310d157b25360812626f5dabaf726a3.ctex"]
 
 [params]
 
