@@ -18,7 +18,7 @@ func _physics_process(_delta: float) -> void:
 func _atacar() -> void:
 	for cuerpo in get_overlapping_bodies():
 		if cuerpo.is_in_group("enemigos"):
-			cuerpo.recibir_dano(dano)
+			cuerpo.recibir_dano(int(round(dano * heroe.poder)))
 	Audio.sfx("katana")
 	mostrando = true
 	queue_redraw()

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://0qumqduttr1i"]
+
+[ext_resource type="Script" uid="uid://c77fkbu3dhgew" path="res://escenas/jugador/kitsunebi.gd" id="1_7doi4"]
+
+[node name="Kitsunebi" type="Node2D" unique_id=839953925]
+script = ExtResource("1_7doi4")
