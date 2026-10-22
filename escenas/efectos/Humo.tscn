@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://vvqvas6pfeju"]
 
-[ext_resource type="Script" uid="uid://cvlw7w2ai0p45" path="res://escenas/efectos/Humo.gd" id="1_pxoy7"]
+[ext_resource type="Script" uid="uid://cvlw7w2ai0p45" path="res://escenas/efectos/Humo.gd" id="1_a1od4"]
 
 [sub_resource type="Gradient" id="Gradient_3grmx"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
@@ -20,7 +20,7 @@ scale_amount_min = 2.0
 scale_amount_max = 4.0
 color = Color(0.85, 0.85, 0.9, 1)
 color_ramp = SubResource("Gradient_3grmx")
-script = ExtResource("1_pxoy7")
+script = ExtResource("1_a1od4")
 
 [node name="Papel" type="CPUParticles2D" parent="." unique_id=518768658]
 emitting = false
