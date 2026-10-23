@@ -1,10 +1,13 @@
 extends Node2D
 # Campana suzu (Miko): onda circular que crece, dana y empuja.
 
+const RECARGA_MINIMA := 1.0 # nunca suena mas rapido que esto
+const RADIO_MAXIMO := 80.0 # nunca cubre toda la pantalla
+
 var nivel := 1
-var dano := 4
-var radio_max := 50.0
-var empuje := 30.0
+var dano := 3
+var radio_max := 45.0
+var empuje := 12.0
 var duracion := 0.35 # lo que tarda la onda en crecer
 
 var radio := 0.0
@@ -14,6 +17,7 @@ var golpeados: Array = []
 @onready var heroe = get_tree().get_first_node_in_group("jugador")
 
 func _ready() -> void:
+	timer.wait_time = 1.8
 	timer.timeout.connect(_sonar)
 
 func _sonar() -> void:
@@ -45,9 +49,10 @@ func _draw() -> void:
 	if radio > 0.0:
 		draw_arc(Vector2.ZERO, radio, 0.0, TAU, 32, Color(1, 0.9, 0.5, 0.8), 2.0)
 
-# La llama el heroe cuando eligen la campana en el menu de mejoras
+# La llama el heroe cuando eligen la campana en el menu de mejoras.
+# Todo sube en linea recta y con tope: ya no cubre la pantalla ni suena sin parar.
 func subir_nivel() -> void:
 	nivel += 1
 	dano += 2
-	radio_max *= 1.15
-	timer.wait_time = maxf(0.6, timer.wait_time * 0.85)
+	radio_max = minf(RADIO_MAXIMO, radio_max + 5.0)
+	timer.wait_time = maxf(RECARGA_MINIMA, timer.wait_time - 0.1)

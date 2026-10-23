@@ -19,8 +19,8 @@ const MEJORAS := {
 	"ofuda": {"nombre": "Ofuda", "texto": "Talismanes que persiguen yokais."},
 	"kunai": {"nombre": "Kunai", "texto": "Cuchillos en línea que atraviesan."},
 	"kitsunebi": {"nombre": "Kitsunebi", "texto": "Fuegos de zorro que giran a tu alrededor."},
-	"waraji": {"nombre": "Waraji", "texto": "+10 % de velocidad."},
-	"haori": {"nombre": "Haori", "texto": "+20 de vida máxima."},
-	"omamori": {"nombre": "Omamori", "texto": "+20 % de radio para recoger."},
-	"hachimaki": {"nombre": "Hachimaki", "texto": "+15 % de daño de todas las armas."},
+	"waraji": {"nombre": "Waraji", "texto": "+8 % de velocidad."},
+	"haori": {"nombre": "Haori", "texto": "+25 de vida máxima y cura 25."},
+	"omamori": {"nombre": "Omamori", "texto": "+25 % de radio para recoger."},
+	"hachimaki": {"nombre": "Hachimaki", "texto": "+20 % de daño de todas las armas."},
 }

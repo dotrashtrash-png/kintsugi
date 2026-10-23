@@ -1,4 +1,7 @@
 extends Area2D
+# Katana (Ronin): corte al frente cada cierto tiempo.
+
+const RECARGA_MINIMA := 0.5 # nunca ataca mas rapido que esto
 
 var nivel := 1
 var dano := 5
@@ -35,8 +38,10 @@ func _draw() -> void:
 	draw_arc(Vector2(4, 0), 18.0, -PI / 3.0, PI / 3.0, 16, Color(1, 1, 1, 0.9), 3.0)
 	draw_arc(Vector2(4, 0), 14.0, -PI / 4.0, PI / 4.0, 12, Color(1, 1, 1, 0.45), 2.0)
 
-# La llama el heroe cuando eligen la katana en el menu de mejoras
+# La llama el heroe cuando eligen la katana en el menu de mejoras.
+# Crece en linea recta (no se multiplica): al nivel 8 es 1.7 veces mas grande.
 func subir_nivel() -> void:
 	nivel += 1
-	dano += 3
-	scale *= 1.15 # mas alcance
+	dano += 2
+	scale = Vector2.ONE * (1.0 + 0.1 * (nivel - 1))
+	timer.wait_time = maxf(RECARGA_MINIMA, timer.wait_time - 0.04)
