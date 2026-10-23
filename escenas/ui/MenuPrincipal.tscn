@@ -75,8 +75,15 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 12
 text = "KINTSUGI · Cali Game Jam #4, Edición Colombia Solidaria
-Código: Miguel Cano, Miller, Juan Marín, Juan Cadavid, Villa, Lopez
-Arte: Matta, Juan Marín
+
+Miguel Angel Cano (do.trash) · Líder y código
+Juan Jose Marin (marin) · Código y arte
+Juan Sebastian Cadavid (juannn) · Código
+Juan Guillermo Miller (miller) · Código
+Juan Jose Villa (limon) · Código
+Steban Lopez (p0xz) · Código
+Luis Miguel Matta (m.r_cronos) · Arte
+
 Arte base: Ninja Adventure de Pixel-boy (CC0)
 Música: Free Music : MOMIZizm MUSiC (music.storyinvention.com/en/)
 Efectos de sonido: creados para el juego"
