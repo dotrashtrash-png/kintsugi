@@ -2,8 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://e70vtv4g5gm2" path="res://arte/tiles/TilesetField.png" id="1_21i7k"]
 
-[ext_resource type="Texture2D" uid="uid://dndg2l33dgm7" path="res://arte/tiles/TilesetFloorDetail.png" id="2_detalle"]
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_devob"]
 texture = ExtResource("1_21i7k")
 0:0/0 = 0
@@ -73,13 +71,14 @@ texture = ExtResource("1_21i7k")
 3:8/0 = 0
 3:4/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_53tha"]
-texture = ExtResource("2_detalle")
+[sub_resource type="TileSet" id="TileSet_3qmhb"]
+sources/0 = SubResource("TileSetAtlasSource_devob")
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_21i7k"]
 load_path = "res://.godot/imported/TilesetFloorDetail.png-200954030e742ab195a9566f2c23c03c.ctex"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_53tha"]
-texture = ExtResource("2_detalle")
+texture = SubResource("CompressedTexture2D_21i7k")
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
