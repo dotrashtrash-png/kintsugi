@@ -11,7 +11,6 @@ var radio := 0.0
 var golpeados: Array = []
 
 @onready var timer: Timer = $Timer
-@onready var heroe = get_tree().get_first_node_in_group("jugador")
 
 func _ready() -> void:
 	timer.timeout.connect(_sonar)
@@ -38,7 +37,7 @@ func _physics_process(_delta: float) -> void:
 			if not enemigo.is_in_group("jefe"): # al Tengu no se le empuja
 				var dir: Vector2 = global_position.direction_to(enemigo.global_position)
 				enemigo.global_position += dir * empuje
-			enemigo.recibir_dano(int(round(dano * heroe.poder)))
+			enemigo.recibir_dano(dano)
 	queue_redraw()
 
 func _draw() -> void:
