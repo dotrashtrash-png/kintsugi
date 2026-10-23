@@ -9,7 +9,7 @@ const RUTA_TENGU := "res://escenas/enemigos/Tengu.tscn"
 const RUTA_ALDEA := "res://escenas/base/Aldea.tscn"
 const MEJORAS_QUE_NO_SON_ARMAS := ["waraji", "haori", "omamori", "hachimaki"]
 const NIVEL_MAXIMO := 8 # el mismo numero que en heroe.gd
-const MARGEN_BORDE := 24.0 # el heroe no se acerca mas que esto al borde del mapa
+const MARGEN_BORDE := 10.0 # el heroe no se acerca mas que esto al borde del mapa
 
 var tiempo := 0.0
 var experiencia := 0
@@ -34,15 +34,20 @@ func _ready() -> void:
 	Audio.musica("run")
 
 
-# Mide el mapa de Miller y le pone esos bordes a la camara del heroe.
+# Mide el mapa (la imagen Fondo de la Zona) y le pone esos bordes a la camara del heroe.
 func calcular_limites() -> void:
-	if not has_node("Zona/Suelo"):
+	if has_node("Zona/Fondo"):
+		var fondo: Sprite2D = $Zona/Fondo
+		var r: Rect2 = fondo.get_rect()
+		limites = Rect2(fondo.to_global(r.position), r.size * fondo.global_scale)
+	elif has_node("Zona/Suelo"):
+		var suelo: TileMapLayer = $Zona/Suelo
+		var celdas: Rect2i = suelo.get_used_rect()
+		var tam := Vector2(suelo.tile_set.tile_size)
+		var esquina: Vector2 = suelo.to_global(Vector2(celdas.position) * tam)
+		limites = Rect2(esquina, Vector2(celdas.size) * tam)
+	else:
 		return
-	var suelo: TileMapLayer = $Zona/Suelo
-	var celdas: Rect2i = suelo.get_used_rect()
-	var tam := Vector2(suelo.tile_set.tile_size)
-	var esquina: Vector2 = suelo.to_global(Vector2(celdas.position) * tam)
-	limites = Rect2(esquina, Vector2(celdas.size) * tam)
 	var camara: Camera2D = heroe.get_node("Camera2D")
 	camara.limit_left = int(limites.position.x)
 	camara.limit_top = int(limites.position.y)
