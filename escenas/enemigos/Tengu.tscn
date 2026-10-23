@@ -37,6 +37,8 @@ offset_left = -50.5
 offset_right = 50.5
 offset_bottom = 26.0
 grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 34)
 theme_override_font_sizes/font_size = 18
 text = "Gran Tengu"
 
@@ -48,4 +50,6 @@ offset_left = -210.0
 offset_right = 210.0
 offset_bottom = 27.0
 grow_horizontal = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 64)
 show_percentage = false

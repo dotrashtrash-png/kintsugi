@@ -10,7 +10,7 @@ var mostrando := false
 
 @onready var timer: Timer = $Timer
 
-		func _ready() -> void:
+func _ready() -> void:
 	heroe = get_tree().get_first_node_in_group("jugador")
 	timer.timeout.connect(_atacar)
 
