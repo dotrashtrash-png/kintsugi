@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://e70vtv4g5gm2" path="res://arte/tiles/TilesetField.png" id="1_21i7k"]
 
-[ext_resource type="Texture2D" uid="uid://dndg2l33dgm7" path="res://arte/tiles/TilesetFloorDetail.png" id="2_detalle"]
+[ext_resource type="Texture2D" uid="uid://blwkn4h3suqoo" path="res://arte/tiles/decoracion.png" id="2_detalle"]
 
 [ext_resource type="Texture2D" uid="uid://8mu83nl0mc0l" path="res://arte/tiles/suelo.png" id="3_suelo"]
 
