@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c4ykbt2gc7irw"]
 
-[ext_resource type="Texture2D" uid="uid://fmoammwm0fy5" path="res://arte/tiles/mapa_noche.png" id="1_fondo"]
+[ext_resource type="Texture2D" uid="uid://c7yvx8yiaqieo" path="res://arte/tiles/mapa_grande.png" id="1_fondo"]
 
 [node name="Zona" type="Node2D"]
 
