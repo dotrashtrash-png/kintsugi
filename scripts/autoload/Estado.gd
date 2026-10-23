@@ -2,12 +2,19 @@ extends Node
 
 signal cambio
 
+const ARCHIVO := "user://kintsugi.cfg"
+
 var materiales := {"madera": 0, "tejas": 0, "oro": 0}
 var aldeanos := 0
 var edificios: Array[String] = []
 var heroes_desbloqueados: Array[String] = ["ronin"]
 var heroe_elegido := "ronin"
-var ultima_salida := {}
+var ultima_salida := {} 
+var vio_intro := false
+var salidas := 0 
+
+func _ready() -> void:
+	cargar()
 
 func agregar(tipo: String, cantidad: int) -> void:
 	materiales[tipo] += cantidad
@@ -31,7 +38,9 @@ func recibir_botin(botin: Dictionary, aldeanos_rescatados: int, sobrevivio: bool
 	for tipo in botin:
 		materiales[tipo] += botin[tipo]
 	aldeanos += aldeanos_rescatados
+	salidas += 1
 	ultima_salida = {"botin": botin, "aldeanos": aldeanos_rescatados, "sobrevivio": sobrevivio}
+	guardar()
 	cambio.emit()
 
 func esta_reparado(id: String) -> bool:
@@ -51,6 +60,7 @@ func reparar(id: String) -> bool:
 	pagar(Edificios.LISTA[id]["costo"])
 	edificios.append(id)
 	aplicar_efecto(id)
+	guardar()
 	cambio.emit()
 	return true
 
@@ -60,6 +70,8 @@ func aplicar_efecto(id: String) -> void:
 			desbloquear_heroe("miko")
 		"biblioteca":
 			desbloquear_heroe("onmyoji")
+		"puente":
+			desbloquear_heroe("kunoichi")
 
 func desbloquear_heroe(id: String) -> void:
 	if not heroes_desbloqueados.has(id):
@@ -67,3 +79,41 @@ func desbloquear_heroe(id: String) -> void:
 
 func bono_vida() -> float:
 	return 0.2 if esta_reparado("onsen") else 0.0
+
+func tiene_partida() -> bool:
+	return salidas > 0 or not edificios.is_empty()
+
+func guardar() -> void:
+	var archivo := ConfigFile.new()
+	archivo.set_value("progreso", "materiales", materiales)
+	archivo.set_value("progreso", "aldeanos", aldeanos)
+	archivo.set_value("progreso", "edificios", edificios)
+	archivo.set_value("progreso", "heroes", heroes_desbloqueados)
+	archivo.set_value("progreso", "heroe_elegido", heroe_elegido)
+	archivo.set_value("progreso", "vio_intro", vio_intro)
+	archivo.set_value("progreso", "salidas", salidas)
+	archivo.save(ARCHIVO)
+
+func cargar() -> void:
+	var archivo := ConfigFile.new()
+	if archivo.load(ARCHIVO) != OK:
+		return 
+	materiales = archivo.get_value("progreso", "materiales", materiales)
+	aldeanos = archivo.get_value("progreso", "aldeanos", 0)
+	edificios.assign(archivo.get_value("progreso", "edificios", []))
+	heroes_desbloqueados.assign(archivo.get_value("progreso", "heroes", ["ronin"]))
+	heroe_elegido = archivo.get_value("progreso", "heroe_elegido", "ronin")
+	vio_intro = archivo.get_value("progreso", "vio_intro", false)
+	salidas = archivo.get_value("progreso", "salidas", 0)
+
+func reiniciar() -> void:
+	materiales = {"madera": 0, "tejas": 0, "oro": 0}
+	aldeanos = 0
+	edificios.clear()
+	heroes_desbloqueados.assign(["ronin"])
+	heroe_elegido = "ronin"
+	ultima_salida = {}
+	vio_intro = false
+	salidas = 0
+	guardar()
+	cambio.emit()

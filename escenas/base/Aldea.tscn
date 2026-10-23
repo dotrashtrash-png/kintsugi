@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d1jjywxs00c1h"]
 
 [ext_resource type="Script" uid="uid://c3ptscv3df3gw" path="res://escenas/base/Aldea.gd" id="1_movyn"]
+[ext_resource type="PackedScene" uid="uid://2hy01rpuidop" path="res://escenas/ui/Dialogo.tscn" id="2_6avvw"]
 [ext_resource type="PackedScene" uid="uid://bj67h4t54cf1o" path="res://escenas/base/Edificio.tscn" id="2_lkqpu"]
 
 [node name="Aldea" type="Node2D" unique_id=1120546708]
@@ -11,25 +12,33 @@ offset_right = 1152.0
 offset_bottom = 648.0
 color = Color(0.63920635, 0.63920635, 0.6392063, 1)
 
+[node name="Tinte" type="CanvasModulate" parent="." unique_id=503871058]
+
+[node name="Dialogo" parent="." unique_id=1220943999 instance=ExtResource("2_6avvw")]
+
+[node name="Kohaku" type="Sprite2D" parent="." unique_id=1629301481]
+position = Vector2(680, 110)
+scale = Vector2(2, 2)
+
 [node name="Edificios" type="Node2D" parent="." unique_id=934687619]
 
 [node name="Santuario" parent="Edificios" unique_id=685525046 instance=ExtResource("2_lkqpu")]
-position = Vector2(572, 108)
+position = Vector2(576, 90)
 id = "santuario"
 
 [node name="Torii" parent="Edificios" unique_id=759179646 instance=ExtResource("2_lkqpu")]
-position = Vector2(572, 270)
+position = Vector2(575, 280)
 id = "torii"
 
 [node name="Onsen" parent="Edificios" unique_id=1864807790 instance=ExtResource("2_lkqpu")]
-position = Vector2(216, 306)
+position = Vector2(300, 280)
 
 [node name="Biblioteca" parent="Edificios" unique_id=133562056 instance=ExtResource("2_lkqpu")]
-position = Vector2(936, 306)
+position = Vector2(860, 280)
 id = "biblioteca"
 
 [node name="Puente" parent="Edificios" unique_id=782062986 instance=ExtResource("2_lkqpu")]
-position = Vector2(576, 450)
+position = Vector2(576, 440)
 id = "puente"
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=2122045962]
@@ -65,3 +74,10 @@ offset_left = 8.0
 offset_top = 520.0
 offset_right = 48.0
 offset_bottom = 560.0
+
+[node name="BotonBorrar" type="Button" parent="UI" unique_id=906589395]
+offset_left = 960.0
+offset_top = 44.0
+offset_right = 1149.0
+offset_bottom = 75.0
+text = "Borrar partida (prueba)"

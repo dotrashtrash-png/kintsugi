@@ -1,10 +1,14 @@
 extends Node
 
 func _ready() -> void:
-	print("Inicio: ", Estado.materiales)
-	Estado.recibir_botin({"madera": 12, "tejas": 6, "oro": 0}, 1, true)
-	print("Despues: ", Estado.materiales, " aldeanos: ", Estado.aldeanos)
-	print("Puedo reparar onsen? ", Estado.puede_reparar("onsen")) # true
-	print("Reparar onsen: ", Estado.reparar("onsen")) # true
-	print("Quedan: ", Estado.materiales, " bono: ", Estado.bono_vida())
-	print("Puedo reparar torii? ", Estado.puede_reparar("torii")) # false
+	Estado.reiniciar()
+	Estado.recibir_botin({"madera": 20, "tejas": 10, "oro": 0}, 1, true)
+	Estado.reparar("onsen")
+	print("Guardado: ", Estado.materiales, " edificios ", Estado.edificios)
+	Estado.materiales = {"madera": 0, "tejas": 0, "oro": 0}
+	Estado.edificios.clear()
+	Estado.cargar()
+	print("Cargado: ", Estado.materiales, " edificios ", Estado.edificios)
+	print("Tiene partida: ", Estado.tiene_partida()) 
+	Estado.reiniciar()
+	print("Despues de reiniciar: ", Estado.tiene_partida()) 

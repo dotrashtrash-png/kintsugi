@@ -6,24 +6,30 @@
 script = ExtResource("1_rfeqr")
 
 [node name="Cuadro" type="ColorRect" parent="." unique_id=569693440]
-offset_left = -24.0
-offset_top = -24.0
-offset_right = 24.0
-offset_bottom = 24.0
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+
+[node name="Dibujo" type="Sprite2D" parent="." unique_id=1490521750]
+scale = Vector2(2, 2)
+
+[node name="Vetas" type="Sprite2D" parent="." unique_id=2076702414]
+scale = Vector2(2, 2)
 
 [node name="Nombre" type="Label" parent="." unique_id=132172186]
 custom_minimum_size = Vector2(160, 0)
 offset_left = -80.0
-offset_top = 26.0
+offset_top = 56.0
 offset_right = 80.0
-offset_bottom = 56.0
-theme_override_font_sizes/font_size = 14
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 12
 horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="Boton" type="Button" parent="." unique_id=1774490671]
-offset_left = -24.0
-offset_top = -24.0
-offset_right = 24.0
-offset_bottom = 24.0
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
 flat = true
