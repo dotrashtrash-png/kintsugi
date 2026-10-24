@@ -37,6 +37,17 @@ func _ready() -> void:
 		$Sprite.visible = false
 		
 	Audio.sfx("tengu")
+	
+	# Efecto de jugabilidad (Juego): Destello blanco y temblor de cámara al aparecer
+	modulate = Color(3, 3, 3)
+	create_tween().tween_property(self, "modulate", Color.WHITE, 0.4)
+	
+	if heroe and heroe.has_node("Camera2D"):
+		var camara = heroe.get_node("Camera2D")
+		var tw = create_tween()
+		for i in 4:
+			tw.tween_property(camara, "offset", Vector2(randf_range(-6, 6), randf_range(-6, 6)), 0.05)
+		tw.tween_property(camara, "offset", Vector2.ZERO, 0.05)
 
 func _physics_process(delta: float) -> void:
 	if heroe == null or muerto:
@@ -47,12 +58,14 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	if $Sprite.visible:
-		$Sprite.frame = int(Time.get_ticks_msec() / 500.0) % 2 # aletea
+		# Aleteo más lento ajustado a 500.0
+		$Sprite.frame = int(Time.get_ticks_msec() / 500.0) % 2 
 		
-	# Pega por contacto cada 0.8 s
+	# Pega por contacto cada 0.8 s (aplicando el multiplicador de poder del héroe)
 	espera_dano -= delta
 	if espera_dano <= 0.0 and global_position.distance_to(heroe.global_position) < 22.0:
-		heroe.recibir_dano(dano)
+		var daño_final = int(round(dano * heroe.poder)) if (heroe and "poder" in heroe) else dano
+		heroe.recibir_dano(daño_final)
 		espera_dano = 0.8
 		
 	# Ataques con reloj
@@ -73,7 +86,7 @@ func invocar_cuervos(cantidad: int) -> void:
 		get_parent().add_child(cuervo)
 		cuervo.global_position = global_position + Vector2.RIGHT.rotated(TAU * i / cantidad) * 24.0
 
-# Aviso de medio segundo (se pone blanco) y despues el viento empuja y pega poquito.
+# Aviso de medio segundo (se pone blanco) y despues el viento empuja y pega.
 func rafaga() -> void:
 	var aviso = create_tween()
 	aviso.tween_property(self, "modulate", Color(2, 2, 2), 0.25)
@@ -86,13 +99,12 @@ func rafaga() -> void:
 	Audio.sfx("viento")
 	if global_position.distance_to(heroe.global_position) < alcance_viento:
 		heroe.empujar(global_position.direction_to(heroe.global_position) * fuerza_viento)
-		heroe.recibir_dano(5)
+		heroe.recibir_dano(int(round(5 * heroe.poder)) if (heroe and "poder" in heroe) else 5)
 
 func recibir_dano(cantidad: int) -> void:
 	if muerto:
 		return
 	vida -= cantidad
-	NumeroDano.crear(self, cantidad)
 	$BarraJefe/Barra.value = vida
 	
 	if has_node("Golpe"):

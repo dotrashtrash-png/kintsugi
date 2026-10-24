@@ -2,8 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://d05nvof33o5rk" path="res://escenas/jugador/Heroe.tscn" id="1_05qeo"]
 [ext_resource type="PackedScene" uid="uid://bo2usy14xe3vl" path="res://escenas/enemigos/Spawner.tscn" id="2_05qeo"]
-[ext_resource type="PackedScene" uid="uid://w5jjfmrpxs4f" path="res://escenas/enemigos/Chochin.tscn" id="2_8cn0w"]
-[ext_resource type="PackedScene" uid="uid://cli0ons300fe0" path="res://escenas/enemigos/KasaObake.tscn" id="3_8cn0w"]
 
 [node name="PruebaYokais" type="Node2D" unique_id=1214473874]
 
@@ -17,5 +15,3 @@ color = Color(0.29440817, 0.3862801, 0.37896043, 1)
 [node name="Heroe" parent="." unique_id=1937584079 instance=ExtResource("1_05qeo")]
 
 [node name="Spawner" parent="." unique_id=1972774240 instance=ExtResource("2_05qeo")]
-escena_chochin = ExtResource("2_8cn0w")
-escena_kasa = ExtResource("3_8cn0w")

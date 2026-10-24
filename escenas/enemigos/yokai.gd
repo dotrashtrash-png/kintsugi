@@ -60,7 +60,8 @@ func revisar_contacto(delta: float) -> void:
 	if espera_dano > 0.0:
 		return
 	if global_position.distance_to(heroe.global_position) < distancia_contacto:
-		heroe.recibir_dano(dano)
+		var daño_final = int(round(dano * heroe.poder)) if (heroe and "poder" in heroe) else dano
+		heroe.recibir_dano(daño_final)
 		espera_dano = PAUSA_DANO
 
 func animar(delta: float) -> void:
