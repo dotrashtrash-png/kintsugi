@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dkvxldlg00j0a"]
+
+[ext_resource type="Script" uid="uid://dd3vbah5oaxbs" path="res://cuchillo.gd" id="1_2dxsr"]
+
+[node name="Cuchillo" type="Node2D" unique_id=1849496228]
+script = ExtResource("1_2dxsr")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=573028721]
+offset_left = -4.0
+offset_top = 1.0
+offset_right = 4.0
+offset_bottom = 3.0
+offset_transform_enabled = true
+color = Color(0.8, 0.85, 0.9, 1)

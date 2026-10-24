@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bxk7x3nigk43"]
+
+[ext_resource type="Script" uid="uid://dc1rhsehuwg4h" path="res://kunai.gd" id="1_c32ah"]
+
+[node name="Kunai" type="Node2D" unique_id=775857302]
+script = ExtResource("1_c32ah")
+
+[node name="Timer" type="Timer" parent="." unique_id=1122635549]
+wait_time = 0.9
+autostart = true
