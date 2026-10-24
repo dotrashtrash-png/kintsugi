@@ -8,7 +8,7 @@ const HARU := {
 	"falta": "Todavía no alcanza. Sal otra vez: las ruinas guardan más de lo que parece.",
 	"onsen": "El agua caliente vuelve a correr. Saldrás con más fuerzas.",
 	"torii": "El torii brilla otra vez. La Miko, la sacerdotisa del santuario, quiere acompañarte.",
-	"biblioteca": "Los pergaminos se salvaron. El Onmyōji ya puede leer sus talismanes.",
+	"biblioteca": "Los pergaminos se salvaron. El Onmyoji ya puede leer sus talismanes.",
 	"puente": "El puente rojo está en pie. La Kunoichi lo cruzó para ayudarte… y del otro lado baja el Gran Tengu. Ten cuidado.",
 	"santuario": "El santuario está completo. Enciende los faroles. Kohaku está despertando.",
 }

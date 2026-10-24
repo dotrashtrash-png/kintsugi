@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 	if $Sprite.visible:
-		$Sprite.frame = int(Time.get_ticks_msec() / 300.0) % 2 # aletea
+		$Sprite.frame = int(Time.get_ticks_msec() / 500.0) % 2 # aletea
 		
 	# Pega por contacto cada 0.8 s
 	espera_dano -= delta
@@ -92,6 +92,7 @@ func recibir_dano(cantidad: int) -> void:
 	if muerto:
 		return
 	vida -= cantidad
+	NumeroDano.crear(self, cantidad)
 	$BarraJefe/Barra.value = vida
 	
 	if has_node("Golpe"):

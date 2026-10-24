@@ -81,6 +81,18 @@ func _animar(dir: Vector2, delta: float) -> void:
 	paso += delta * 14.0
 	sprite.position.y = -roundf(absf(sin(paso)) * 1.5) # saltito al caminar
 
+# Barra de vida chiquita debajo del heroe (como en Vampire Survivors)
+func _process(_delta: float) -> void:
+	queue_redraw()
+
+func _draw() -> void:
+	if muerto:
+		return
+	var ancho := 16.0
+	var y := 10.0
+	draw_rect(Rect2(-ancho / 2.0 - 1.0, y - 1.0, ancho + 2.0, 4.0), Color("1b1a2e"))
+	draw_rect(Rect2(-ancho / 2.0, y, ancho * float(vida) / float(vida_maxima), 2.0), Color("c8402e"))
+
 func _regenerar(delta: float) -> void:
 	if regen <= 0.0 or vida >= vida_maxima:
 		return

@@ -9,7 +9,7 @@ const TOTAL_EDIFICIOS := 5
 const NOMBRES_HEROES := {
 	"ronin": "Ronin · katana",
 	"miko": "Miko · campana",
-	"onmyoji": "Onmyōji · ofuda",
+	"onmyoji": "Onmyoji · ofuda",
 	"kunoichi": "Kunoichi · kunai",
 }
 
