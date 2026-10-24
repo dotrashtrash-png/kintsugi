@@ -104,6 +104,8 @@ func actualizar() -> void:
 		if datos["aldeanos"] > 0:
 			partes.append(_pieza("Aldeanos", Estado.aldeanos, datos["aldeanos"]))
 		t += "\n" + " · ".join(partes)
+		if not Estado.faltan_requisitos(id).is_empty():
+			partes.append("[color=#%s]Antes repara los demás[/color]" % FALTA)
 	texto.text = t + "[/center]"
 
 	# Borde dorado solo cuando ya se puede reparar

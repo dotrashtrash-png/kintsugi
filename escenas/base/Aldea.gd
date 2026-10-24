@@ -2,20 +2,64 @@ extends Node2D
 
 const RUTA_SALIR := "res://escenas/run/Run.tscn"
 const RUTA_FINAL := "res://escenas/base/Final.tscn"
-const RUTA_KOHAKU := "res://arte/yokais/kohaku.png" # si Matta la mueve a arte/aldea/, cambia esta ruta
+# Busca a Kohaku en estas rutas, en orden. Usa la primera que exista.
+const RUTAS_KOHAKU := [
+	"res://arte/aldea/kohaku.png",
+	"res://arte/yokais/kohaku.png",
+]
+const RUTA_PISO := "res://arte/aldea/piso_aldea.png" # 384x216: a x3 llena la ventana
 const COLOR_RUINAS := Color(0.55, 0.55, 0.65) # la aldea al empezar: gris azulado
 const TOTAL_EDIFICIOS := 5
 
-const NOMBRES_HEROES := {
-	"ronin": "Ronin · katana",
-	"miko": "Miko · campana",
-	"onmyoji": "Onmyoji · ofuda",
-	"kunoichi": "Kunoichi · kunai",
+# Selector de heroe en tarjetas
+const ORDEN_HEROES := ["ronin", "miko", "onmyoji", "kunoichi"]
+const TITULO_HEROE := {"ronin": "Ronin", "miko": "Miko", "onmyoji": "Onmyōji", "kunoichi": "Kunoichi"}
+const REQUISITO_HEROE := {
+	"miko": "Repara el torii",
+	"onmyoji": "Repara la biblioteca",
+	"kunoichi": "Repara el puente",
 }
+const DORADO_TARJETA := Color("e8b04a")
+
+# Panel de botin
+const ICONOS_BOTIN := {
+	"madera": "res://arte/ui/madera.png",
+	"tejas": "res://arte/ui/tejas.png",
+	"oro": "res://arte/ui/oro.png",
+}
+const NOMBRE_BOTIN := {"madera": "Madera", "tejas": "Tejas", "oro": "Oro"}
 
 var ya_dijo_falta := false
+var capa_botin: CanvasLayer
 
-const RUTA_PISO := "res://arte/aldea/piso_aldea.png" # 384x216: a x3 llena la ventana
+
+func _ready() -> void:
+	for edificio in $Edificios.get_children():
+		edificio.elegido.connect(_on_edificio_elegido)
+	$UI/BotonSalir.pressed.connect(_on_salir)
+	$UI/BotonPrueba.pressed.connect(_on_prueba)
+	$UI/BotonPrueba.visible = OS.is_debug_build()
+	$UI/BotonBorrar.pressed.connect(_on_borrar)
+	$UI/BotonBorrar.visible = OS.is_debug_build()
+	Estado.cambio.connect(actualizar)
+	poner_piso()
+	preparar_kohaku()
+	var saludo := elegir_saludo() # antes de mostrar_ultima_salida(), que la borra
+	var salida: Dictionary = Estado.ultima_salida.duplicate(true) # copia para el panel
+	actualizar()
+	mostrar_ultima_salida()
+	Audio.musica("aldea")
+	if not salida.is_empty():
+		await _mostrar_botin(salida) # el panel va ANTES que Haru
+	if saludo != "":
+		$Dialogo.mostrar(saludo)
+
+
+func _process(_delta: float) -> void:
+	# La cola de Kohaku se mueve: cambia de cuadro cada medio segundo
+	if $Kohaku.visible and $Kohaku.hframes > 1:
+		$Kohaku.frame = int(Time.get_ticks_msec() / 500.0) % $Kohaku.hframes
+
 
 # Pone el piso de la aldea encima del fondo gris. El Tinte (CanvasModulate) lo
 # pinta gris en ruinas y le devuelve el color al reparar, igual que a los edificios.
@@ -30,46 +74,33 @@ func poner_piso() -> void:
 	add_child(piso)
 	move_child(piso, $Fondo.get_index() + 1)
 
-func _ready() -> void:
-	poner_piso()
-	for edificio in $Edificios.get_children():
-		edificio.elegido.connect(_on_edificio_elegido)
-	$UI/BotonSalir.pressed.connect(_on_salir)
-	$UI/BotonPrueba.pressed.connect(_on_prueba)
-	$UI/BotonPrueba.visible = OS.is_debug_build()
-	$UI/BotonBorrar.pressed.connect(_on_borrar)
-	$UI/BotonBorrar.visible = OS.is_debug_build()
-	Estado.cambio.connect(actualizar)
-	preparar_kohaku()
-	var saludo := elegir_saludo() # antes de mostrar_ultima_salida(), que la borra
-	var salida: Dictionary = Estado.ultima_salida.duplicate(true) # copia para el panel
-	actualizar()
-	mostrar_ultima_salida()
-	Audio.musica("aldea")
-	if not salida.is_empty():
-		await _mostrar_botin(salida) # el panel va ANTES que Haru
-	if saludo != "":
-		$Dialogo.mostrar(saludo)
-func _process(_delta: float) -> void:
-	# La cola de Kohaku se mueve: cambia de cuadro cada medio segundo
-	if $Kohaku.visible and $Kohaku.hframes > 1:
-		$Kohaku.frame = int(Time.get_ticks_msec() / 500.0) % $Kohaku.hframes
 
 func preparar_kohaku() -> void:
-	if ResourceLoader.exists(RUTA_KOHAKU):
-		var tex: Texture2D = load(RUTA_KOHAKU)
-		$Kohaku.texture = tex
-		# Cuenta los cuadros solos: ancho / alto (2 cuadros de 32x32 = 64x32)
-		$Kohaku.hframes = maxi(1, int(tex.get_width() / tex.get_height()))
-	else:
-		$Kohaku.visible = false
+	for ruta in RUTAS_KOHAKU:
+		if ResourceLoader.exists(ruta):
+			var tex: Texture2D = load(ruta)
+			$Kohaku.texture = tex
+			# Cuenta los cuadros solos: ancho / alto (2 cuadros de 32x32 = 64x32)
+			$Kohaku.hframes = maxi(1, int(tex.get_width() / tex.get_height()))
+			return
+	$Kohaku.visible = false
+
 
 func elegir_saludo() -> String:
 	var s: Dictionary = Estado.ultima_salida
 	if s.is_empty():
 		# Solo la primera vez que llega a la aldea
 		return Textos.HARU["inicio"] if Estado.salidas == 0 and Estado.edificios.is_empty() else ""
-	return Textos.HARU["volver_bien"] if s["sobrevivio"] else Textos.HARU["volver_mal"]
+	# 1. Primer aldeano rescatado (antes no tenia ninguno)
+	if s["aldeanos"] > 0 and Estado.aldeanos == s["aldeanos"]:
+		return Textos.HARU["primer_aldeano"]
+	# 2. Pista: 5 salidas y nada reparado
+	if Estado.salidas == 5 and Estado.edificios.is_empty():
+		return Textos.HARU["pista"]
+	# 3. Frase al azar
+	var lista: Array = Textos.HARU["volver_bien"] if s["sobrevivio"] else Textos.HARU["volver_mal"]
+	return lista.pick_random()
+
 
 func actualizar() -> void:
 	var m: Dictionary = Estado.materiales
@@ -79,12 +110,14 @@ func actualizar() -> void:
 	actualizar_heroes()
 	actualizar_color()
 
+
 # Mas edificios reparados = mas color en la aldea y Kohaku mas visible
 func actualizar_color() -> void:
 	var avance := float(Estado.edificios.size()) / TOTAL_EDIFICIOS
 	create_tween().tween_property($Tinte, "color", COLOR_RUINAS.lerp(Color.WHITE, avance), 1.0)
 	var opacidad := 0.2 + 0.16 * Estado.edificios.size()
 	create_tween().tween_property($Kohaku, "modulate:a", opacidad, 1.0)
+
 
 func mostrar_ultima_salida() -> void:
 	var s: Dictionary = Estado.ultima_salida
@@ -96,12 +129,16 @@ func mostrar_ultima_salida() -> void:
 	$UI/LabelMensaje.text = "%s Trajiste %d madera, %d tejas, %d oro y %d aldeanos." % [inicio, b["madera"], b["tejas"], b["oro"], s["aldeanos"]]
 	Estado.ultima_salida = {}
 
+
 func _on_edificio_elegido(id: String) -> void:
 	if $Dialogo.visible:
 		return
 	var nombre: String = Edificios.LISTA[id]["nombre"]
 	if Estado.esta_reparado(id):
 		$UI/LabelMensaje.text = nombre + " ya está reparado."
+		return
+	if not Estado.faltan_requisitos(id).is_empty():
+		$UI/LabelMensaje.text = nombre + " se repara al final: primero los otros edificios."
 		return
 	if not Estado.reparar(id):
 		$UI/LabelMensaje.text = "Te falta material o aldeanos para " + nombre + "."
@@ -119,8 +156,10 @@ func _on_edificio_elegido(id: String) -> void:
 		await $Dialogo.cerrado
 		get_tree().change_scene_to_file(RUTA_FINAL)
 
+
 func _on_salir() -> void:
 	get_tree().change_scene_to_file(RUTA_SALIR)
+
 
 # Solo para probar: da materiales sin jugar.
 func _on_prueba() -> void:
@@ -130,24 +169,20 @@ func _on_prueba() -> void:
 	Estado.aldeanos += 5
 	Estado.cambio.emit()
 
-# Solo para probar: borra todo y recarga la aldea.
+
+# Solo para probar: borra la partida guardada y recarga la aldea.
 func _on_borrar() -> void:
 	Estado.reiniciar()
 	get_tree().reload_current_scene()
+
 
 func _on_heroe_elegido(id: String) -> void:
 	Estado.heroe_elegido = id
 	Estado.guardar()
 	actualizar_heroes()
+
+
 # ---------- Selector de heroe en tarjetas ----------
-const ORDEN_HEROES := ["ronin", "miko", "onmyoji", "kunoichi"]
-const TITULO_HEROE := {"ronin": "Ronin", "miko": "Miko", "onmyoji": "Onmyōji", "kunoichi": "Kunoichi"}
-const REQUISITO_HEROE := {
-	"miko": "Repara el torii",
-	"onmyoji": "Repara la biblioteca",
-	"kunoichi": "Repara el puente",
-}
-const DORADO_TARJETA := Color("e8b04a")
 
 func actualizar_heroes() -> void:
 	for hijo in $UI/Heroes.get_children():
@@ -254,15 +289,9 @@ func _etiqueta(texto: String, color: Color) -> Label:
 	l.add_theme_color_override("font_color", color)
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return l
-# ---------- Panel de botin al volver ----------
-const ICONOS_BOTIN := {
-	"madera": "res://arte/ui/madera.png",
-	"tejas": "res://arte/ui/tejas.png",
-	"oro": "res://arte/ui/oro.png",
-}
-const NOMBRE_BOTIN := {"madera": "Madera", "tejas": "Tejas", "oro": "Oro"}
 
-var capa_botin: CanvasLayer
+
+# ---------- Panel de botin al volver ----------
 
 func _mostrar_botin(salida: Dictionary) -> void:
 	var botin: Dictionary = salida["botin"]

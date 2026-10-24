@@ -50,9 +50,18 @@ func puede_reparar(id: String) -> bool:
 	var datos: Dictionary = Edificios.LISTA[id]
 	if esta_reparado(id):
 		return false
+	if not faltan_requisitos(id).is_empty():
+		return false
 	if aldeanos < datos["aldeanos"]:
 		return false
 	return puede_pagar(datos["costo"])
+	# Edificios que hay que reparar antes de este (vacio = ninguno)
+func faltan_requisitos(id: String) -> Array:
+	var faltan: Array = []
+	for req in Edificios.LISTA[id].get("requiere", []):
+		if not esta_reparado(req):
+			faltan.append(req)
+	return faltan
 
 func reparar(id: String) -> bool:
 	if not puede_reparar(id):
