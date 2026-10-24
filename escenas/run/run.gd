@@ -7,6 +7,7 @@ extends Node2D
 
 const RUTA_TENGU := "res://escenas/enemigos/Tengu.tscn"
 const RUTA_ALDEA := "res://escenas/base/Aldea.tscn"
+const RUTA_PAUSA := "res://escenas/run/Pausa.tscn"
 const MEJORAS_QUE_NO_SON_ARMAS := ["waraji", "haori", "omamori", "hachimaki"]
 const NIVEL_MAXIMO := 8 # el mismo numero que en heroe.gd
 const MARGEN_BORDE := 10.0 # el heroe no se acerca mas que esto al borde del mapa
@@ -31,6 +32,8 @@ func _ready() -> void:
 	if has_node("MenuMejoras"):
 		$MenuMejoras.mejora_elegida.connect(_on_mejora_elegida)
 	calcular_limites()
+	if ResourceLoader.exists(RUTA_PAUSA):
+		add_child(load(RUTA_PAUSA).instantiate())
 	Audio.musica("run")
 
 
@@ -77,7 +80,7 @@ func agregar_experiencia(cantidad: int) -> void:
 	while experiencia >= experiencia_necesaria:
 		experiencia -= experiencia_necesaria
 		nivel += 1
-		experiencia_necesaria = 5 + nivel * 3 # cada nivel pide un poco mas
+		experiencia_necesaria = 6 + nivel * 5 # cada nivel pide mas
 		niveles_pendientes += 1
 	if niveles_pendientes > 0 and not get_tree().paused:
 		mostrar_menu()
@@ -162,6 +165,11 @@ func terminar(sobrevivio: bool) -> void:
 		for tipo in botin:
 			botin[tipo] = botin[tipo] / 2 # si cae, trae la mitad de los materiales
 	Estado.recibir_botin(botin, aldeanos_rescatados, sobrevivio)
+	# Aviso de 2 segundos antes de volver, para que se entienda que paso
+	if has_node("HUD/LabelTiempo"):
+		$HUD/LabelTiempo.text = "¡Sobreviviste!" if sobrevivio else "Caíste..."
+	get_tree().paused = true
+	await get_tree().create_timer(2.0, true).timeout # cuenta aunque el juego este en pausa
 	get_tree().paused = false # nunca cambiar de escena en pausa
 	get_tree().change_scene_to_file.call_deferred(RUTA_ALDEA)
 

@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://escenas/run/pausa.gd" id="1_w7fte"]
+
+[node name="Pausa" type="CanvasLayer" unique_id=714902386]
+process_mode = 3
+layer = 10
+script = ExtResource("1_w7fte")

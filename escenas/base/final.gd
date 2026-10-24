@@ -4,6 +4,8 @@ extends Control
 
 const RUTA_MENU := "res://escenas/ui/MenuPrincipal.tscn"
 const RUTA_IMAGEN := "res://arte/aldea/final_kohaku.png"
+# Musica del final: "Dream Sakura" (u otra) de MOMIZizm MUSiC, guardada con uno de estos nombres.
+const RUTAS_MUSICA := ["res://audio/musica/mus_final.ogg", "res://audio/musica/mus_final.mp3"]
 const PAGINAS := [
 	"Los faroles del santuario se encienden, uno por uno.",
 	"Kohaku abre los ojos. Tsugimura recordó a su guardiana, y las grietas de la aldea brillan con oro.",
@@ -18,7 +20,25 @@ func _ready() -> void:
 	$Imagen.modulate.a = 0.0
 	create_tween().tween_property($Imagen, "modulate:a", 1.0, 2.0)
 	Audio.sfx("reparar")
+	poner_musica()
 	mostrar()
+
+# Si existe mus_final (.ogg o .mp3) suena en loop; si no, sigue la musica que venia.
+func poner_musica() -> void:
+	for ruta in RUTAS_MUSICA:
+		if not ResourceLoader.exists(ruta):
+			continue
+		Audio.parar_musica()
+		var pista: AudioStream = load(ruta)
+		if "loop" in pista:
+			pista.loop = true
+		var reproductor := AudioStreamPlayer.new()
+		reproductor.stream = pista
+		reproductor.volume_db = -8.0
+		reproductor.bus = "Musica"
+		add_child(reproductor)
+		reproductor.play()
+		return
 
 func mostrar() -> void:
 	$Texto.text = PAGINAS[pagina]

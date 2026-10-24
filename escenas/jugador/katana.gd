@@ -2,6 +2,7 @@ extends Area2D
 # Katana (Ronin): corte al frente cada cierto tiempo.
 
 const RECARGA_MINIMA := 0.5 # nunca ataca mas rapido que esto
+const ALCANCE_APUNTAR := 70.0 # apunta sola al yokai mas cercano dentro de esta distancia
 
 var nivel := 1
 var dano := 5
@@ -15,8 +16,23 @@ func _ready() -> void:
 	timer.timeout.connect(_atacar)
 
 func _physics_process(_delta: float) -> void:
-	if heroe:
-		rotation = heroe.direccion.angle() # apunta hacia donde camina
+	if heroe == null or mostrando:
+		return # durante el corte la direccion queda fija (antes se podia girar y pegar en 360)
+	var objetivo := yokai_mas_cercano()
+	if objetivo:
+		rotation = global_position.direction_to(objetivo.global_position).angle()
+	else:
+		rotation = heroe.direccion.angle() # sin yokais cerca: hacia donde camina
+
+func yokai_mas_cercano() -> Node2D:
+	var mejor: Node2D = null
+	var mejor_distancia := ALCANCE_APUNTAR * scale.x
+	for e in get_tree().get_nodes_in_group("enemigos"):
+		var d := global_position.distance_to(e.global_position)
+		if d < mejor_distancia:
+			mejor = e
+			mejor_distancia = d
+	return mejor
 
 func _atacar() -> void:
 	for cuerpo in get_overlapping_bodies():

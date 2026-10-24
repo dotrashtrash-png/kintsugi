@@ -8,14 +8,31 @@ extends CanvasLayer
 
 signal cerrado
 
+# Retrato de cada personaje. Si el dibujo no existe, queda el cuadro de color.
+const RETRATOS := {
+	"Abuela Haru": "res://arte/ui/retrato_haru.png",
+	"Kohaku": "res://arte/yokais/kohaku.png",
+}
+
+var retrato: TextureRect
+
 
 func _ready() -> void:
 	visible = false
+	retrato = TextureRect.new()
+	retrato.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	retrato.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	retrato.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	retrato.set_anchors_preset(Control.PRESET_FULL_RECT)
+	$Panel/Retrato.add_child(retrato)
 
 
 func mostrar(texto: String, nombre := "Abuela Haru") -> void:
 	$Panel/Nombre.text = nombre
 	$Panel/Texto.text = texto
+	var ruta: String = RETRATOS.get(nombre, "")
+	retrato.texture = load(ruta) if ruta != "" and ResourceLoader.exists(ruta) else null
+	$Panel/Retrato.color = Color(0.11, 0.1, 0.18) if retrato.texture else Color(0.75, 0.6, 0.45)
 	visible = true
 	Audio.sfx("haru")
 

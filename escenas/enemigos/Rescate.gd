@@ -6,6 +6,8 @@ const ORO_POR_RESCATE := 2
 var heroe_dentro := false
 var progreso := 0.0
 var liberado := false
+var emboscada_hecha := false
+const KASAS_EMBOSCADA := 6 # al empezar a liberar, salen paraguas alrededor
 
 func _ready() -> void:
 	add_to_group("rescates")
@@ -16,6 +18,9 @@ func _ready() -> void:
 func _on_body_entered(cuerpo: Node2D) -> void:
 	if cuerpo.is_in_group("jugador"):
 		heroe_dentro = true
+		if not emboscada_hecha:
+			emboscada_hecha = true
+			emboscada.call_deferred() # no se puede crear cuerpos en medio de la fisica
 
 func _on_body_exited(cuerpo: Node2D) -> void:
 	if cuerpo.is_in_group("jugador"):
@@ -56,3 +61,12 @@ func poner_dibujo() -> void:
 	add_child(dibujo)
 	move_child(dibujo, $Barra.get_index()) # debajo de la barra
 	$Aldeano.visible = false
+
+# Los yokais no dejan rescatar tranquilo: aparece un circulo de Kasas
+func emboscada() -> void:
+	var spawner = get_parent()
+	if spawner == null or not spawner.has_method("crear"):
+		return
+	for i in KASAS_EMBOSCADA:
+		var punto: Vector2 = global_position + Vector2.RIGHT.rotated(TAU * i / KASAS_EMBOSCADA) * 110.0
+		spawner.crear(spawner.escena_kasa, punto)

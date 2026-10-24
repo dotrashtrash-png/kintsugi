@@ -12,6 +12,7 @@ const COLORES := {
 	"madera": Color(0.8, 0.55, 0.35),
 	"tejas": Color(0.9, 0.5, 0.5),
 	"oro": Color(1, 0.85, 0.3),
+	"onigiri": Color(1, 1, 1),
 }
 
 var heroe
@@ -38,6 +39,11 @@ func _on_body_entered(cuerpo: Node2D) -> void:
 	if recogido or not cuerpo.is_in_group("jugador"):
 		return
 	recogido = true
+	if tipo == "onigiri":
+		cuerpo.vida = mini(cuerpo.vida_maxima, cuerpo.vida + randi_range(5, 10)) # cura, no se guarda
+		Audio.sfx("nivel")
+		queue_free()
+		return
 	var run = get_tree().get_first_node_in_group("run")
 	if run:
 		run.agregar_material(tipo, cantidad)

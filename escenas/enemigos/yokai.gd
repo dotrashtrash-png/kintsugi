@@ -14,27 +14,36 @@ extends CharacterBody2D
 const RUTA_LUZ := "res://escenas/run/Luz.tscn"
 const RUTA_MATERIAL := "res://escenas/run/Material.tscn"
 const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
+const PROBABILIDAD_ONIGIRI := 0.05 # 5 de cada 100 yokais sueltan un onigiri que cura
 const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
 var heroe
 var espera_dano := 0.0
 var muerto := false
 var reloj_anim := 0.0
+var run
 
 func _ready() -> void:
 	add_to_group("enemigos")
 	heroe = get_tree().get_first_node_in_group("jugador")
+	run = get_tree().get_first_node_in_group("run")
 
 func _physics_process(delta: float) -> void:
 	if heroe == null or muerto:
 		return
 	mover(delta)
+	quedarse_en_el_mapa()
 	revisar_contacto(delta)
 	animar(delta)
 
 func mover(_delta: float) -> void:
 	velocity = global_position.direction_to(heroe.global_position) * velocidad
 	move_and_slide()
+
+# Los empujones (campana, golpe) ya no sacan a los yokais del mapa
+func quedarse_en_el_mapa() -> void:
+	if run and run.limites.has_area():
+		global_position = global_position.clamp(run.limites.position, run.limites.end)
 
 func revisar_contacto(delta: float) -> void:
 	espera_dano -= delta
@@ -72,6 +81,10 @@ func morir() -> void:
 		var mat = soltar(RUTA_MATERIAL)
 		if mat:
 			mat.tipo = elegir_material()
+	if randf() < PROBABILIDAD_ONIGIRI:
+		var comida = soltar(RUTA_MATERIAL)
+		if comida:
+			comida.tipo = "onigiri"
 	soltar(RUTA_HUMO)
 	Audio.sfx("yokai_muere")
 	queue_free()
