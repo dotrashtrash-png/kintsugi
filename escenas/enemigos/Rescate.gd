@@ -9,6 +9,7 @@ var liberado := false
 
 func _ready() -> void:
 	add_to_group("rescates")
+	poner_dibujo()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
@@ -41,3 +42,17 @@ func liberar() -> void:
 		run.agregar_aldeano()
 		run.agregar_material("oro", ORO_POR_RESCATE)
 	queue_free()
+
+# Si existe arte/aldea/aldeano.png (hoja de 64x16), el aldeano sale dibujado de frente.
+func poner_dibujo() -> void:
+	var ruta := "res://arte/aldea/aldeano.png"
+	if not ResourceLoader.exists(ruta):
+		return
+	var dibujo := Sprite2D.new()
+	dibujo.texture = load(ruta)
+	dibujo.hframes = 4
+	dibujo.frame = 0
+	dibujo.position = $Aldeano.position + $Aldeano.size / 2.0
+	add_child(dibujo)
+	move_child(dibujo, $Barra.get_index()) # debajo de la barra
+	$Aldeano.visible = false

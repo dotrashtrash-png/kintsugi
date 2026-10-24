@@ -18,7 +18,7 @@ func _ready() -> void:
 		$Dibujo.texture = load(ruta)
 		$Cuadro.visible = false
 	if ResourceLoader.exists(RUTA_VETAS):
-		$Vetas.texture = load(RUTA_VETAS)
+		$Vetas.texture = vetas_recortadas()
 	actualizar()
 
 func actualizar() -> void:
@@ -42,6 +42,27 @@ func texto_costo() -> String:
 	if datos["aldeanos"] > 0:
 		partes.append("%d aldeanos" % datos["aldeanos"])
 	return ", ".join(partes)
+
+# Las vetas de oro son las mismas para los 5 edificios. Aqui se borran las partes
+# que caen fuera del dibujo, para que no queden lineas doradas flotando en el aire.
+func vetas_recortadas() -> Texture2D:
+	var original: Texture2D = load(RUTA_VETAS)
+	if $Dibujo.texture == null:
+		return original
+	var vetas: Image = original.get_image()
+	var dibujo: Image = $Dibujo.texture.get_image()
+	if vetas.get_size() != dibujo.get_size():
+		return original
+	if vetas.is_compressed():
+		vetas.decompress()
+	if dibujo.is_compressed():
+		dibujo.decompress()
+	vetas.convert(Image.FORMAT_RGBA8)
+	for y in vetas.get_height():
+		for x in vetas.get_width():
+			if dibujo.get_pixel(x, y).a < 0.5:
+				vetas.set_pixel(x, y, Color(0, 0, 0, 0))
+	return ImageTexture.create_from_image(vetas)
 
 func celebrar() -> void:
 	var t := create_tween()

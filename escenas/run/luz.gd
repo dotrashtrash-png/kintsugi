@@ -4,6 +4,7 @@ extends Area2D
 # Si el héroe se acerca, vuela hacia él. Al tocarlo, suma experiencia al Run.
 
 @export var valor := 1
+const RUTA_DIBUJO := "res://arte/ui/luz.png"
 const VELOCIDAD_IMAN := 220.0 # más rápido que el héroe, para que siempre lo alcance
 
 var heroe
@@ -13,6 +14,7 @@ var recogida := false
 
 func _ready() -> void:
 	heroe = get_tree().get_first_node_in_group("jugador")
+	poner_dibujo()
 	# body_entered avisa cuando un cuerpo (el héroe) entra en el círculo.
 	body_entered.connect(_on_body_entered)
 
@@ -37,3 +39,15 @@ func _on_body_entered(cuerpo: Node2D) -> void:
 		run.agregar_experiencia(valor)
 	Audio.sfx("luz")
 	queue_free()
+
+
+# Si existe arte/ui/luz.png, la luz se ve como orbe dorado en vez de cuadro.
+func poner_dibujo() -> void:
+	if not ResourceLoader.exists(RUTA_DIBUJO):
+		return
+	var dibujo := Sprite2D.new()
+	dibujo.texture = load(RUTA_DIBUJO)
+	add_child(dibujo)
+	for hijo in get_children():
+		if hijo is ColorRect:
+			hijo.visible = false

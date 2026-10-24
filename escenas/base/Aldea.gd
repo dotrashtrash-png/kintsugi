@@ -15,7 +15,23 @@ const NOMBRES_HEROES := {
 
 var ya_dijo_falta := false
 
+const RUTA_PISO := "res://arte/aldea/piso_aldea.png" # 384x216: a x3 llena la ventana
+
+# Pone el piso de la aldea encima del fondo gris. El Tinte (CanvasModulate) lo
+# pinta gris en ruinas y le devuelve el color al reparar, igual que a los edificios.
+func poner_piso() -> void:
+	if not ResourceLoader.exists(RUTA_PISO):
+		return
+	var piso := Sprite2D.new()
+	piso.name = "Piso"
+	piso.texture = load(RUTA_PISO)
+	piso.centered = false
+	piso.scale = Vector2(3, 3)
+	add_child(piso)
+	move_child(piso, $Fondo.get_index() + 1)
+
 func _ready() -> void:
+	poner_piso()
 	for edificio in $Edificios.get_children():
 		edificio.elegido.connect(_on_edificio_elegido)
 	$UI/BotonSalir.pressed.connect(_on_salir)
