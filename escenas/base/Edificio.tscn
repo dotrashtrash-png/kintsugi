@@ -17,16 +17,6 @@ scale = Vector2(2, 2)
 [node name="Vetas" type="Sprite2D" parent="." unique_id=2076702414]
 scale = Vector2(2, 2)
 
-[node name="Nombre" type="Label" parent="." unique_id=132172186]
-custom_minimum_size = Vector2(160, 0)
-offset_left = -80.0
-offset_top = 56.0
-offset_right = 80.0
-offset_bottom = 96.0
-theme_override_font_sizes/font_size = 12
-horizontal_alignment = 1
-autowrap_mode = 2
-
 [node name="Boton" type="Button" parent="." unique_id=1774490671]
 offset_left = -48.0
 offset_top = -48.0
