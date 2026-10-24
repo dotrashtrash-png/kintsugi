@@ -74,6 +74,8 @@ func aplicar_efecto(id: String) -> void:
 			desbloquear_heroe("kunoichi")
 
 func desbloquear_heroe(id: String) -> void:
+	if id == "kunoichi" and not ResourceLoader.exists("res://escenas/jugador/Kunai.tscn"):
+		return # sin kunai no hay kunoichi
 	if not heroes_desbloqueados.has(id):
 		heroes_desbloqueados.append(id)
 

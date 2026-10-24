@@ -17,13 +17,13 @@ color = Color(0.63920635, 0.63920635, 0.6392063, 1)
 [node name="Dialogo" parent="." unique_id=1220943999 instance=ExtResource("2_6avvw")]
 
 [node name="Kohaku" type="Sprite2D" parent="." unique_id=1629301481]
-position = Vector2(680, 110)
+position = Vector2(720, 110)
 scale = Vector2(2, 2)
 
 [node name="Edificios" type="Node2D" parent="." unique_id=934687619]
 
 [node name="Santuario" parent="Edificios" unique_id=685525046 instance=ExtResource("2_lkqpu")]
-position = Vector2(576, 90)
+position = Vector2(572, 78)
 id = "santuario"
 
 [node name="Torii" parent="Edificios" unique_id=759179646 instance=ExtResource("2_lkqpu")]
@@ -71,9 +71,9 @@ text = "+ materiales (prueba)"
 
 [node name="Heroes" type="HBoxContainer" parent="UI" unique_id=653409733]
 offset_left = 8.0
-offset_top = 520.0
+offset_top = 478.0
 offset_right = 48.0
-offset_bottom = 560.0
+offset_bottom = 518.0
 
 [node name="BotonBorrar" type="Button" parent="UI" unique_id=906589395]
 offset_left = 960.0
