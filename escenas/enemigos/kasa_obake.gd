@@ -14,7 +14,7 @@ func mover(delta: float) -> void:
 		reloj = tiempo_salto if saltando else tiempo_quieto
 	
 	if saltando:
-		velocity = global_position.direction_to(heroe.global_position) * velocidad
+		velocity = global_position.direction_to(objetivo()) * velocidad * ritmo
 	else:
 		velocity = Vector2.ZERO
 	

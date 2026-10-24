@@ -9,9 +9,9 @@ func _ready() -> void:
 	poner_dibujo()
 
 func mover(delta: float) -> void:
-	var dir := global_position.direction_to(heroe.global_position).rotated(giro)
+	var dir := global_position.direction_to(objetivo()).rotated(giro)
 	giro = move_toward(giro, 0.0, 0.8 * delta) # la curva se va enderezando
-	velocity = dir * velocidad
+	velocity = dir * velocidad * ritmo
 	move_and_slide()
 
 # Si existe arte/yokais/cuervo.png (2 cuadros de 16x16), lo usa en vez del cuadro.

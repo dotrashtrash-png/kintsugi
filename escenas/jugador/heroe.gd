@@ -125,10 +125,19 @@ func _sacudir_camara() -> void:
 func empujar(fuerza: Vector2) -> void:
 	empuje = (empuje + fuerza).limit_length(EMPUJE_MAXIMO)
 
+# Busca la escena del arma: "Kitsunebi.tscn" o "kitsunebi.tscn" (la Web distingue mayusculas
+# y en Windows/Mac el nombre puede haber quedado de cualquiera de las dos formas).
+static func ruta_arma(nombre: String) -> String:
+	for archivo in [nombre.capitalize(), nombre]:
+		var ruta := "res://escenas/jugador/%s.tscn" % archivo
+		if ResourceLoader.exists(ruta):
+			return ruta
+	return ""
+
 # Agrega un arma buscando su escena por nombre: "katana" -> Katana.tscn
 func agregar_arma(nombre: String) -> void:
-	var ruta := "res://escenas/jugador/%s.tscn" % nombre.capitalize()
-	if not ResourceLoader.exists(ruta):
+	var ruta := ruta_arma(nombre)
+	if ruta == "":
 		push_warning("Todavia no existe el arma: " + ruta)
 		return
 	var arma: Node = load(ruta).instantiate()

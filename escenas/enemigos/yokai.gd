@@ -22,9 +22,15 @@ var espera_dano := 0.0
 var muerto := false
 var reloj_anim := 0.0
 var run
+var desvio := Vector2.ZERO
+var ritmo := 1.0
 
 func _ready() -> void:
 	add_to_group("enemigos")
+	# Cada yokai apunta a un punto propio alrededor del heroe y camina a su ritmo:
+	# asi se reparten en una horda y no se apilan en un solo punto (sin costo de fisica).
+	desvio = Vector2.RIGHT.rotated(randf() * TAU) * randf_range(4.0, 13.0)
+	ritmo = randf_range(0.85, 1.15)
 	heroe = get_tree().get_first_node_in_group("jugador")
 	run = get_tree().get_first_node_in_group("run")
 
@@ -36,8 +42,12 @@ func _physics_process(delta: float) -> void:
 	revisar_contacto(delta)
 	animar(delta)
 
+# A donde camina este yokai: el heroe mas su desvio propio
+func objetivo() -> Vector2:
+	return heroe.global_position + desvio
+
 func mover(_delta: float) -> void:
-	velocity = global_position.direction_to(heroe.global_position) * velocidad
+	velocity = global_position.direction_to(objetivo()) * velocidad * ritmo
 	move_and_slide()
 
 # Los empujones (campana, golpe) ya no sacan a los yokais del mapa

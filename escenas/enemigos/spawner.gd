@@ -31,6 +31,43 @@ func _process(delta: float) -> void:
 		anillos_hechos += 1
 		evento_anillo(18 + anillos_hechos * 6) # 24, 30 y 36 faroles
 
+# ---------- Separar la horda ----------
+# Los yokais no chocan con fisica (seria muy pesado en la Web). En cambio, cada cuadro
+# se reparten en una cuadricula y los que quedan encima de otro se empujan un poco.
+# Asi la horda rodea al heroe como en Vampire Survivors en vez de apilarse en un punto.
+const SEPARACION := 10.0
+
+func _physics_process(_delta: float) -> void:
+	separar()
+
+func separar() -> void:
+	var celdas := {}
+	for e in get_tree().get_nodes_in_group("enemigos"):
+		if e.is_in_group("jefe"):
+			continue
+		var c := Vector2i(floori(e.global_position.x / SEPARACION), floori(e.global_position.y / SEPARACION))
+		if celdas.has(c):
+			celdas[c].append(e)
+		else:
+			celdas[c] = [e]
+	for c in celdas:
+		var grupo: Array = celdas[c]
+		if grupo.size() < 2:
+			continue
+		for i in grupo.size():
+			var a: Node2D = grupo[i]
+			for j in range(i + 1, grupo.size()):
+				var b: Node2D = grupo[j]
+				var d: Vector2 = a.global_position - b.global_position
+				var largo := d.length()
+				if largo >= SEPARACION:
+					continue
+				var dir := d / largo if largo > 0.01 else Vector2.RIGHT.rotated(randf() * TAU)
+				var paso := dir * (SEPARACION - largo) * 0.25
+				a.global_position += paso
+				b.global_position -= paso
+
+
 func generar_oleada() -> void:
 	if heroe == null:
 		return

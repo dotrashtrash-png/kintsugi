@@ -114,8 +114,8 @@ func mostrar_menu() -> void:
 func mejoras_posibles() -> Array:
 	var posibles: Array = []
 	for nombre in Heroes.MEJORAS.keys():
-		var ruta := "res://escenas/jugador/%s.tscn" % String(nombre).capitalize()
-		if not (nombre in MEJORAS_QUE_NO_SON_ARMAS or ResourceLoader.exists(ruta)):
+		var existe: bool = heroe.ruta_arma(String(nombre)) != ""
+		if not (nombre in MEJORAS_QUE_NO_SON_ARMAS or existe):
 			continue # el arma todavia no existe
 		if heroe.has_method("nivel_de") and heroe.nivel_de(nombre) >= NIVEL_MAXIMO:
 			continue # ya esta al maximo
