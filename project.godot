@@ -24,6 +24,10 @@ Estado="*uid://bja6hn013ofjh"
 
 window/stretch/mode="canvas_items"
 
+[gui]
+
+theme/custom="res://escenas/ui/tema.tres"
+
 [input]
 
 izquierda={

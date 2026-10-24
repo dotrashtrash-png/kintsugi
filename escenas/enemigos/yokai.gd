@@ -67,6 +67,7 @@ func recibir_dano(cantidad: int) -> void:
 	if muerto:
 		return
 	vida -= cantidad
+	NumeroDano.crear(self, cantidad)
 	if has_node("Golpe"):
 		$Golpe.recibir()
 	if vida <= 0:

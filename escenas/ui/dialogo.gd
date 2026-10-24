@@ -15,6 +15,8 @@ const RETRATOS := {
 }
 
 var retrato: TextureRect
+var flecha: Label
+var escribiendo: Tween
 
 
 func _ready() -> void:
@@ -25,11 +27,31 @@ func _ready() -> void:
 	retrato.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	retrato.set_anchors_preset(Control.PRESET_FULL_RECT)
 	$Panel/Retrato.add_child(retrato)
+	$Panel/Nombre.add_theme_font_size_override("font_size", 16)
+	$Panel/Nombre.add_theme_color_override("font_color", Color("e8b04a"))
+	$Panel/Texto.add_theme_font_size_override("font_size", 16)
+	# triangulo que parpadea abajo a la derecha: "clic para seguir"
+	flecha = Label.new()
+	flecha.text = "▼"
+	flecha.add_theme_color_override("font_color", Color("e8b04a"))
+	$Panel.add_child(flecha)
+	flecha.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
+	flecha.offset_left = -28.0
+	flecha.offset_top = -28.0
+	var parpadeo := create_tween().set_loops()
+	parpadeo.tween_property(flecha, "modulate:a", 0.2, 0.5)
+	parpadeo.tween_property(flecha, "modulate:a", 1.0, 0.5)
 
 
 func mostrar(texto: String, nombre := "Abuela Haru") -> void:
 	$Panel/Nombre.text = nombre
 	$Panel/Texto.text = texto
+	# efecto maquina de escribir
+	$Panel/Texto.visible_ratio = 0.0
+	if escribiendo:
+		escribiendo.kill()
+	escribiendo = create_tween()
+	escribiendo.tween_property($Panel/Texto, "visible_ratio", 1.0, texto.length() * 0.022)
 	var ruta: String = RETRATOS.get(nombre, "")
 	retrato.texture = load(ruta) if ruta != "" and ResourceLoader.exists(ruta) else null
 	$Panel/Retrato.color = Color(0.11, 0.1, 0.18) if retrato.texture else Color(0.75, 0.6, 0.45)
@@ -44,6 +66,13 @@ func _input(event: InputEvent) -> void:
 		return
 	var es_clic: bool = event is InputEventMouseButton and event.pressed # ": bool" porque Godot no adivina el tipo aquí
 	if es_clic or event.is_action_pressed("ui_accept"):
+		# primer clic: termina de escribir el texto; segundo clic: cierra
+		if $Panel/Texto.visible_ratio < 1.0:
+			if escribiendo:
+				escribiendo.kill()
+			$Panel/Texto.visible_ratio = 1.0
+			get_viewport().set_input_as_handled()
+			return
 		visible = false
 		get_viewport().set_input_as_handled() # "este clic ya lo usé, no se lo pases a nadie más"
 		cerrado.emit()
