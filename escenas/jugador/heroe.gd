@@ -158,7 +158,7 @@ func mejorar(nombre: String) -> void:
 		"omamori":
 			radio_recoger += radio_base * 0.25
 		"hachimaki":
-			poder += 0.2
+			poder += 0.1
 		_:
 			# Es un arma: si ya la tiene, sube de nivel; si no, la agrega
 			if armas.has_node(nombre):

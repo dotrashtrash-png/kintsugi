@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var velocidad := 60.0
 @export var vida := 10
 @export var dano := 5
-@export var probabilidad_material := 0.1 # 0.1 = 1 de cada 10 suelta material
+@export var probabilidad_material := 0.05 # 0.05 = 1 de cada 20 suelta material
 @export var distancia_contacto := 14.0 # distancia minima para pegar
 @export var fps := 4.0 # cuadros por segundo de la animacion
 @export var voltear := true # voltea el dibujo cuando camina a la izquierda
@@ -14,7 +14,7 @@ extends CharacterBody2D
 const RUTA_LUZ := "res://escenas/run/Luz.tscn"
 const RUTA_MATERIAL := "res://escenas/run/Material.tscn"
 const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
-const PROBABILIDAD_ONIGIRI := 0.05 # 5 de cada 100 yokais sueltan un onigiri que cura
+const PROBABILIDAD_ONIGIRI := 0.015 # 15 de cada 1000 yokais sueltan un onigiri que cura
 const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
 # Lista de enemigos compartida por cuadro: las armas la piden muchas

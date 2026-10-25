@@ -22,5 +22,5 @@ const MEJORAS := {
 	"waraji": {"nombre": "Waraji", "texto": "+8 % de velocidad."},
 	"haori": {"nombre": "Haori", "texto": "+25 de vida máxima y cura 25."},
 	"omamori": {"nombre": "Omamori", "texto": "+25 % de radio para recoger."},
-	"hachimaki": {"nombre": "Hachimaki", "texto": "+20 % de daño de todas las armas."},
+	"hachimaki": {"nombre": "Hachimaki", "texto": "+10 % de daño de todas las armas."},
 }

@@ -6,7 +6,9 @@ extends Node2D
 @export var escena_rescate: PackedScene = preload("res://escenas/enemigos/Rescate.tscn")
 @export var tope: int = 150 # maximo de yokais vivos a la vez (la Web se traba con mas)
 @export var distancia: float = 260.0 # a que distancia del heroe aparecen: fuera de la pantalla
-@export var vida_extra_por_minuto: float = 0.5 # +35% de vida por cada minuto que pasa
+@export var vida_extra_por_minuto: float = 0.4 # vida extra que suma cada minuto...
+@export var vida_extra_acelerada: float = 0.12 # ...y esta crece al cuadrado: minuto 1 x1.5, minuto 3 x3.3, minuto 5 x6
+@export var dano_extra_por_minuto: float = 0.12 # al minuto 5 pegan 60% mas
 
 # Minutos en los que un anillo de faroles rodea al heroe
 const MINUTOS_ANILLO := [2.0, 4.0, 5.5]
@@ -90,7 +92,10 @@ func elegir_yokai() -> PackedScene:
 # TODOS los yokais nuevos pasan por aqui: les sube la vida segun el tiempo.
 func crear(escena: PackedScene, posicion: Vector2) -> Yokai:
 	var yokai: Yokai = escena.instantiate()
-	yokai.vida = int(ceil(yokai.vida * (1.0 + tiempo / 60.0 * vida_extra_por_minuto)))
+	# El inicio casi no cambia; lo que sube fuerte es el final, cuando ya tienes varias armas.
+	var m := tiempo / 60.0
+	yokai.vida = int(ceil(yokai.vida * (1.0 + m * vida_extra_por_minuto + m * m * vida_extra_acelerada)))
+	yokai.dano = int(round(yokai.dano * (1.0 + m * dano_extra_por_minuto)))
 	add_child(yokai)
 	yokai.global_position = dentro_del_mapa(posicion)
 	return yokai

@@ -40,7 +40,7 @@ func _on_body_entered(cuerpo: Node2D) -> void:
 		return
 	recogido = true
 	if tipo == "onigiri":
-		cuerpo.vida = mini(cuerpo.vida_maxima, cuerpo.vida + randi_range(5, 10)) # cura, no se guarda
+		cuerpo.vida = mini(cuerpo.vida_maxima, cuerpo.vida + randi_range(3, 6)) # cura poquito, no se guarda
 		Audio.sfx("nivel")
 		queue_free()
 		return
