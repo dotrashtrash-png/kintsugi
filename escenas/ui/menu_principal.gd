@@ -36,6 +36,15 @@ func _ready() -> void:
 	boton_sonido.text = "Sonido"
 	boton_sonido.pressed.connect(func() -> void: MenuSonido.abrir(self))
 	$Botones.add_child(boton_sonido)
+	# Con 4 botones la fila ya no cabia en su caja y quedaba corrida a la derecha:
+	# se achican un poco y la caja se centra con el ancho justo.
+	var ancho_total := 0.0
+	for b: Button in $Botones.get_children():
+		b.custom_minimum_size.x = 160
+		ancho_total += 160
+	ancho_total += 18 * ($Botones.get_child_count() - 1)
+	$Botones.offset_left = -ancho_total / 2.0
+	$Botones.offset_right = ancho_total / 2.0
 	$Ventana.visible = false
 	animar_fondo()
 	poner_logo()
