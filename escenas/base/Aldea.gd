@@ -346,12 +346,12 @@ func _mostrar_botin(salida: Dictionary) -> void:
 	panel.pivot_offset = panel.size / 2.0
 	panel.scale = Vector2(0.85, 0.85)
 	panel.modulate.a = 0.0
-	var entra := create_tween().set_parallel(true)
+	var entra := capa_botin.create_tween().set_parallel(true)
 	entra.tween_property(panel, "scale", Vector2.ONE, 0.15)
 	entra.tween_property(panel, "modulate:a", 1.0, 0.15)
 
 	# Los numeros suben de 0 al valor en 0.6 s
-	var sube := create_tween().set_parallel(true)
+	var sube := capa_botin.create_tween().set_parallel(true)
 	for f in filas:
 		sube.tween_method(f["poner"], 0, f["valor"], 0.6)
 

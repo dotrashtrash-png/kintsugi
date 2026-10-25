@@ -8,6 +8,7 @@ extends Node2D
 const RUTA_TENGU := "res://escenas/enemigos/Tengu.tscn"
 const RUTA_ALDEA := "res://escenas/base/Aldea.tscn"
 const RUTA_PAUSA := "res://escenas/run/Pausa.tscn"
+const CONTROLES_TACTILES := preload("res://escenas/run/controles_tactiles.gd")
 const MEJORAS_QUE_NO_SON_ARMAS := ["waraji", "haori", "omamori", "hachimaki"]
 const NIVEL_MAXIMO := 8 # el mismo numero que en heroe.gd
 const MARGEN_BORDE := 10.0 # el heroe no se acerca mas que esto al borde del mapa
@@ -34,6 +35,11 @@ func _ready() -> void:
 	calcular_limites()
 	if ResourceLoader.exists(RUTA_PAUSA):
 		add_child(load(RUTA_PAUSA).instantiate())
+	# En celular: joystick donde pongas el dedo y boton de pausa
+	if DisplayServer.is_touchscreen_available():
+		var tactil := CanvasLayer.new()
+		tactil.set_script(CONTROLES_TACTILES)
+		add_child(tactil)
 	Audio.musica("run")
 
 
@@ -146,6 +152,7 @@ func aparecer_jefe() -> void:
 		lugar = lugar.clamp(limites.position, limites.end)
 	tengu.global_position = lugar
 	tengu.vencido.connect(_on_tengu_vencido)
+	Audio.musica("jefe") # si no existe mus_jefe, sigue la musica del run
 
 
 func _on_tengu_vencido() -> void:
@@ -165,6 +172,7 @@ func terminar(sobrevivio: bool) -> void:
 		for tipo in botin:
 			botin[tipo] = botin[tipo] / 2 # si cae, trae la mitad de los materiales
 	Estado.recibir_botin(botin, aldeanos_rescatados, sobrevivio)
+	Audio.jingle("victoria" if sobrevivio else "derrota")
 	# Aviso de 2 segundos antes de volver, para que se entienda que paso
 	if has_node("HUD/LabelTiempo"):
 		$HUD/LabelTiempo.text = "¡Sobreviviste!" if sobrevivio else "Caíste..."

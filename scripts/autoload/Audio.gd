@@ -5,6 +5,8 @@ extends Node
 #   Audio.musica("aldea")   -> capas mus_aldea_capa1..6.ogg
 #   Audio.subir_capa(n)     -> en la aldea, suenan las capas 1 a n
 #   Audio.musica("menu")    -> res://audio/musica/mus_menu.ogg (si no existe, la de la aldea)
+#   Audio.musica("jefe")    -> cualquier otro nombre: mus_jefe en loop (si no existe, sigue la que suena)
+#   Audio.jingle("derrota") -> mus_derrota una sola vez, cortando la musica (victoria, derrota...)
 # Todos los botones del juego suenan solos al pasar el mouse o el teclado por
 # encima (sfx_hover): nadie tiene que conectar nada en sus escenas.
 # El clic sigue siendo Audio.sfx("boton") en cada escena, como hasta ahora.
@@ -26,6 +28,8 @@ var capas: Array[AudioStreamPlayer] = []
 var tema_run: AudioStreamPlayer
 var tema_menu: AudioStreamPlayer
 var cache := {}
+var tema_extra: AudioStreamPlayer # jefe y cualquier otra musica en loop
+var tema_jingle: AudioStreamPlayer # musiquitas cortas de una vez
 
 # Volumen de 0.0 a 1.0 por bus. Lo cambia la pausa con sus barras.
 func poner_volumen(bus: String, valor: float) -> void:
@@ -61,6 +65,8 @@ func _ready() -> void:
 	if pista_menu == null:
 		pista_menu = _cargar(RUTA_MUSICA % "aldea_capa1", true)
 	tema_menu = _reproductor_musica(pista_menu, VOLUMEN_MUSICA)
+	tema_extra = _reproductor_musica(null, VOLUMEN_MUSICA)
+	tema_jingle = _reproductor_musica(null, VOLUMEN_MUSICA)
 	# Cada boton que aparezca en cualquier escena recibe sus sonidos
 	get_tree().node_added.connect(_on_nodo_agregado)
 
@@ -112,6 +118,14 @@ func sfx(nombre: String, volumen := VOLUMEN_SFX) -> void:
 	p.play()
 
 func musica(nombre: String) -> void:
+	if not nombre in ["menu", "run", "aldea"]:
+		var pista := _cargar(RUTA_MUSICA % nombre, true)
+		if pista == null:
+			return # no hay archivo: que siga sonando lo que estaba
+		parar_musica()
+		tema_extra.stream = pista
+		tema_extra.play()
+		return
 	parar_musica()
 	match nombre:
 		"menu":
@@ -132,8 +146,27 @@ func subir_capa(n: int) -> void:
 		var objetivo := VOLUMEN_MUSICA if i < n else SILENCIO
 		create_tween().tween_property(capas[i], "volume_db", objetivo, 1.5)
 
+# Una musiquita corta (sin loop): corta la musica y suena una vez.
+func jingle(nombre: String) -> void:
+	var base := RUTA_MUSICA % nombre
+	var pista: AudioStream = null
+	for ext: String in EXTENSIONES:
+		if ResourceLoader.exists(base + "." + ext):
+			pista = load(base + "." + ext).duplicate()
+			break
+	if pista == null:
+		return
+	if pista is AudioStreamOggVorbis or pista is AudioStreamMP3:
+		pista.loop = false
+	elif pista is AudioStreamWAV:
+		pista.loop_mode = AudioStreamWAV.LOOP_DISABLED
+	parar_musica()
+	tema_jingle.stream = pista
+	tema_jingle.play()
+
 func parar_musica() -> void:
 	tema_run.stop()
 	tema_menu.stop()
+	tema_extra.stop() # el jingle no se corta: es corto y se mezcla con la entrada a la aldea
 	for c in capas:
 		c.stop()
