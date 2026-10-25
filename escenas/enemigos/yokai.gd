@@ -25,9 +25,16 @@ static var _cuadro_lista := -1
 static func todos(arbol: SceneTree) -> Array:
 	if arbol == null:
 		return []
-	# Por cuadro de proceso: los nodos borrados con queue_free desaparecen al final de cada uno
-	var cuadro := Engine.get_process_frames()
-	if cuadro != _cuadro_lista:
+	# Godot borra los nodos (queue_free) despues de CADA paso de fisica y de cada cuadro,
+	# asi que la lista guardada puede traer yokais ya borrados: si hay uno, se pide de nuevo.
+	var cuadro := Engine.get_physics_frames()
+	var vieja := cuadro != _cuadro_lista
+	if not vieja:
+		for e in _lista_enemigos:
+			if not is_instance_valid(e):
+				vieja = true
+				break
+	if vieja:
 		_lista_enemigos = arbol.get_nodes_in_group("enemigos")
 		_cuadro_lista = cuadro
 	return _lista_enemigos
