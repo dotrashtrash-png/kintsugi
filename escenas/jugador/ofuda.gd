@@ -27,7 +27,7 @@ func _lanzar() -> void:
 
 func _mas_cercanos(n: int) -> Array:
 	var lista: Array = []
-	for e in get_tree().get_nodes_in_group("enemigos"):
+	for e in Yokai.todos(get_tree()):
 		var d := global_position.distance_to(e.global_position)
 		if d <= alcance:
 			lista.append([d, e])

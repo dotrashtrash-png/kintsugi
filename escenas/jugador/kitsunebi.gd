@@ -26,15 +26,22 @@ func _physics_process(delta: float) -> void:
 		quemados[e] -= delta
 		if quemados[e] <= 0.0:
 			quemados.erase(e)
-	# Revisar cada llama contra cada yokai
+	# Revisar cada yokai cercano contra las llamas (los lejanos se saltan rapido)
+	var llamas: Array[Vector2] = []
 	for i in cantidad:
-		var pos := global_position + posicion_llama(i)
-		for e in get_tree().get_nodes_in_group("enemigos"):
-			if quemados.has(e):
-				continue
-			if pos.distance_to(e.global_position) < 11.0:
+		llamas.append(global_position + posicion_llama(i))
+	var alcance := (radio + 11.0) * (radio + 11.0)
+	for e in Yokai.todos(get_tree()):
+		if not is_instance_valid(e) or quemados.has(e):
+			continue
+		var p: Vector2 = e.global_position
+		if global_position.distance_squared_to(p) > alcance:
+			continue
+		for pos in llamas:
+			if pos.distance_squared_to(p) < 121.0: # 11 px
 				e.recibir_dano(int(round(dano * heroe.poder)))
 				quemados[e] = PAUSA
+				break
 	queue_redraw()
 
 func posicion_llama(i: int) -> Vector2:

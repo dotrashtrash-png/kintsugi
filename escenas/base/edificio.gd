@@ -14,6 +14,15 @@ const RUTA_DIBUJO := "res://arte/aldea/%s.png"
 const RUTA_VETAS := "res://arte/aldea/vetas_oro.png"
 const NOMBRES := {"madera": "Madera", "tejas": "Tejas", "oro": "Oro"}
 const ANCHO := 232.0 # ancho de la plaquita
+# Las vetas son un solo dibujo para todos los edificios: este shader las recorta
+# con la silueta del edificio para que no se salgan al piso.
+const SHADER_VETAS := """
+shader_type canvas_item;
+uniform sampler2D silueta : filter_nearest;
+void fragment() {
+	COLOR.a *= texture(silueta, UV).a;
+}
+"""
 
 var escala_base := Vector2.ONE
 var brillo: Tween
@@ -37,6 +46,13 @@ func _ready() -> void:
 			cuadro.visible = false
 	if vetas and ResourceLoader.exists(RUTA_VETAS):
 		vetas.texture = load(RUTA_VETAS)
+		if dibujo and dibujo.texture:
+			var sombreador := Shader.new()
+			sombreador.code = SHADER_VETAS
+			var material := ShaderMaterial.new()
+			material.shader = sombreador
+			material.set_shader_parameter("silueta", dibujo.texture)
+			vetas.material = material
 	_crear_info()
 	$Boton.pressed.connect(_on_boton_pressed)
 	$Boton.mouse_entered.connect(_hover.bind(true))

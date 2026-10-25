@@ -17,6 +17,20 @@ const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
 const PROBABILIDAD_ONIGIRI := 0.05 # 5 de cada 100 yokais sueltan un onigiri que cura
 const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
+# Lista de enemigos compartida por cuadro de fisica: las armas la piden muchas
+# veces por cuadro y pedirla al arbol cada vez era lo que mas lag daba en la Web.
+static var _lista_enemigos: Array = []
+static var _cuadro_lista := -1
+
+static func todos(arbol: SceneTree) -> Array:
+	if arbol == null:
+		return []
+	var cuadro := Engine.get_physics_frames()
+	if cuadro != _cuadro_lista:
+		_lista_enemigos = arbol.get_nodes_in_group("enemigos")
+		_cuadro_lista = cuadro
+	return _lista_enemigos
+
 var heroe
 var espera_dano := 0.0
 var muerto := false
@@ -60,8 +74,7 @@ func revisar_contacto(delta: float) -> void:
 	if espera_dano > 0.0:
 		return
 	if global_position.distance_to(heroe.global_position) < distancia_contacto:
-		var daño_final = int(round(dano * heroe.poder)) if (heroe and "poder" in heroe) else dano
-		heroe.recibir_dano(daño_final)
+		heroe.recibir_dano(dano) # el poder del heroe (Hachimaki) sube SU dano, no el de los yokais
 		espera_dano = PAUSA_DANO
 
 func animar(delta: float) -> void:

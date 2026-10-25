@@ -39,7 +39,7 @@ offset_bottom = 26.0
 grow_horizontal = 2
 offset_transform_enabled = true
 offset_transform_position = Vector2(0, 34)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 16
 text = "Gran Tengu"
 
 [node name="Barra" type="ProgressBar" parent="BarraJefe" unique_id=1973604316]

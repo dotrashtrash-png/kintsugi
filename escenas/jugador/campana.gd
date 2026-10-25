@@ -34,7 +34,7 @@ func _apagar() -> void:
 func _physics_process(_delta: float) -> void:
 	if radio <= 0.0:
 		return
-	for enemigo in get_tree().get_nodes_in_group("enemigos"):
+	for enemigo in Yokai.todos(get_tree()):
 		if not is_instance_valid(enemigo) or enemigo in golpeados:
 			continue
 		if global_position.distance_to(enemigo.global_position) <= radio:

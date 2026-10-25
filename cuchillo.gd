@@ -15,7 +15,7 @@ func _physics_process(delta: float) -> void:
 		queue_free()
 		return
 	global_position += direccion * velocidad * delta
-	for e in get_tree().get_nodes_in_group("enemigos"):
+	for e in Yokai.todos(get_tree()):
 		if not is_instance_valid(e) or e in golpeados:
 			continue
 		if global_position.distance_to(e.global_position) < 9.0:

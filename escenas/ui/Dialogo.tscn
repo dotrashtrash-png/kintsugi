@@ -33,7 +33,7 @@ offset_left = 88.0
 offset_top = 6.0
 offset_right = 400.0
 offset_bottom = 26.0
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "Abuela Haru"
 
 [node name="Texto" type="Label" parent="Panel"]
@@ -45,6 +45,6 @@ offset_top = 28.0
 offset_right = -12.0
 offset_bottom = 78.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 16
 text = "Texto de prueba."
 autowrap_mode = 3

@@ -31,7 +31,7 @@ func _lanzar() -> void:
 func _apuntar() -> Vector2:
 	var mejor: Node2D = null
 	var mejor_dist := ALCANCE * ALCANCE
-	for e in get_tree().get_nodes_in_group("enemigos"):
+	for e in Yokai.todos(get_tree()):
 		if not is_instance_valid(e) or not (e is Node2D):
 			continue
 		if "muerto" in e and e.muerto:

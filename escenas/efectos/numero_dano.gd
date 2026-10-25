@@ -5,12 +5,15 @@ extends Label
 
 const MAXIMO_EN_PANTALLA := 30 # en la Web, mas numeros que esto bajan los FPS
 
+static var vivos := 0 # contador barato (antes se pedia el grupo en cada golpe)
+
 static func crear(donde: Node2D, cantidad: int) -> void:
 	var arbol := donde.get_tree()
-	if arbol.get_nodes_in_group("numeros_dano").size() >= MAXIMO_EN_PANTALLA:
+	if vivos >= MAXIMO_EN_PANTALLA:
 		return
 	var n := NumeroDano.new()
-	n.add_to_group("numeros_dano")
+	vivos += 1
+	n.tree_exited.connect(func() -> void: NumeroDano.vivos -= 1)
 	n.text = str(cantidad)
 	n.add_theme_font_size_override("font_size", 8)
 	n.add_theme_color_override("font_color", Color("fff8e7"))

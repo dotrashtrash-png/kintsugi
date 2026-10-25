@@ -108,7 +108,7 @@ func etiqueta(texto: String, tamano: int, color := CREMA) -> Label:
 func boton(texto: String) -> Button:
 	var b := Button.new()
 	b.text = texto
-	b.add_theme_font_size_override("font_size", 18)
+	b.add_theme_font_size_override("font_size", 16)
 	b.add_theme_stylebox_override("normal", caja(PIZARRA, GRIS))
 	b.add_theme_stylebox_override("hover", caja(GRIS, ORO))
 	b.add_theme_stylebox_override("focus", caja(GRIS, ORO))

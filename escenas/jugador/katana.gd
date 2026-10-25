@@ -27,7 +27,7 @@ func _physics_process(_delta: float) -> void:
 func yokai_mas_cercano() -> Node2D:
 	var mejor: Node2D = null
 	var mejor_distancia := ALCANCE_APUNTAR * scale.x
-	for e in get_tree().get_nodes_in_group("enemigos"):
+	for e in Yokai.todos(get_tree()):
 		var d := global_position.distance_to(e.global_position)
 		if d < mejor_distancia:
 			mejor = e

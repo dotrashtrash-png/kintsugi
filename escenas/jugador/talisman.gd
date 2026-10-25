@@ -16,7 +16,7 @@ func _physics_process(delta: float) -> void:
 		direccion = global_position.direction_to(objetivo.global_position)
 	global_position += direccion * velocidad * delta
 	rotation = direccion.angle()
-	for e in get_tree().get_nodes_in_group("enemigos"):
+	for e in Yokai.todos(get_tree()):
 		if is_instance_valid(e) and global_position.distance_to(e.global_position) < 8.0:
 			e.recibir_dano(dano)
 			queue_free()
