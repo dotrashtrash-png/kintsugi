@@ -13,9 +13,9 @@ config_version=5
 config/name="KINTSUGI"
 run/main_scene="uid://ds0hnnl7vm728"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://arte/ui/icono_juego.png"
 boot_splash/bg_color=Color(0.105882, 0.101961, 0.180392, 1)
 boot_splash/show_image=false
+config/icon="res://arte/ui/icono_juego.png"
 
 [autoload]
 
