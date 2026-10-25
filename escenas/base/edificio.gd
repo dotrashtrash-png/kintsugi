@@ -119,9 +119,11 @@ func actualizar() -> void:
 			partes.append(_pieza(NOMBRES[tipo], Estado.materiales[tipo], datos["costo"][tipo]))
 		if datos["aldeanos"] > 0:
 			partes.append(_pieza("Aldeanos", Estado.aldeanos, datos["aldeanos"]))
-		t += "\n" + " · ".join(partes)
+		# Cada pieza no se parte en dos lineas; el salto cae solo entre piezas
+		t += "\n" + "   ".join(partes)
+		# Antes se agregaba despues de armar el texto y nunca se veia
 		if not Estado.faltan_requisitos(id).is_empty():
-			partes.append("[color=#%s]Antes repara los demás[/color]" % FALTA)
+			t += "\n[color=#%s]Antes repara los demás[/color]" % FALTA
 	texto.text = t + "[/center]"
 
 	# Borde dorado solo cuando ya se puede reparar
@@ -134,7 +136,7 @@ func actualizar() -> void:
 # "Madera 12/15": crema si alcanza, rojo si falta
 func _pieza(etiqueta: String, tengo: int, necesito: int) -> String:
 	var color := CREMA if tengo >= necesito else FALTA
-	return "[color=#%s]%s %d/%d[/color]" % [color, etiqueta, tengo, necesito]
+	return "[color=#%s]%s\u00a0%d/%d[/color]" % [color, etiqueta, tengo, necesito]
 
 
 # La plaquita late suave cuando ya se puede reparar

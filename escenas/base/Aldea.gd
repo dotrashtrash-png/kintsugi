@@ -40,7 +40,7 @@ func _ready() -> void:
 	$UI/BotonPrueba.pressed.connect(_on_prueba)
 	$UI/BotonPrueba.visible = OS.is_debug_build()
 	$UI/BotonBorrar.pressed.connect(_on_borrar)
-	$UI/BotonBorrar.visible = OS.is_debug_build()
+	$UI/BotonBorrar.visible = true # los jurados lo usan para empezar de cero
 	Estado.cambio.connect(actualizar)
 	poner_piso()
 	preparar_kohaku()
