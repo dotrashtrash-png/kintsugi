@@ -36,6 +36,7 @@ func poner_musica() -> void:
 		reproductor.stream = pista
 		reproductor.volume_db = -8.0
 		reproductor.bus = "Musica"
+		reproductor.playback_type = AudioServer.PLAYBACK_TYPE_STREAM
 		add_child(reproductor)
 		reproductor.play()
 		return

@@ -1,6 +1,6 @@
 extends Node
 # Audio del juego. Los demas solo llaman:
-#   Audio.sfx("katana")     -> res://audio/sfx/sfx_katana.wav
+#   Audio.sfx("katana")     -> res://audio/sfx/sfx_katana (.wav, .ogg o .mp3)
 #   Audio.musica("run")     -> res://audio/musica/mus_run.ogg
 #   Audio.musica("aldea")   -> capas mus_aldea_capa1..6.ogg
 #   Audio.subir_capa(n)     -> en la aldea, suenan las capas 1 a n
@@ -10,8 +10,9 @@ extends Node
 # El clic sigue siendo Audio.sfx("boton") en cada escena, como hasta ahora.
 # Si un archivo todavia no existe, no suena y no da error.
 
-const RUTA_SFX := "res://audio/sfx/sfx_%s.wav"
-const RUTA_MUSICA := "res://audio/musica/mus_%s.ogg"
+const RUTA_SFX := "res://audio/sfx/sfx_%s"
+const RUTA_MUSICA := "res://audio/musica/mus_%s"
+const EXTENSIONES := ["wav", "ogg", "mp3"] # sirve cualquiera de las tres
 const CAPAS_ALDEA := 6
 const CANALES_SFX := 8 # cuantos efectos pueden sonar a la vez
 const SILENCIO := -80.0
@@ -53,26 +54,27 @@ func _ready() -> void:
 		add_child(p)
 		canales.append(p)
 	for i in CAPAS_ALDEA:
-		var c := AudioStreamPlayer.new()
-		c.stream = _cargar(RUTA_MUSICA % ("aldea_capa%d" % (i + 1)), true)
-		c.volume_db = SILENCIO
-		c.bus = "Musica"
-		add_child(c)
+		var c := _reproductor_musica(_cargar(RUTA_MUSICA % ("aldea_capa%d" % (i + 1)), true), SILENCIO)
 		capas.append(c)
-	tema_run = AudioStreamPlayer.new()
-	tema_run.stream = _cargar(RUTA_MUSICA % "run", true)
-	tema_run.volume_db = VOLUMEN_MUSICA
-	tema_run.bus = "Musica"
-	add_child(tema_run)
-	tema_menu = AudioStreamPlayer.new()
-	tema_menu.stream = _cargar(RUTA_MUSICA % "menu", true)
-	if tema_menu.stream == null:
-		tema_menu.stream = _cargar(RUTA_MUSICA % "aldea_capa1", true)
-	tema_menu.volume_db = VOLUMEN_MUSICA
-	tema_menu.bus = "Musica"
-	add_child(tema_menu)
+	tema_run = _reproductor_musica(_cargar(RUTA_MUSICA % "run", true), VOLUMEN_MUSICA)
+	var pista_menu := _cargar(RUTA_MUSICA % "menu", true)
+	if pista_menu == null:
+		pista_menu = _cargar(RUTA_MUSICA % "aldea_capa1", true)
+	tema_menu = _reproductor_musica(pista_menu, VOLUMEN_MUSICA)
 	# Cada boton que aparezca en cualquier escena recibe sus sonidos
 	get_tree().node_added.connect(_on_nodo_agregado)
+
+# La musica va en modo STREAM: en la Web el modo por defecto ("sample") no la
+# hace sonar con nuestros buses creados por codigo ni con los cambios de volumen.
+# Los efectos se quedan en el modo por defecto (suenan bien y sin retraso).
+func _reproductor_musica(pista: AudioStream, volumen_inicial: float) -> AudioStreamPlayer:
+	var r := AudioStreamPlayer.new()
+	r.stream = pista
+	r.volume_db = volumen_inicial
+	r.bus = "Musica"
+	r.playback_type = AudioServer.PLAYBACK_TYPE_STREAM
+	add_child(r)
+	return r
 
 func _on_nodo_agregado(nodo: Node) -> void:
 	if nodo is BaseButton:
@@ -83,15 +85,19 @@ func _sonar_hover(boton: BaseButton) -> void:
 	if not boton.disabled and boton.is_visible_in_tree():
 		sfx("hover", VOLUMEN_HOVER)
 
-func _cargar(ruta: String, en_loop := false) -> AudioStream:
-	if cache.has(ruta):
-		return cache[ruta]
+# "base" va sin extension: prueba .wav, .ogg y .mp3 en ese orden.
+func _cargar(base: String, en_loop := false) -> AudioStream:
+	if cache.has(base):
+		return cache[base]
 	var s: AudioStream = null
-	if ResourceLoader.exists(ruta):
-		s = load(ruta)
-		if en_loop and s is AudioStreamOggVorbis:
-			s.loop = true
-	cache[ruta] = s
+	for ext: String in EXTENSIONES:
+		var ruta: String = base + "." + ext
+		if ResourceLoader.exists(ruta):
+			s = load(ruta)
+			break
+	if en_loop and (s is AudioStreamOggVorbis or s is AudioStreamMP3):
+		s.loop = true
+	cache[base] = s
 	return s
 
 func sfx(nombre: String, volumen := VOLUMEN_SFX) -> void:
