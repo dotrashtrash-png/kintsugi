@@ -7,6 +7,9 @@ var nivel := 1
 var dano := 6
 var cantidad := 1 # talismanes por disparo
 var alcance := 220.0
+const MAXIMO_TALISMANES := 4 # por disparo, para que no se vuelva infinita
+
+@onready var heroe = get_tree().get_first_node_in_group("jugador")
 
 @onready var timer: Timer = $Timer
 
@@ -21,7 +24,7 @@ func _lanzar() -> void:
 	for objetivo in objetivos:
 		var t = TALISMAN.instantiate()
 		t.objetivo = objetivo
-		t.dano = dano
+		t.dano = int(round(dano * heroe.poder)) if heroe else dano
 		get_tree().current_scene.add_child(t)
 		t.global_position = global_position
 
@@ -40,5 +43,5 @@ func _mas_cercanos(n: int) -> Array:
 # La llama el heroe cuando eligen la ofuda en el menu de mejoras
 func subir_nivel() -> void:
 	nivel += 1
-	cantidad += 1
+	cantidad = mini(cantidad + 1, MAXIMO_TALISMANES)
 	dano += 2
