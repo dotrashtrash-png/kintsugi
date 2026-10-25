@@ -26,15 +26,13 @@ Controles: `WASD` o flechas para moverte.
 | `escenas/pruebas/<persona>/` | Escenas de prueba personales. **No van al juego final.** |
 | `scripts/autoload/` | `Estado` (progreso y materiales) y `Audio`. |
 
-## Cómo se trabajó en la jam
+## Ramas
 
-- Todo se sube directo a `main`. Antes de empezar y antes de subir: **Pull**.
-- Si el Pull dice *"untracked working tree files would be overwritten"*: cerrar Godot, descartar los `.import` del error y repetir el Pull.
-- Las escenas de prueba van en `escenas/pruebas/<persona>/` y no se exportan.
-- Los nombres de archivo distinguen mayúsculas en la versión Web: escenas en PascalCase, scripts y carpetas en minúscula.
+- `main`: siempre abre y corre. Está protegida: solo entra por pull request.
+- Una rama por persona: `miller`, `juancadavid`, `juanmarin`, `villa`, `lopez`, `miguel`. Trabajas siempre en la tuya y la subes a `main` con un PR.
 
-## Equipo
+Mira [CONTRIBUTING.md](CONTRIBUTING.md) para el flujo completo.
 
-Miguel Ángel Cano (líder y código) · Juan José Marín (código y arte) · Juan Sebastián Cadavid (código) · Juan Guillermo Miller (código) · Juan José Villa (código) · Luis Miguel Matta (arte)
+## Ramas antiguas
 
-Hecho para la **Cali Game Jam #4 · Edición Colombia Solidaria** (tema: *Reconstruir*).
+- `origin/miller` (aparece en algunas vistas como `origin/origin/miller`): rama heredada, **se va a eliminar**. Lo útil (mapa Zona y arreglo del Spawner) ya se rescató. No la confundas con tu rama personal `miller`.
