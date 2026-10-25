@@ -30,6 +30,12 @@ func _ready() -> void:
 	$Botones/BotonComoJugar.pressed.connect(_on_como_jugar)
 	$Botones/BotonCreditos.pressed.connect(_on_creditos)
 	$Ventana/Columna/BotonVolver.pressed.connect(_on_volver)
+	# Boton de Sonido: copia del de Creditos (mismo estilo), sin sus conexiones
+	var boton_sonido: Button = $Botones/BotonCreditos.duplicate(Node.DUPLICATE_GROUPS | Node.DUPLICATE_SCRIPTS)
+	boton_sonido.name = "BotonSonido"
+	boton_sonido.text = "Sonido"
+	boton_sonido.pressed.connect(func() -> void: MenuSonido.abrir(self))
+	$Botones.add_child(boton_sonido)
 	$Ventana.visible = false
 	animar_fondo()
 	poner_logo()

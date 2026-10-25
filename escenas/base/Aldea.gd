@@ -41,6 +41,13 @@ func _ready() -> void:
 	$UI/BotonPrueba.visible = OS.is_debug_build()
 	$UI/BotonBorrar.pressed.connect(_on_borrar)
 	$UI/BotonBorrar.visible = true # los jurados lo usan para empezar de cero
+	# Boton de Sonido debajo de Borrar partida (misma forma)
+	var boton_sonido: Button = $UI/BotonBorrar.duplicate(Node.DUPLICATE_GROUPS | Node.DUPLICATE_SCRIPTS)
+	boton_sonido.name = "BotonSonido"
+	boton_sonido.text = "Sonido"
+	boton_sonido.position.y += 38
+	boton_sonido.pressed.connect(func() -> void: MenuSonido.abrir(self))
+	$UI.add_child(boton_sonido)
 	Estado.cambio.connect(actualizar)
 	poner_piso()
 	preparar_kohaku()

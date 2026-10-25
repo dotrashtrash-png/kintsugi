@@ -31,11 +31,27 @@ var cache := {}
 var tema_extra: AudioStreamPlayer # jefe y cualquier otra musica en loop
 var tema_jingle: AudioStreamPlayer # musiquitas cortas de una vez
 
-# Volumen de 0.0 a 1.0 por bus. Lo cambia la pausa con sus barras.
-func poner_volumen(bus: String, valor: float) -> void:
+const ARCHIVO_OPCIONES := "user://opciones.cfg"
+
+# Volumen de 0.0 a 1.0 por bus. Lo cambian las barras de la pausa y del menu de sonido.
+# Se guarda, asi al volver a abrir el juego queda como lo dejaste.
+func poner_volumen(bus: String, valor: float, guardar := true) -> void:
 	var i := AudioServer.get_bus_index(bus)
 	if i >= 0:
 		AudioServer.set_bus_volume_db(i, linear_to_db(maxf(valor, 0.0001)))
+	if guardar:
+		var cfg := ConfigFile.new()
+		cfg.load(ARCHIVO_OPCIONES)
+		cfg.set_value("volumen", bus, valor)
+		cfg.save(ARCHIVO_OPCIONES)
+
+func _cargar_volumenes() -> void:
+	var cfg := ConfigFile.new()
+	if cfg.load(ARCHIVO_OPCIONES) != OK:
+		return
+	for bus in ["Musica", "Efectos"]:
+		if cfg.has_section_key("volumen", bus):
+			poner_volumen(bus, float(cfg.get_value("volumen", bus)), false)
 
 func volumen(bus: String) -> float:
 	var i := AudioServer.get_bus_index(bus)
@@ -51,6 +67,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS # suena aunque el juego este en pausa
 	_crear_bus("Musica")
 	_crear_bus("Efectos")
+	_cargar_volumenes()
 	for i in CANALES_SFX:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = VOLUMEN_SFX

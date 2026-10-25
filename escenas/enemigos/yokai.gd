@@ -14,7 +14,7 @@ extends CharacterBody2D
 const RUTA_LUZ := "res://escenas/run/Luz.tscn"
 const RUTA_MATERIAL := "res://escenas/run/Material.tscn"
 const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
-const PROBABILIDAD_ONIGIRI := 0.015 # 15 de cada 1000 yokais sueltan un onigiri que cura
+const PROBABILIDAD_ONIGIRI := 0.025 # 25 de cada 1000 yokais sueltan un onigiri que cura
 const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
 # Lista de enemigos compartida por cuadro: las armas la piden muchas
