@@ -17,7 +17,7 @@ const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
 const PROBABILIDAD_ONIGIRI := 0.05 # 5 de cada 100 yokais sueltan un onigiri que cura
 const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
-# Lista de enemigos compartida por cuadro de fisica: las armas la piden muchas
+# Lista de enemigos compartida por cuadro: las armas la piden muchas
 # veces por cuadro y pedirla al arbol cada vez era lo que mas lag daba en la Web.
 static var _lista_enemigos: Array = []
 static var _cuadro_lista := -1
@@ -25,7 +25,8 @@ static var _cuadro_lista := -1
 static func todos(arbol: SceneTree) -> Array:
 	if arbol == null:
 		return []
-	var cuadro := Engine.get_physics_frames()
+	# Por cuadro de proceso: los nodos borrados con queue_free desaparecen al final de cada uno
+	var cuadro := Engine.get_process_frames()
 	if cuadro != _cuadro_lista:
 		_lista_enemigos = arbol.get_nodes_in_group("enemigos")
 		_cuadro_lista = cuadro
