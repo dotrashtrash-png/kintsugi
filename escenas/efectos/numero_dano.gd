@@ -15,10 +15,12 @@ static func crear(donde: Node2D, cantidad: int) -> void:
 	vivos += 1
 	n.tree_exited.connect(func() -> void: NumeroDano.vivos -= 1)
 	n.text = str(cantidad)
-	n.add_theme_font_size_override("font_size", 8)
+	# La fuente pixel se rompe en 8 px ("10" se leia "ID"): se dibuja en 16 y se achica a la mitad
+	n.add_theme_font_size_override("font_size", 16)
+	n.scale = Vector2(0.5, 0.5)
 	n.add_theme_color_override("font_color", Color("fff8e7"))
 	n.add_theme_color_override("font_outline_color", Color("1b1a2e"))
-	n.add_theme_constant_override("outline_size", 3)
+	n.add_theme_constant_override("outline_size", 5)
 	n.z_index = 50
 	arbol.current_scene.add_child(n)
 	n.global_position = donde.global_position + Vector2(randf_range(-8, 2), -20)
