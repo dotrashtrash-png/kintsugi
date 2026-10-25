@@ -95,7 +95,7 @@ func celebrar() -> void:
 	if aviso:
 		aviso.visible = false
 	var texto := Label.new()
-	texto.text = "¡Rescatado! +%d oro" % ORO_POR_RESCATE
+	texto.text = tr("¡Rescatado! +%d oro") % ORO_POR_RESCATE
 	texto.add_theme_font_size_override("font_size", 16)
 	texto.add_theme_color_override("font_color", ORO)
 	texto.add_theme_color_override("font_outline_color", Color("1b1a2e"))

@@ -14,9 +14,9 @@ func _process(_delta: float) -> void:
 		$LabelTiempo.text = "¡El Gran Tengu!"
 	else:
 		$LabelTiempo.text = "%d:%02d" % [minutos, segundos]
-	$LabelVida.text = "Vida %d / %d" % [run.heroe.vida, run.heroe.vida_maxima]
-	$LabelNivel.text = "Nivel %d" % run.nivel
+	$LabelVida.text = tr("Vida %d / %d") % [run.heroe.vida, run.heroe.vida_maxima]
+	$LabelNivel.text = tr("Nivel %d") % run.nivel
 	$BarraXP.max_value = run.experiencia_necesaria
 	$BarraXP.value = run.experiencia
 	var m: Dictionary = run.recolectado
-	$LabelMateriales.text = "Madera %d · Tejas %d · Oro %d · Aldeanos %d" % [m["madera"], m["tejas"], m["oro"], run.aldeanos_rescatados]
+	$LabelMateriales.text = tr("Madera %d · Tejas %d · Oro %d · Aldeanos %d") % [m["madera"], m["tejas"], m["oro"], run.aldeanos_rescatados]

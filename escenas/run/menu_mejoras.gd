@@ -42,15 +42,15 @@ func mostrar(nuevas_opciones: Array) -> void:
 # "Kunai (nueva)" o "Katana Nv. 2 -> 3", y abajo el texto de la mejora
 func texto_de(nombre: String, heroe) -> String:
 	var datos: Dictionary = Heroes.MEJORAS.get(nombre, {})
-	var titulo: String = datos.get("nombre", nombre.capitalize())
+	var titulo: String = tr(datos.get("nombre", nombre.capitalize()))
 	var nivel_actual := 0
 	if heroe and heroe.has_method("nivel_de"):
 		nivel_actual = heroe.nivel_de(nombre)
 	if nivel_actual == 0:
-		titulo += " (nueva)"
+		titulo = tr("%s (nueva)") % titulo
 	else:
-		titulo += " Nv. %d → %d" % [nivel_actual, nivel_actual + 1]
-	return titulo + "\n" + str(datos.get("texto", ""))
+		titulo = tr("%s Nv. %d → %d") % [titulo, nivel_actual, nivel_actual + 1]
+	return titulo + "\n" + tr(str(datos.get("texto", "")))
 
 
 func _on_boton(indice: int) -> void:

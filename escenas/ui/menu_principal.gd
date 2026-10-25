@@ -45,6 +45,7 @@ func _ready() -> void:
 	ancho_total += 18 * ($Botones.get_child_count() - 1)
 	$Botones.offset_left = -ancho_total / 2.0
 	$Botones.offset_right = ancho_total / 2.0
+	crear_boton_idioma()
 	$Ventana.visible = false
 	animar_fondo()
 	poner_logo()
@@ -96,6 +97,39 @@ func entrada() -> void:
 	var y0: float = titulo.position.y
 	flotar.tween_property(titulo, "position:y", y0 - 4.0, 1.6).set_trans(Tween.TRANS_SINE)
 	flotar.tween_property(titulo, "position:y", y0, 1.6).set_trans(Tween.TRANS_SINE)
+
+
+# ---------- Idioma ----------
+
+# Boton arriba a la derecha: dice el idioma al que cambias (English / Español).
+func crear_boton_idioma() -> void:
+	var boton := Button.new()
+	boton.name = "BotonIdioma"
+	boton.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED # "English" y "Español" no se traducen
+	boton.custom_minimum_size = Vector2(140, 40)
+	boton.anchor_left = 1.0
+	boton.anchor_right = 1.0
+	boton.offset_left = -156.0
+	boton.offset_right = -16.0
+	boton.offset_top = 16.0
+	boton.offset_bottom = 56.0
+	boton.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	boton.pressed.connect(_on_idioma)
+	add_child(boton)
+	poner_texto_idioma()
+	boton.modulate.a = 0.0 # aparece junto con los botones de abajo
+	create_tween().tween_property(boton, "modulate:a", 1.0, 0.4).set_delay(1.5)
+
+
+func poner_texto_idioma() -> void:
+	$BotonIdioma.text = "English" if Idioma.actual == "es" else "Español"
+
+
+# Todos los textos del juego cambian solos (Labels y botones); queda guardado.
+func _on_idioma() -> void:
+	Audio.sfx("boton")
+	Idioma.cambiar()
+	poner_texto_idioma()
 
 
 # ---------- Botones ----------

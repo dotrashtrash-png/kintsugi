@@ -67,23 +67,23 @@ func actualizar() -> void:
 	var run = get_parent()
 	var h = run.heroe
 	var lineas := PackedStringArray()
-	lineas.append("Vida  %d / %d   (regenera %.1f por segundo)" % [h.vida, h.vida_maxima, h.regen])
-	lineas.append("Daño  x%.2f   ·   Velocidad  %d   ·   Radio para recoger  %d" % [h.poder, h.velocidad, h.radio_recoger])
+	lineas.append(tr("Vida  %d / %d   (regenera %.1f por segundo)") % [h.vida, h.vida_maxima, h.regen])
+	lineas.append(tr("Daño  x%.2f   ·   Velocidad  %d   ·   Radio para recoger  %d") % [h.poder, h.velocidad, h.radio_recoger])
 	var armas := PackedStringArray()
 	for arma in h.armas.get_children():
-		armas.append("%s Nv. %d" % [nombre_de(arma.name), arma.nivel])
-	lineas.append("Armas:  " + (", ".join(armas) if armas.size() > 0 else "ninguna"))
+		armas.append(tr("%s Nv. %d") % [nombre_de(arma.name), arma.nivel])
+	lineas.append(tr("Armas:") + "  " + (", ".join(armas) if armas.size() > 0 else tr("ninguna")))
 	var pasivas := PackedStringArray()
 	for clave in h.niveles:
-		pasivas.append("%s Nv. %d" % [nombre_de(clave), h.niveles[clave]])
-	lineas.append("Pasivas:  " + (", ".join(pasivas) if pasivas.size() > 0 else "ninguna"))
+		pasivas.append(tr("%s Nv. %d") % [nombre_de(clave), h.niveles[clave]])
+	lineas.append(tr("Pasivas:") + "  " + (", ".join(pasivas) if pasivas.size() > 0 else tr("ninguna")))
 	estadisticas.text = "\n".join(lineas)
 	var m: Dictionary = run.recolectado
-	materiales.text = "Esta salida:  Madera %d · Tejas %d · Oro %d · Aldeanos %d" % [m["madera"], m["tejas"], m["oro"], run.aldeanos_rescatados]
+	materiales.text = tr("Esta salida:  Madera %d · Tejas %d · Oro %d · Aldeanos %d") % [m["madera"], m["tejas"], m["oro"], run.aldeanos_rescatados]
 
 
 func nombre_de(clave) -> String:
-	return Heroes.MEJORAS.get(String(clave), {}).get("nombre", String(clave).capitalize())
+	return tr(Heroes.MEJORAS.get(String(clave), {}).get("nombre", String(clave).capitalize()))
 
 
 # ---------- Construir la interfaz ----------

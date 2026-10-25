@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Audio="*uid://dpb5i64t6fgcb"
 Estado="*uid://bja6hn013ofjh"
+Idioma="*res://scripts/autoload/Idioma.gd"
 
 [display]
 

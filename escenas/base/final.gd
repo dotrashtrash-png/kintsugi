@@ -1,6 +1,7 @@
 extends Control
 # Escena final: Kohaku despierta sobre la aldea reparada.
-# 3 paginas de texto encima del dibujo. Clic o Enter pasan; al final vuelve al menu.
+# 4 paginas de texto encima del dibujo. Clic o Enter pasan; al final vuelve al menu.
+# Cada pagina cabe en 2 lineas: si es mas larga, lo de abajo no se ve.
 
 const RUTA_MENU := "res://escenas/ui/MenuPrincipal.tscn"
 const RUTA_IMAGEN := "res://arte/aldea/final_kohaku.png"
@@ -9,7 +10,8 @@ const RUTAS_MUSICA := ["res://audio/musica/mus_final.ogg", "res://audio/musica/m
 const PAGINAS := [
 	"Los faroles del santuario se encienden, uno por uno.",
 	"Kohaku abre los ojos. Tsugimura recordó a su guardiana, y las grietas de la aldea brillan con oro.",
-	"Lo que se rompe y se repara con cuidado puede ser más bello que antes.\n\nGracias por jugar KINTSUGI.",
+	"Lo que se rompe y se repara con cuidado puede ser más bello que antes.",
+	"Gracias por jugar KINTSUGI.",
 ]
 
 var pagina := 0

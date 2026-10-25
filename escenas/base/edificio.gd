@@ -113,16 +113,16 @@ func actualizar() -> void:
 		cuadro.color = Color(1.0, 0.8, 0.35) if reparado else Color(0.4, 0.4, 0.45)
 
 	var color_nombre := "e8b04a" if reparado else CREMA
-	var t := "[center][color=#%s]%s[/color]" % [color_nombre, datos["nombre"]]
+	var t := "[center][color=#%s]%s[/color]" % [color_nombre, tr(datos["nombre"])]
 	if not reparado and not Estado.faltan_requisitos(id).is_empty():
 		# Bloqueado (el santuario): solo el aviso, asi la placa no tapa el edificio de abajo
-		t += "\n[color=#%s]Primero repara los otros edificios[/color]" % FALTA
+		t += "\n[color=#%s]%s[/color]" % [FALTA, tr("Primero repara los otros edificios")]
 	elif not reparado:
 		var partes := PackedStringArray()
 		for tipo in datos["costo"]:
-			partes.append(_pieza(NOMBRES[tipo], Estado.materiales[tipo], datos["costo"][tipo]))
+			partes.append(_pieza(tr(NOMBRES[tipo]), Estado.materiales[tipo], datos["costo"][tipo]))
 		if datos["aldeanos"] > 0:
-			partes.append(_pieza("Aldeanos", Estado.aldeanos, datos["aldeanos"]))
+			partes.append(_pieza(tr("Aldeanos"), Estado.aldeanos, datos["aldeanos"]))
 		# Cada pieza no se parte en dos lineas; el salto cae solo entre piezas
 		t += "\n" + "   ".join(partes)
 	texto.text = t + "[/center]"

@@ -111,7 +111,7 @@ func elegir_saludo() -> String:
 
 func actualizar() -> void:
 	var m: Dictionary = Estado.materiales
-	$UI/LabelMateriales.text = "Madera %d · Tejas %d · Oro %d · Aldeanos %d" % [m["madera"], m["tejas"], m["oro"], Estado.aldeanos]
+	$UI/LabelMateriales.text = tr("Madera %d · Tejas %d · Oro %d · Aldeanos %d") % [m["madera"], m["tejas"], m["oro"], Estado.aldeanos]
 	for edificio in $Edificios.get_children():
 		edificio.actualizar()
 	actualizar_heroes()
@@ -132,23 +132,23 @@ func mostrar_ultima_salida() -> void:
 		$UI/LabelMensaje.text = "Toca un edificio en ruinas para repararlo."
 		return
 	var b: Dictionary = s["botin"]
-	var inicio := "Volviste sano y salvo." if s["sobrevivio"] else "Caíste, pero trajiste la mitad."
-	$UI/LabelMensaje.text = "%s Trajiste %d madera, %d tejas, %d oro y %d aldeanos." % [inicio, b["madera"], b["tejas"], b["oro"], s["aldeanos"]]
+	var inicio := tr("Volviste sano y salvo.") if s["sobrevivio"] else tr("Caíste, pero trajiste la mitad.")
+	$UI/LabelMensaje.text = tr("%s Trajiste %d madera, %d tejas, %d oro y %d aldeanos.") % [inicio, b["madera"], b["tejas"], b["oro"], s["aldeanos"]]
 	Estado.ultima_salida = {}
 
 
 func _on_edificio_elegido(id: String) -> void:
 	if $Dialogo.visible:
 		return
-	var nombre: String = Edificios.LISTA[id]["nombre"]
+	var nombre: String = tr(Edificios.LISTA[id]["nombre"])
 	if Estado.esta_reparado(id):
-		$UI/LabelMensaje.text = nombre + " ya está reparado."
+		$UI/LabelMensaje.text = tr("%s ya está reparado.") % nombre
 		return
 	if not Estado.faltan_requisitos(id).is_empty():
-		$UI/LabelMensaje.text = nombre + " se repara al final: primero los otros edificios."
+		$UI/LabelMensaje.text = tr("%s se repara al final: primero los otros edificios.") % nombre
 		return
 	if not Estado.reparar(id):
-		$UI/LabelMensaje.text = "Te falta material o aldeanos para " + nombre + "."
+		$UI/LabelMensaje.text = tr("Te falta material o aldeanos para %s.") % nombre
 		if not ya_dijo_falta:
 			ya_dijo_falta = true
 			$Dialogo.mostrar(Textos.HARU["falta"])
@@ -157,7 +157,7 @@ func _on_edificio_elegido(id: String) -> void:
 	for edificio in $Edificios.get_children():
 		if edificio.id == id:
 			edificio.celebrar()
-	$UI/LabelMensaje.text = "¡Reparaste " + nombre + " con oro!"
+	$UI/LabelMensaje.text = tr("¡Reparaste %s con oro!") % nombre
 	$Dialogo.mostrar(Textos.HARU[id])
 	if id == "santuario":
 		await $Dialogo.cerrado
@@ -379,7 +379,7 @@ func _fila_botin(tipo: String, valor: int) -> Dictionary:
 		icono.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icono.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		fila.add_child(icono)
-	var nombre: String = NOMBRE_BOTIN.get(tipo, "Aldeanos")
+	var nombre: String = tr(NOMBRE_BOTIN.get(tipo, "Aldeanos"))
 	var etiqueta := _linea_botin("+0 " + nombre, Color("fff8e7") if valor > 0 else Color(1, 0.97, 0.9, 0.5))
 	etiqueta.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	etiqueta.custom_minimum_size = Vector2(150, 0)
