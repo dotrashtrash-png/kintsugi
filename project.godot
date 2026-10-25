@@ -17,6 +17,10 @@ boot_splash/bg_color=Color(0.105882, 0.101961, 0.180392, 1)
 boot_splash/show_image=false
 config/icon="res://arte/ui/icono_juego.png"
 
+[audio]
+
+driver/output_latency.web=200
+
 [autoload]
 
 Audio="*uid://dpb5i64t6fgcb"
