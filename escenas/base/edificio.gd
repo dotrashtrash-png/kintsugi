@@ -68,6 +68,7 @@ func _crear_info() -> void:
 		alto = dibujo.texture.get_height() * dibujo.scale.y
 
 	info = Node2D.new()
+	info.z_index = 10 # la placa siempre por encima de los edificios vecinos
 	info.position = Vector2(0, alto / 2.0 + 6.0)
 	# Contra-escala: la letra se ve a su tamano real aunque el edificio tenga Scale.
 	info.scale = Vector2(1.0 / scale.x, 1.0 / scale.y)
@@ -113,7 +114,10 @@ func actualizar() -> void:
 
 	var color_nombre := "e8b04a" if reparado else CREMA
 	var t := "[center][color=#%s]%s[/color]" % [color_nombre, datos["nombre"]]
-	if not reparado:
+	if not reparado and not Estado.faltan_requisitos(id).is_empty():
+		# Bloqueado (el santuario): solo el aviso, asi la placa no tapa el edificio de abajo
+		t += "\n[color=#%s]Primero repara los otros edificios[/color]" % FALTA
+	elif not reparado:
 		var partes := PackedStringArray()
 		for tipo in datos["costo"]:
 			partes.append(_pieza(NOMBRES[tipo], Estado.materiales[tipo], datos["costo"][tipo]))
@@ -121,9 +125,6 @@ func actualizar() -> void:
 			partes.append(_pieza("Aldeanos", Estado.aldeanos, datos["aldeanos"]))
 		# Cada pieza no se parte en dos lineas; el salto cae solo entre piezas
 		t += "\n" + "   ".join(partes)
-		# Antes se agregaba despues de armar el texto y nunca se veia
-		if not Estado.faltan_requisitos(id).is_empty():
-			t += "\n[color=#%s]Antes repara los demás[/color]" % FALTA
 	texto.text = t + "[/center]"
 
 	# Borde dorado solo cuando ya se puede reparar
