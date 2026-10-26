@@ -158,9 +158,15 @@ func musica(nombre: String) -> void:
 					c.play() # todas arrancan juntas para quedar sincronizadas
 			subir_capa(1 + Estado.edificios.size())
 
+# Las "capas" de la aldea son canciones distintas (no ambientes que se mezclan):
+# suena solo la mas alta que exista entre las primeras n, y cambia con un fundido.
 func subir_capa(n: int) -> void:
+	var activa := 0
+	for i in mini(n, capas.size()):
+		if capas[i].stream:
+			activa = i
 	for i in capas.size():
-		var objetivo := VOLUMEN_MUSICA if i < n else SILENCIO
+		var objetivo := VOLUMEN_MUSICA if i == activa else SILENCIO
 		create_tween().tween_property(capas[i], "volume_db", objetivo, 1.5)
 
 # Una musiquita corta (sin loop): corta la musica y suena una vez.
