@@ -118,17 +118,30 @@ func morir() -> void:
 		var comida = soltar(RUTA_MATERIAL)
 		if comida:
 			comida.tipo = "onigiri"
-	soltar(RUTA_HUMO)
+	# Si muchos mueren a la vez, no hace falta un humo por cada uno (eran lo que mas pesaba)
+	if humos_vivos < MAXIMO_HUMOS:
+		var humo = soltar(RUTA_HUMO)
+		if humo:
+			humos_vivos += 1
+			humo.tree_exited.connect(func() -> void: Yokai.humos_vivos -= 1)
 	Audio.sfx("yokai_muere")
 	queue_free()
 
 func elegir_material() -> String:
 	return "madera" if randf() < 0.6 else "tejas"
 
+# Las escenas que sueltan se cargan una sola vez (antes se buscaban en disco en cada muerte)
+const MAXIMO_HUMOS := 12
+static var humos_vivos := 0
+static var _escenas := {}
+
 func soltar(ruta: String):
-	if not ResourceLoader.exists(ruta):
+	if not _escenas.has(ruta):
+		_escenas[ruta] = load(ruta) if ResourceLoader.exists(ruta) else null
+	var escena: PackedScene = _escenas[ruta]
+	if escena == null:
 		return null
-	var cosa: Node2D = load(ruta).instantiate()
+	var cosa: Node2D = escena.instantiate()
 	cosa.position = global_position
 	get_tree().current_scene.add_child.call_deferred(cosa)
 	return cosa

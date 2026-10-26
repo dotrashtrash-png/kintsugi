@@ -19,6 +19,9 @@ var anillos_hechos := 0
 
 func _ready() -> void:
 	heroe = get_tree().get_first_node_in_group("jugador")
+	# En celular, menos yokais a la vez: se sigue sintiendo horda y no se traba
+	if OS.has_feature("web_android") or OS.has_feature("web_ios") or OS.has_feature("mobile"):
+		tope = 100
 	$TimerOleada.timeout.connect(generar_oleada)
 	$TimerRescate.timeout.connect(generar_rescate)
 
@@ -32,6 +35,24 @@ func _process(delta: float) -> void:
 	if anillos_hechos < MINUTOS_ANILLO.size() and tiempo >= MINUTOS_ANILLO[anillos_hechos] * 60.0:
 		anillos_hechos += 1
 		evento_anillo(18 + anillos_hechos * 6) # 24, 30 y 36 faroles
+	_crear_pendientes()
+
+# ---------- Cola de aparicion ----------
+# Crear 30 yokais en el mismo cuadro trababa la Web un momento. Ahora las oleadas y los
+# anillos se anotan en una cola y salen pocos por cuadro: se ve igual y no se traba.
+const MAXIMO_POR_CUADRO := 3
+var pendientes: Array = [] # [escena, distancia desde el heroe]
+
+func encolar(escena: PackedScene, desde_heroe: Vector2) -> void:
+	pendientes.append([escena, desde_heroe])
+
+func _crear_pendientes() -> void:
+	if heroe == null:
+		pendientes.clear()
+		return
+	for i in mini(MAXIMO_POR_CUADRO, pendientes.size()):
+		var p: Array = pendientes.pop_front()
+		crear(p[0], heroe.global_position + p[1])
 
 # ---------- Separar la horda ----------
 # Los yokais no chocan con fisica (seria muy pesado en la Web). En cambio, cada cuadro
@@ -39,13 +60,18 @@ func _process(delta: float) -> void:
 # Asi la horda rodea al heroe como en Vampire Survivors en vez de apilarse en un punto.
 const SEPARACION := 10.0
 
+var cuadro_fisica := 0
+
 func _physics_process(_delta: float) -> void:
-	separar()
+	# Cada 2 cuadros alcanza para que no se encimen y cuesta la mitad
+	cuadro_fisica += 1
+	if cuadro_fisica % 2 == 0:
+		separar()
 
 func separar() -> void:
 	var celdas := {}
-	for e in get_tree().get_nodes_in_group("enemigos"):
-		if e.is_in_group("jefe"):
+	for e in Yokai.todos(get_tree()):
+		if not is_instance_valid(e) or e.is_in_group("jefe"):
 			continue
 		var c := Vector2i(floori(e.global_position.x / SEPARACION), floori(e.global_position.y / SEPARACION))
 		if celdas.has(c):
@@ -65,7 +91,7 @@ func separar() -> void:
 				if largo >= SEPARACION:
 					continue
 				var dir := d / largo if largo > 0.01 else Vector2.RIGHT.rotated(randf() * TAU)
-				var paso := dir * (SEPARACION - largo) * 0.25
+				var paso := dir * (SEPARACION - largo) * 0.4
 				a.global_position += paso
 				b.global_position -= paso
 
@@ -75,11 +101,13 @@ func generar_oleada() -> void:
 		return
 	# Minuto 0: 1 yokai por tanda. Minuto 5: 6 por tanda.
 	var cantidad: int = 2 + int(tiempo / 50.0)
+	var vivos: int = Yokai.todos(get_tree()).size() + pendientes.size()
 	for i in cantidad:
-		if get_tree().get_nodes_in_group("enemigos").size() >= tope:
+		if vivos >= tope:
 			return
+		vivos += 1
 		var angulo: float = randf() * TAU
-		crear(elegir_yokai(), heroe.global_position + Vector2.RIGHT.rotated(angulo) * distancia)
+		encolar(elegir_yokai(), Vector2.RIGHT.rotated(angulo) * distancia)
 
 func elegir_yokai() -> PackedScene:
 	var r: float = randf()
@@ -115,7 +143,7 @@ func evento_anillo(cantidad: int) -> void:
 	Audio.sfx("viento")
 	for i in cantidad:
 		var angulo: float = TAU * i / cantidad
-		crear(escena_chochin, heroe.global_position + Vector2.RIGHT.rotated(angulo) * 230.0)
+		encolar(escena_chochin, Vector2.RIGHT.rotated(angulo) * 230.0)
 
 func generar_rescate() -> void:
 	if escena_rescate == null or heroe == null:

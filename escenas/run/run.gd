@@ -29,6 +29,8 @@ var limites := Rect2() # el rectangulo del mapa en pixeles (vacio si no hay Zona
 
 func _ready() -> void:
 	add_to_group("run")
+	Yokai.humos_vivos = 0 # contadores de efectos: empiezan limpios en cada salida
+	Estado.soltar_teclas()
 	heroe.murio.connect(_on_heroe_murio)
 	if has_node("MenuMejoras"):
 		$MenuMejoras.mejora_elegida.connect(_on_mejora_elegida)

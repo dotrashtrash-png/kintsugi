@@ -16,6 +16,19 @@ var salidas := 0
 func _ready() -> void:
 	cargar()
 
+# Tecla pegada: si sueltas la tecla cuando el juego no tiene el foco (clic afuera, cambiar
+# de pestaña o de ventana, la barra de itch), el navegador nunca avisa que la soltaste y el
+# heroe sigue caminando solo. Al perder o recuperar el foco se sueltan todas.
+func _notification(what: int) -> void:
+	if what in [NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_FOCUS_IN,
+			NOTIFICATION_WM_WINDOW_FOCUS_OUT, NOTIFICATION_WM_WINDOW_FOCUS_IN,
+			NOTIFICATION_APPLICATION_PAUSED]:
+		soltar_teclas()
+
+func soltar_teclas() -> void:
+	for accion in ["izquierda", "derecha", "arriba", "abajo", "ui_left", "ui_right", "ui_up", "ui_down"]:
+		Input.action_release(accion)
+
 func agregar(tipo: String, cantidad: int) -> void:
 	materiales[tipo] += cantidad
 	cambio.emit()

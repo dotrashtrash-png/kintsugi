@@ -42,11 +42,18 @@ func _on_body_entered(cuerpo: Node2D) -> void:
 
 
 # Si existe arte/ui/luz.png, la luz se ve como orbe dorado en vez de cuadro.
+# La textura se busca una sola vez para todas las luces (sale una por cada yokai que muere).
+static var _textura: Texture2D = null
+static var _buscada := false
+
 func poner_dibujo() -> void:
-	if not ResourceLoader.exists(RUTA_DIBUJO):
+	if not _buscada:
+		_buscada = true
+		_textura = load(RUTA_DIBUJO) if ResourceLoader.exists(RUTA_DIBUJO) else null
+	if _textura == null:
 		return
 	var dibujo := Sprite2D.new()
-	dibujo.texture = load(RUTA_DIBUJO)
+	dibujo.texture = _textura
 	add_child(dibujo)
 	for hijo in get_children():
 		if hijo is ColorRect:

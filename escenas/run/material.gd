@@ -52,11 +52,16 @@ func _on_body_entered(cuerpo: Node2D) -> void:
 
 
 # Si existe el dibujo (arte/ui/madera.png, tejas.png, oro.png), lo pone en vez del cuadro.
+# Las texturas se buscan una sola vez y se guardan aqui.
+static var _texturas := {}
+
 func poner_dibujo(ruta: String) -> void:
-	if not ResourceLoader.exists(ruta):
+	if not _texturas.has(ruta):
+		_texturas[ruta] = load(ruta) if ResourceLoader.exists(ruta) else null
+	if _texturas[ruta] == null:
 		$Cuadro.color = COLORES.get(tipo, Color.WHITE)
 		return
 	var dibujo := Sprite2D.new()
-	dibujo.texture = load(ruta)
+	dibujo.texture = _texturas[ruta]
 	add_child(dibujo)
 	$Cuadro.visible = false

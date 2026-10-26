@@ -123,7 +123,16 @@ func _cargar(base: String, en_loop := false) -> AudioStream:
 	cache[base] = s
 	return s
 
+# El mismo efecto no se repite mas seguido que esto: si mueren 20 yokais en un cuadro
+# suena uno solo (20 a la vez sonaban fuerte y trababan la Web).
+const SEPARACION_MISMO_SFX := 45 # milisegundos
+var ultimo_sfx := {}
+
 func sfx(nombre: String, volumen := VOLUMEN_SFX) -> void:
+	var ahora := Time.get_ticks_msec()
+	if ahora - int(ultimo_sfx.get(nombre, -1000)) < SEPARACION_MISMO_SFX:
+		return
+	ultimo_sfx[nombre] = ahora
 	var s := _cargar(RUTA_SFX % nombre)
 	if s == null:
 		return
