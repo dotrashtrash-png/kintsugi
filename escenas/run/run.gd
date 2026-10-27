@@ -20,6 +20,7 @@ var experiencia_necesaria := 5
 var niveles_pendientes := 0
 var recolectado := {"madera": 0, "tejas": 0, "oro": 0}
 var aldeanos_rescatados := 0
+var muertes := 0 # yokais vencidos en esta salida
 var jefe_aparecio := false
 var terminado := false
 var limites := Rect2() # el rectangulo del mapa en pixeles (vacio si no hay Zona)

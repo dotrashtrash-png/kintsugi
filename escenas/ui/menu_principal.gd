@@ -135,9 +135,11 @@ func _on_idioma() -> void:
 # ---------- Botones ----------
 
 func _on_jugar() -> void:
-	# Quien nunca ha salido a las ruinas ve primero el tutorial (la gente no lee la pagina de itch)
-	if Estado.salidas == 0 and not tutorial_abierto:
+	# La primera vez que se le da Jugar sale el tutorial (la gente no lee la pagina de itch)
+	if not Estado.vio_tutorial and not tutorial_abierto:
 		tutorial_abierto = true
+		Estado.vio_tutorial = true # solo la primera vez que se le da Jugar
+		Estado.guardar()
 		abrir_ventana("Cómo se juega", TUTORIAL)
 		$Ventana/Columna/BotonVolver.text = "¡A jugar!"
 		return

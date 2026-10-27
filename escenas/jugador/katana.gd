@@ -57,11 +57,15 @@ func _ocultar() -> void:
 	mostrando = false
 	queue_redraw()
 
-# El corte: una media luna que barre de un lado al otro, gruesa en la punta y que se
-# va cerrando por detras, con el filo blanco y unas chispas al final.
-const DURACION_CORTE := 0.18
-const RADIO_CORTE := 20.0
-const ABERTURA := 1.25 # radianes a cada lado (unos 72 grados)
+# El corte: animacion pixel art de 6 cuadros (arte/ui/corte_katana.png, 28x44 cada uno):
+# aparece fino, se abre en media luna blanca y azul, y se deshace en rayas.
+# Un corte sale normal y el siguiente volteado (de arriba a abajo / de abajo a arriba).
+const DURACION_CORTE := 0.24
+const HOJA := preload("res://arte/ui/corte_katana.png")
+const CUADROS_CORTE := 6
+const ANCHO_CORTE := 28
+const ALTO_CORTE := 44
+const ORIGEN_CORTE := Vector2(2, 22) # el punto del dibujo que va sobre la katana
 const CENTRO_CORTE := Vector2(4, 0)
 var progreso := 0.0
 var sentido := 1.0
@@ -69,37 +73,11 @@ var sentido := 1.0
 func _draw() -> void:
 	if not mostrando:
 		return
-	var a0 := -ABERTURA * sentido
-	var a1 := ABERTURA * sentido
-	var barrido := 1.0 - pow(1.0 - minf(progreso * 1.4, 1.0), 3.0) # rapido al inicio, frena al final
-	var punta := lerpf(a0, a1, barrido)
-	var cola := lerpf(a0, a1, maxf(0.0, (progreso - 0.3) / 0.7)) # la cola alcanza a la punta
-	var alfa := 1.0 if progreso < 0.6 else 1.0 - (progreso - 0.6) / 0.4
-	var pasos := 14
-	var afuera := PackedVector2Array()
-	var adentro := PackedVector2Array()
-	for i in pasos + 1:
-		var f := float(i) / pasos
-		var ang := lerpf(cola, punta, f)
-		var grosor := 1.0 + 7.0 * f # fina en la cola, gruesa en la punta
-		var dir := Vector2.RIGHT.rotated(ang)
-		afuera.append(CENTRO_CORTE + dir * RADIO_CORTE)
-		adentro.append(CENTRO_CORTE + dir * (RADIO_CORTE - grosor))
-	if absf(punta - cola) > 0.05:
-		var cuerpo := afuera.duplicate()
-		for i in range(adentro.size() - 1, -1, -1):
-			cuerpo.append(adentro[i])
-		draw_colored_polygon(cuerpo, Color(1.0, 0.95, 0.85, 0.45 * alfa))
-		draw_polyline(afuera, Color(1, 1, 1, 0.95 * alfa), 2.0) # el filo
-	# Linea de la hoja en la punta y chispas
-	var d := Vector2.RIGHT.rotated(punta)
-	draw_line(CENTRO_CORTE + d * (RADIO_CORTE - 9.0), CENTRO_CORTE + d * (RADIO_CORTE + 3.0), Color(1, 1, 1, alfa), 2.0)
-	if progreso > 0.45:
-		var chispa := (progreso - 0.45) / 0.55
-		for k in 3:
-			var off := Vector2.RIGHT.rotated(punta + sentido * (0.25 + 0.2 * k))
-			var p0 := CENTRO_CORTE + off * (RADIO_CORTE + 2.0 + 6.0 * chispa)
-			draw_rect(Rect2(p0 - Vector2.ONE, Vector2(2, 2)), Color(1.0, 0.85, 0.45, 1.0 - chispa))
+	var cuadro := mini(int(progreso * CUADROS_CORTE), CUADROS_CORTE - 1)
+	var fuente := Rect2(cuadro * ANCHO_CORTE, 0, ANCHO_CORTE, ALTO_CORTE)
+	draw_set_transform(CENTRO_CORTE, 0.0, Vector2(1.0, sentido))
+	draw_texture_rect_region(HOJA, Rect2(-ORIGEN_CORTE, Vector2(ANCHO_CORTE, ALTO_CORTE)), fuente)
+	draw_set_transform(Vector2.ZERO)
 
 # La llama el heroe cuando eligen la katana en el menu de mejoras.
 # Crece en linea recta hasta el tope: al nivel 8 llega a 1.8 (antes 1.7) y pega 28 (antes 19).

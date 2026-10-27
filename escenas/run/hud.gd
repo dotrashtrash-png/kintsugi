@@ -33,6 +33,9 @@ func _ready() -> void:
 	_decorar_barra_xp()
 	_crear_barra_vida()
 	$LabelVida.visible = false # la vida ahora es la barra roja con numeros
+	_crear_contadores()
+	$LabelNivel.offset_top = 18
+	$LabelNivel.offset_bottom = 36
 	# Casillas de armas y pasivas debajo de la vida
 	var columna := VBoxContainer.new()
 	columna.position = Vector2(8, 46)
@@ -72,7 +75,11 @@ func _actualizar() -> void:
 	$BarraXP.max_value = run.experiencia_necesaria
 	$BarraXP.value = run.experiencia
 	var m: Dictionary = run.recolectado
-	$LabelMateriales.text = tr("Madera %d · Tejas %d · Oro %d · Aldeanos %d") % [m["madera"], m["tejas"], m["oro"], run.aldeanos_rescatados]
+	contadores["madera"].text = str(m["madera"])
+	contadores["tejas"].text = str(m["tejas"])
+	contadores["oro"].text = str(m["oro"])
+	contadores["aldeanos"].text = str(run.aldeanos_rescatados)
+	texto_muertes.text = str(run.muertes)
 	_actualizar_casillas()
 
 
@@ -257,3 +264,73 @@ func _actualizar_vida(delta: float) -> void:
 	if h.vida != vida_mostrada:
 		vida_mostrada = h.vida
 		texto_vida.text = "%d / %d" % [h.vida, h.vida_maxima]
+
+
+# ---------- Contadores con iconos: materiales abajo, calavera de yokais arriba a la derecha ----------
+
+var contadores := {}
+var texto_muertes: Label
+
+func _numero(tamano := 16) -> Label:
+	var l := Label.new()
+	l.add_theme_font_size_override("font_size", tamano)
+	l.add_theme_color_override("font_color", CREMA)
+	l.add_theme_color_override("font_outline_color", NOCHE)
+	l.add_theme_constant_override("outline_size", 6)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return l
+
+func _mini_icono(textura: Texture2D) -> TextureRect:
+	var t := TextureRect.new()
+	t.texture = textura
+	t.custom_minimum_size = Vector2(24, 24) # 12 px al doble, nitido
+	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return t
+
+func _crear_contadores() -> void:
+	$LabelMateriales.visible = false
+	var fila := HBoxContainer.new()
+	fila.add_theme_constant_override("separation", 6)
+	fila.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	fila.anchor_top = 1.0
+	fila.anchor_bottom = 1.0
+	fila.offset_left = 8
+	fila.offset_top = -34
+	fila.offset_bottom = -6
+	add_child(fila)
+	var aldeano := AtlasTexture.new() # primer cuadro de la hoja del aldeano
+	aldeano.atlas = load("res://arte/aldea/aldeano.png")
+	aldeano.region = Rect2(0, 0, 16, 16)
+	var iconos_material := {
+		"madera": load("res://arte/ui/madera.png"),
+		"tejas": load("res://arte/ui/tejas.png"),
+		"oro": load("res://arte/ui/oro.png"),
+		"aldeanos": aldeano,
+	}
+	for clave in ["madera", "tejas", "oro", "aldeanos"]:
+		fila.add_child(_mini_icono(iconos_material[clave]))
+		var n := _numero()
+		n.text = "0"
+		n.custom_minimum_size = Vector2(28, 0)
+		fila.add_child(n)
+		contadores[clave] = n
+	# Calavera arriba a la derecha, debajo del nivel
+	var muertes := HBoxContainer.new()
+	muertes.alignment = BoxContainer.ALIGNMENT_END
+	muertes.add_theme_constant_override("separation", 6)
+	muertes.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	muertes.anchor_left = 1.0
+	muertes.anchor_right = 1.0
+	muertes.offset_left = -160
+	muertes.offset_right = -8
+	muertes.offset_top = 38
+	muertes.offset_bottom = 62
+	add_child(muertes)
+	texto_muertes = _numero()
+	texto_muertes.text = "0"
+	muertes.add_child(texto_muertes)
+	var calavera := _mini_icono(load("res://arte/ui/calavera.png"))
+	calavera.custom_minimum_size = Vector2(18, 18)
+	muertes.add_child(calavera)

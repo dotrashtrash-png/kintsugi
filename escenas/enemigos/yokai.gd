@@ -126,6 +126,8 @@ func recibir_dano(cantidad: int) -> void:
 
 func morir() -> void:
 	muerto = true
+	if run:
+		run.muertes += 1 # el contador de la calavera en el HUD
 	var luz = soltar(RUTA_LUZ)
 	if luz:
 		luz.valor = valor_luz

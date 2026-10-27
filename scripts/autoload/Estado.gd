@@ -11,6 +11,7 @@ var heroes_desbloqueados: Array[String] = ["ronin"]
 var heroe_elegido := "ronin"
 var ultima_salida := {} 
 var vio_intro := false
+var vio_tutorial := false # el tutorial del menu sale una sola vez
 var salidas := 0 
 
 func _ready() -> void:
@@ -115,6 +116,7 @@ func guardar() -> void:
 	archivo.set_value("progreso", "heroes", heroes_desbloqueados)
 	archivo.set_value("progreso", "heroe_elegido", heroe_elegido)
 	archivo.set_value("progreso", "vio_intro", vio_intro)
+	archivo.set_value("progreso", "vio_tutorial", vio_tutorial)
 	archivo.set_value("progreso", "salidas", salidas)
 	archivo.save(ARCHIVO)
 
@@ -128,6 +130,7 @@ func cargar() -> void:
 	heroes_desbloqueados.assign(archivo.get_value("progreso", "heroes", ["ronin"]))
 	heroe_elegido = archivo.get_value("progreso", "heroe_elegido", "ronin")
 	vio_intro = archivo.get_value("progreso", "vio_intro", false)
+	vio_tutorial = archivo.get_value("progreso", "vio_tutorial", false)
 	salidas = archivo.get_value("progreso", "salidas", 0)
 
 func reiniciar() -> void:
@@ -138,6 +141,7 @@ func reiniciar() -> void:
 	heroe_elegido = "ronin"
 	ultima_salida = {}
 	vio_intro = false
+	vio_tutorial = false # quien borra la partida empieza de cero: lo vuelve a ver
 	salidas = 0
 	guardar()
 	cambio.emit()
