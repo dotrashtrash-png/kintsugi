@@ -4,7 +4,7 @@ extends Node2D
 const TALISMAN := preload("res://escenas/jugador/Talisman.tscn")
 
 var nivel := 1
-var dano := 6
+var dano := 4.0 # antes 6 (+2): ahora cada golpe deja 3 quemaduras de 15% en area, el total queda parecido
 var cantidad := 1 # talismanes por disparo
 var alcance := 220.0
 const MAXIMO_TALISMANES := 4 # por disparo, para que no se vuelva infinita
@@ -24,7 +24,7 @@ func _lanzar() -> void:
 	for objetivo in objetivos:
 		var t = TALISMAN.instantiate()
 		t.objetivo = objetivo
-		t.dano = int(round(dano * heroe.poder)) if heroe else dano
+		t.dano = int(round(dano * heroe.poder)) if heroe else int(round(dano))
 		get_tree().current_scene.add_child(t)
 		t.global_position = global_position
 
@@ -44,4 +44,4 @@ func _mas_cercanos(n: int) -> Array:
 func subir_nivel() -> void:
 	nivel += 1
 	cantidad = mini(cantidad + 1, MAXIMO_TALISMANES)
-	dano += 2
+	dano += 1.5
