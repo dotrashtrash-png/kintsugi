@@ -17,8 +17,19 @@ var tiempo := 0.0
 var heroe
 var anillos_hechos := 0
 
+# Ayuda para enganchar: las primeras salidas son mas suaves y luego queda la dificultad normal.
+# Solo afecta cuanto se fortalecen los yokais con el tiempo (y un poco su golpe en la primera).
+# Indice = cuantas salidas lleva el jugador (Estado.salidas). Borrar partida la vuelve a dar.
+const AYUDA_CRECIMIENTO := [0.55, 0.8] # 1a salida: al minuto 5 tienen x3.8 de vida (normal x6)
+const AYUDA_GOLPE := [0.85, 0.95] # 1a salida: pegan 15% menos
+var crecimiento := 1.0
+var golpe := 1.0
+
 func _ready() -> void:
 	heroe = get_tree().get_first_node_in_group("jugador")
+	if Estado.salidas < AYUDA_CRECIMIENTO.size():
+		crecimiento = AYUDA_CRECIMIENTO[Estado.salidas]
+		golpe = AYUDA_GOLPE[Estado.salidas]
 	# En celular, menos yokais a la vez: se sigue sintiendo horda y no se traba
 	if OS.has_feature("web_android") or OS.has_feature("web_ios") or OS.has_feature("mobile"):
 		tope = 100
@@ -122,8 +133,8 @@ func crear(escena: PackedScene, posicion: Vector2) -> Yokai:
 	var yokai: Yokai = escena.instantiate()
 	# El inicio casi no cambia; lo que sube fuerte es el final, cuando ya tienes varias armas.
 	var m := tiempo / 60.0
-	yokai.vida = int(ceil(yokai.vida * (1.0 + m * vida_extra_por_minuto + m * m * vida_extra_acelerada)))
-	yokai.dano = int(round(yokai.dano * (1.0 + m * dano_extra_por_minuto)))
+	yokai.vida = int(ceil(yokai.vida * (1.0 + crecimiento * (m * vida_extra_por_minuto + m * m * vida_extra_acelerada))))
+	yokai.dano = maxi(1, int(round(yokai.dano * golpe * (1.0 + crecimiento * m * dano_extra_por_minuto))))
 	add_child(yokai)
 	yokai.global_position = dentro_del_mapa(posicion)
 	return yokai
