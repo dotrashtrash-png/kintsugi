@@ -16,7 +16,7 @@ const LISTA := {
 const MEJORAS := {
 	"katana": {"nombre": "Katana", "texto": "Corte al frente. Más daño y alcance."},
 	"campana": {"nombre": "Campana suzu", "texto": "Onda que purifica y empuja."},
-	"ofuda": {"nombre": "Ofuda", "texto": "Talismanes ardientes que persiguen yokais y queman el suelo."},
+	"ofuda": {"nombre": "Ofuda", "texto": "Talismanes que estallan y queman yokais."},
 	"kunai": {"nombre": "Kunai", "texto": "Cuchillos en línea que atraviesan."},
 	"kitsunebi": {"nombre": "Kitsunebi", "texto": "Fuegos de zorro que giran a tu alrededor."},
 	"waraji": {"nombre": "Waraji", "texto": "+8 % de velocidad."},

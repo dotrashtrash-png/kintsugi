@@ -15,10 +15,26 @@ var opciones: Array = []
 func _ready() -> void:
 	visible = false
 	for i in botones.size():
-		botones[i].pressed.connect(_on_boton.bind(i))
-		botones[i].expand_icon = true # el icono crece con el boton (se ve grande y nitido)
-		botones[i].custom_minimum_size = Vector2(0, 52)
-		botones[i].alignment = HORIZONTAL_ALIGNMENT_LEFT
+		var b: Button = botones[i]
+		b.pressed.connect(_on_boton.bind(i))
+		b.custom_minimum_size = Vector2(0, 52)
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		# El icono va en su propio cuadro fijo a la izquierda. Antes era el icono del boton y,
+		# si el texto era largo, el texto se comia el espacio y el icono desaparecia.
+		var icono := TextureRect.new()
+		icono.name = "Icono"
+		icono.position = Vector2(10, 6)
+		icono.size = Vector2(40, 40)
+		icono.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icono.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icono.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(icono)
+		for estado in ["normal", "hover", "pressed", "focus", "disabled", "hover_pressed"]:
+			var caja := b.get_theme_stylebox(estado)
+			if caja:
+				caja = caja.duplicate()
+				caja.content_margin_left = 60 # el texto empieza despues del icono
+				b.add_theme_stylebox_override(estado, caja)
 
 
 # El Run llama esto con 1 a 3 claves, por ejemplo ["katana", "waraji", "kunai"].
@@ -32,7 +48,8 @@ func mostrar(nuevas_opciones: Array) -> void:
 		var nombre: String = opciones[i]
 		botones[i].text = texto_de(nombre, heroe)
 		var ruta := RUTA_ICONO % nombre
-		botones[i].icon = load(ruta) if ResourceLoader.exists(ruta) else null
+		botones[i].icon = null
+		botones[i].get_node("Icono").texture = load(ruta) if ResourceLoader.exists(ruta) else null
 		botones[i].visible = true
 	visible = true
 	get_tree().paused = true

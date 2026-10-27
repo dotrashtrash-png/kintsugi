@@ -105,7 +105,7 @@ const EN := {
 	"Corte al frente. Más daño y alcance.": "Slash in front of you. More damage and reach.",
 	"Campana suzu": "Suzu bell",
 	"Onda que purifica y empuja.": "A purifying wave that pushes back.",
-	"Talismanes ardientes que persiguen yokais y queman el suelo.": "Burning talismans that chase down yokai and set the ground ablaze.",
+	"Talismanes que estallan y queman yokais.": "Talismans that burst and burn yokai.",
 	"Cuchillos en línea que atraviesan.": "Knives in a line that pierce through.",
 	"Fuegos de zorro que giran a tu alrededor.": "Fox fires that circle around you.",
 	"+8 % de velocidad.": "+8% speed.",
