@@ -44,19 +44,62 @@ func _atacar() -> void:
 			cuerpo.recibir_dano(int(round(dano * heroe.poder)))
 	Audio.sfx("katana")
 	mostrando = true
+	sentido = -sentido # un corte de arriba a abajo, el siguiente de abajo a arriba
+	var t := create_tween()
+	t.tween_method(_poner_progreso, 0.0, 1.0, DURACION_CORTE)
+	t.tween_callback(_ocultar)
+
+func _poner_progreso(p: float) -> void:
+	progreso = p
 	queue_redraw()
-	create_tween().tween_callback(_ocultar).set_delay(0.1)
 
 func _ocultar() -> void:
 	mostrando = false
 	queue_redraw()
 
-# Media luna blanca: el corte de la katana
+# El corte: una media luna que barre de un lado al otro, gruesa en la punta y que se
+# va cerrando por detras, con el filo blanco y unas chispas al final.
+const DURACION_CORTE := 0.18
+const RADIO_CORTE := 20.0
+const ABERTURA := 1.25 # radianes a cada lado (unos 72 grados)
+const CENTRO_CORTE := Vector2(4, 0)
+var progreso := 0.0
+var sentido := 1.0
+
 func _draw() -> void:
 	if not mostrando:
 		return
-	draw_arc(Vector2(4, 0), 18.0, -PI / 3.0, PI / 3.0, 16, Color(1, 1, 1, 0.9), 3.0)
-	draw_arc(Vector2(4, 0), 14.0, -PI / 4.0, PI / 4.0, 12, Color(1, 1, 1, 0.45), 2.0)
+	var a0 := -ABERTURA * sentido
+	var a1 := ABERTURA * sentido
+	var barrido := 1.0 - pow(1.0 - minf(progreso * 1.4, 1.0), 3.0) # rapido al inicio, frena al final
+	var punta := lerpf(a0, a1, barrido)
+	var cola := lerpf(a0, a1, maxf(0.0, (progreso - 0.3) / 0.7)) # la cola alcanza a la punta
+	var alfa := 1.0 if progreso < 0.6 else 1.0 - (progreso - 0.6) / 0.4
+	var pasos := 14
+	var afuera := PackedVector2Array()
+	var adentro := PackedVector2Array()
+	for i in pasos + 1:
+		var f := float(i) / pasos
+		var ang := lerpf(cola, punta, f)
+		var grosor := 1.0 + 7.0 * f # fina en la cola, gruesa en la punta
+		var dir := Vector2.RIGHT.rotated(ang)
+		afuera.append(CENTRO_CORTE + dir * RADIO_CORTE)
+		adentro.append(CENTRO_CORTE + dir * (RADIO_CORTE - grosor))
+	if absf(punta - cola) > 0.05:
+		var cuerpo := afuera.duplicate()
+		for i in range(adentro.size() - 1, -1, -1):
+			cuerpo.append(adentro[i])
+		draw_colored_polygon(cuerpo, Color(1.0, 0.95, 0.85, 0.45 * alfa))
+		draw_polyline(afuera, Color(1, 1, 1, 0.95 * alfa), 2.0) # el filo
+	# Linea de la hoja en la punta y chispas
+	var d := Vector2.RIGHT.rotated(punta)
+	draw_line(CENTRO_CORTE + d * (RADIO_CORTE - 9.0), CENTRO_CORTE + d * (RADIO_CORTE + 3.0), Color(1, 1, 1, alfa), 2.0)
+	if progreso > 0.45:
+		var chispa := (progreso - 0.45) / 0.55
+		for k in 3:
+			var off := Vector2.RIGHT.rotated(punta + sentido * (0.25 + 0.2 * k))
+			var p0 := CENTRO_CORTE + off * (RADIO_CORTE + 2.0 + 6.0 * chispa)
+			draw_rect(Rect2(p0 - Vector2.ONE, Vector2(2, 2)), Color(1.0, 0.85, 0.45, 1.0 - chispa))
 
 # La llama el heroe cuando eligen la katana en el menu de mejoras.
 # Crece en linea recta hasta el tope: al nivel 8 llega a 1.8 (antes 1.7) y pega 28 (antes 19).

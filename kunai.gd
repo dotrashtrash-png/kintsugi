@@ -5,7 +5,7 @@ const CUCHILLO := preload("res://escenas/jugador/Cuchillo.tscn")
 const ABANICO := 0.18 # radianes entre un cuchillo y el siguiente
 const ALCANCE := 230.0 # el cuchillo recorre unos 290 px (320 x 0.9 s): apunta solo a lo que alcanza
 var nivel := 1
-var dano := 6.0 # antes 7 (+2 por nivel): estaba muy fuerte
+var dano := 5.5 # antes 7 y luego 6: sigue un poco fuerte frente a la katana
 var cantidad := 1
 var heroe
 @onready var timer: Timer = $Timer

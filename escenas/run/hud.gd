@@ -27,11 +27,15 @@ func _ready() -> void:
 	t.add_theme_constant_override("outline_size", 6)
 	t.offset_left = -220
 	t.offset_right = 220
-	t.offset_top = 10
-	t.offset_bottom = 48
+	t.offset_top = 16
+	t.offset_bottom = 54
+	t.add_theme_constant_override("outline_size", 8)
+	_decorar_barra_xp()
+	_crear_barra_vida()
+	$LabelVida.visible = false # la vida ahora es la barra roja con numeros
 	# Casillas de armas y pasivas debajo de la vida
 	var columna := VBoxContainer.new()
-	columna.position = Vector2(8, 36)
+	columna.position = Vector2(8, 46)
 	columna.add_theme_constant_override("separation", 4)
 	columna.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(columna)
@@ -45,6 +49,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	_actualizar_vida(delta) # la vida si cada cuadro: un golpe se tiene que ver al instante
 	# 10 veces por segundo alcanza para el reloj y la vida (cada cuadro era trabajo de mas)
 	reloj += delta
 	if reloj < 0.1:
@@ -63,7 +68,6 @@ func _actualizar() -> void:
 		$LabelTiempo.text = "¡El Gran Tengu!"
 	else:
 		$LabelTiempo.text = "%d:%02d" % [minutos, segundos]
-	$LabelVida.text = tr("Vida %d / %d") % [run.heroe.vida, run.heroe.vida_maxima]
 	$LabelNivel.text = tr("Nivel %d") % run.nivel
 	$BarraXP.max_value = run.experiencia_necesaria
 	$BarraXP.value = run.experiencia
@@ -131,3 +135,125 @@ func _icono(clave: String) -> Texture2D:
 		var ruta := RUTA_ICONO % clave
 		iconos[clave] = load(ruta) if ResourceLoader.exists(ruta) else null
 	return iconos[clave]
+
+
+# ---------- Barra de experiencia (arriba, de lado a lado) ----------
+
+func _caja(fondo: Color, borde: Color, ancho_borde: int) -> StyleBoxFlat:
+	var c := StyleBoxFlat.new()
+	c.bg_color = fondo
+	c.border_color = borde
+	c.set_border_width_all(ancho_borde)
+	return c
+
+func _decorar_barra_xp() -> void:
+	var b: ProgressBar = $BarraXP
+	b.offset_bottom = 12 # antes 8
+	var fondo := _caja(Color("14122a"), NOCHE, 1)
+	fondo.border_width_bottom = 2
+	fondo.border_color = ORO.darkened(0.45)
+	var lleno := _caja(ORO, Color("fff0b8"), 0)
+	lleno.border_width_top = 2 # brillo arriba
+	lleno.border_width_bottom = 2
+	lleno.border_color = Color("fff0b8")
+	b.add_theme_stylebox_override("background", fondo)
+	b.add_theme_stylebox_override("fill", lleno)
+	# Rombitos dorados en las puntas
+	for lado in [0, 1]:
+		var rombo := ColorRect.new()
+		rombo.color = ORO
+		rombo.size = Vector2(6, 6)
+		rombo.rotation = PI / 4.0
+		rombo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		rombo.anchor_left = float(lado)
+		rombo.anchor_right = float(lado)
+		rombo.position = Vector2(-4 if lado == 1 else 4, 2)
+		b.add_child(rombo)
+
+
+# ---------- Barra de vida (roja, minimalista, con los numeros encima) ----------
+
+const ANCHO_VIDA := 190.0
+const ALTO_VIDA := 20.0
+var barra_vida: ProgressBar
+var barra_fantasma: ProgressBar # la parte que se acaba de perder, en claro, baja despacio
+var texto_vida: Label
+var vida_mostrada := -1
+
+func _crear_barra_vida() -> void:
+	var caja := Control.new()
+	caja.position = Vector2(8, 18)
+	caja.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(caja)
+	# Marco: borde oscuro con una linea dorada adentro
+	var marco := Panel.new()
+	marco.position = Vector2(14, 0)
+	marco.size = Vector2(ANCHO_VIDA + 6, ALTO_VIDA + 6)
+	var estilo := _caja(Color("2a0f18"), NOCHE, 2)
+	estilo.expand_margin_left = 1
+	estilo.expand_margin_right = 1
+	estilo.expand_margin_top = 1
+	estilo.expand_margin_bottom = 1
+	estilo.shadow_color = ORO.darkened(0.2)
+	estilo.shadow_size = 1
+	marco.add_theme_stylebox_override("panel", estilo)
+	marco.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	caja.add_child(marco)
+	barra_fantasma = _barra(Color("f2d0c8"), Color.TRANSPARENT)
+	barra_vida = _barra(Color("c42828"), Color("f06e64"))
+	for b in [barra_fantasma, barra_vida]:
+		b.position = Vector2(17, 3)
+		b.size = Vector2(ANCHO_VIDA, ALTO_VIDA)
+		caja.add_child(b)
+	# Corazon a la izquierda
+	var corazon := TextureRect.new()
+	corazon.texture = load("res://arte/ui/corazon.png")
+	corazon.size = Vector2(27, 24)
+	corazon.position = Vector2(0, 1)
+	corazon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	corazon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	corazon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	caja.add_child(corazon)
+	# Numeros grandes encima de la barra
+	texto_vida = Label.new()
+	texto_vida.position = Vector2(17, 1)
+	texto_vida.size = Vector2(ANCHO_VIDA, ALTO_VIDA + 4)
+	texto_vida.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	texto_vida.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	texto_vida.add_theme_font_size_override("font_size", 16)
+	texto_vida.add_theme_color_override("font_color", CREMA)
+	texto_vida.add_theme_color_override("font_outline_color", Color("1b0a10"))
+	texto_vida.add_theme_constant_override("outline_size", 6)
+	texto_vida.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	caja.add_child(texto_vida)
+
+func _barra(relleno: Color, brillo: Color) -> ProgressBar:
+	var b := ProgressBar.new()
+	b.show_percentage = false
+	b.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var vacio := StyleBoxEmpty.new()
+	var lleno := StyleBoxFlat.new()
+	lleno.bg_color = relleno
+	if brillo.a > 0.0:
+		lleno.border_width_top = 3 # brillo arriba: se ve en relieve
+		lleno.border_color = brillo
+		lleno.border_blend = false
+	b.add_theme_stylebox_override("background", vacio)
+	b.add_theme_stylebox_override("fill", lleno)
+	return b
+
+func _actualizar_vida(delta: float) -> void:
+	if run.heroe == null or barra_vida == null:
+		return
+	var h = run.heroe
+	barra_vida.max_value = h.vida_maxima
+	barra_fantasma.max_value = h.vida_maxima
+	barra_vida.value = h.vida
+	# La parte perdida queda en claro un momento y baja suave (estilo Blasphemous)
+	if barra_fantasma.value < h.vida:
+		barra_fantasma.value = h.vida
+	else:
+		barra_fantasma.value = move_toward(barra_fantasma.value, h.vida, h.vida_maxima * 0.6 * delta)
+	if h.vida != vida_mostrada:
+		vida_mostrada = h.vida
+		texto_vida.text = "%d / %d" % [h.vida, h.vida_maxima]

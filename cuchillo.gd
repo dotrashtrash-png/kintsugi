@@ -6,8 +6,15 @@ var dano := 7
 var velocidad := 320.0
 var vida_util := 0.9 # segundos antes de desaparecer
 var golpeados: Array = [] # cada yokai recibe un solo golpe de este cuchillo
+const DIBUJO := preload("res://arte/ui/kunai_proyectil.png") # kunai chiquito, punta a la derecha
+
 func _ready() -> void:
 	rotation = direccion.angle()
+	var s := Sprite2D.new()
+	s.texture = DIBUJO
+	add_child(s)
+	if has_node("ColorRect"):
+		$ColorRect.visible = false
 
 func _physics_process(delta: float) -> void:
 	vida_util -= delta
