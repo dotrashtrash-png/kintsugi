@@ -1,8 +1,8 @@
 extends Node2D
-# Un talisman de la Ofuda: persigue a su objetivo ardiendo, le pega una vez
-# y deja el suelo quemando un momento (3 quemaduras de 15% del golpe en un circulo).
+# Un talisman de la Ofuda: persigue a su objetivo ardiendo, le pega una vez y estalla.
+# La explosion deja ardiendo a los yokais que alcanza: 3 quemaduras de 15% del golpe.
 
-const QUEMADURA := preload("res://escenas/jugador/quemadura.gd")
+const EXPLOSION := preload("res://escenas/jugador/explosion_ofuda.gd")
 const PORCENTAJE_QUEMADURA := 0.15 # cada una de las 3 quemaduras
 
 var objetivo: Node2D
@@ -32,16 +32,16 @@ func _physics_process(delta: float) -> void:
 	for e in Yokai.todos(get_tree()):
 		if is_instance_valid(e) and global_position.distance_squared_to(e.global_position) < 64.0:
 			e.recibir_dano(dano)
-			_dejar_quemadura()
+			_estallar()
 			queue_free()
 			return
 
 
-func _dejar_quemadura() -> void:
-	var q := QUEMADURA.new()
-	q.dano_tick = maxi(1, int(round(dano * PORCENTAJE_QUEMADURA)))
-	get_tree().current_scene.add_child(q)
-	q.global_position = global_position
+func _estallar() -> void:
+	var x := EXPLOSION.new()
+	x.dano_tick = maxi(1, int(round(dano * PORCENTAJE_QUEMADURA)))
+	x.position = global_position # antes de entrar al arbol: en _ready ya sabe donde esta
+	get_tree().current_scene.add_child(x)
 
 
 # El papel arde: el sprite parpadea a naranja y deja chispas detras
