@@ -135,11 +135,27 @@ func _on_idioma() -> void:
 # ---------- Botones ----------
 
 func _on_jugar() -> void:
+	# Quien nunca ha salido a las ruinas ve primero el tutorial (la gente no lee la pagina de itch)
+	if Estado.salidas == 0 and not tutorial_abierto:
+		tutorial_abierto = true
+		abrir_ventana("Cómo se juega", TUTORIAL)
+		$Ventana/Columna/BotonVolver.text = "¡A jugar!"
+		return
 	Audio.sfx("boton")
 	var destino := RUTA_ALDEA
 	if not Estado.vio_intro and ResourceLoader.exists(RUTA_INTRO):
 		destino = RUTA_INTRO
 	get_tree().change_scene_to_file(destino)
+
+
+const TUTORIAL := "[b]Objetivo:[/b] reconstruye la aldea de Tsugimura y despierta a Kohaku, la zorra de nueve colas.
+[b]1. Sal a las ruinas.[/b] Muévete con WASD o flechas (en celular, arrastra el dedo). Tus armas atacan solas.
+[b]2. Sobrevive 6 minutos.[/b] Recoge las luces doradas para subir de nivel y elegir mejoras.
+[b]3. Junta materiales.[/b] Madera, tejas y oro caen de los yokais. Para rescatar aldeanos, quédate 3 segundos a su lado.
+[b]4. Repara la aldea.[/b] Cada edificio desbloquea algo nuevo: héroes, más vida, el camino al jefe.
+[b]Ganas[/b] cuando reparas el Santuario de Kohaku. Si caes, vuelves con la mitad de lo que juntaste."
+
+var tutorial_abierto := false
 
 
 func _on_como_jugar() -> void:
@@ -163,6 +179,9 @@ func abrir_ventana(titulo: String, texto: String) -> void:
 
 
 func _on_volver() -> void:
+	if tutorial_abierto:
+		_on_jugar() # "¡A jugar!" del tutorial: sigue a la intro o a la aldea
+		return
 	Audio.sfx("boton")
 	$Ventana.visible = false
 	$Botones.visible = true
@@ -171,4 +190,7 @@ func _on_volver() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if $Ventana.visible and event.is_action_pressed("ui_cancel"):
+		if tutorial_abierto: # Esc en el tutorial: vuelve al menu sin jugar
+			tutorial_abierto = false
+			$Ventana/Columna/BotonVolver.text = "Volver"
 		_on_volver()

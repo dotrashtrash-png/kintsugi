@@ -47,6 +47,11 @@ var reloj_anim := 0.0
 var run
 var desvio := Vector2.ZERO
 var ritmo := 1.0
+# Guardados una vez en _ready: pedirlos 150 veces por cuadro pesaba en la Web
+var dibujo: Sprite2D = null
+var golpe: Node = null
+var limites := Rect2()
+var contacto2 := 0.0 # distancia de contacto al cuadrado
 
 func _ready() -> void:
 	add_to_group("enemigos")
@@ -56,6 +61,11 @@ func _ready() -> void:
 	ritmo = randf_range(0.85, 1.15)
 	heroe = get_tree().get_first_node_in_group("jugador")
 	run = get_tree().get_first_node_in_group("run")
+	dibujo = get_node_or_null("Sprite") as Sprite2D
+	golpe = get_node_or_null("Golpe")
+	if run:
+		limites = run.limites
+	contacto2 = distancia_contacto * distancia_contacto
 
 func _physics_process(delta: float) -> void:
 	if heroe == null or muerto:
@@ -71,38 +81,46 @@ func objetivo() -> Vector2:
 
 func mover(_delta: float) -> void:
 	velocity = global_position.direction_to(objetivo()) * velocidad * ritmo
-	move_and_slide()
+	avanzar()
+
+# Los yokais no chocan con nada (collision_mask = 0): moverlos a mano es igual que
+# move_and_slide() pero mucho mas barato con 150 en pantalla (era lo que mas pesaba al final).
+func avanzar() -> void:
+	global_position += velocity * get_physics_process_delta_time()
 
 # Los empujones (campana, golpe) ya no sacan a los yokais del mapa
 func quedarse_en_el_mapa() -> void:
-	if run and run.limites.has_area():
-		global_position = global_position.clamp(run.limites.position, run.limites.end)
+	if limites.has_area():
+		global_position = global_position.clamp(limites.position, limites.end)
 
 func revisar_contacto(delta: float) -> void:
 	espera_dano -= delta
 	if espera_dano > 0.0:
 		return
-	if global_position.distance_to(heroe.global_position) < distancia_contacto:
+	if global_position.distance_squared_to(heroe.global_position) < contacto2:
 		heroe.recibir_dano(dano) # el poder del heroe (Hachimaki) sube SU dano, no el de los yokais
 		espera_dano = PAUSA_DANO
 
 func animar(delta: float) -> void:
-	if not has_node("Sprite"):
+	if dibujo == null:
 		return
-	var dibujo: Sprite2D = $Sprite
 	if dibujo.hframes > 1:
 		reloj_anim += delta
-		dibujo.frame = int(reloj_anim * fps) % dibujo.hframes
+		var cuadro := int(reloj_anim * fps) % dibujo.hframes
+		if cuadro != dibujo.frame:
+			dibujo.frame = cuadro
 	if voltear and absf(velocity.x) > 1.0:
-		dibujo.flip_h = velocity.x < 0.0
+		var izquierda := velocity.x < 0.0
+		if izquierda != dibujo.flip_h:
+			dibujo.flip_h = izquierda
 
 func recibir_dano(cantidad: int) -> void:
 	if muerto:
 		return
 	vida -= cantidad
 	NumeroDano.crear(self, cantidad)
-	if has_node("Golpe"):
-		$Golpe.recibir()
+	if golpe:
+		golpe.recibir()
 	if vida <= 0:
 		morir()
 

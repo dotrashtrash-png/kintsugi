@@ -18,4 +18,4 @@ func mover(delta: float) -> void:
 	else:
 		velocity = Vector2.ZERO
 	
-	move_and_slide()
+	avanzar()

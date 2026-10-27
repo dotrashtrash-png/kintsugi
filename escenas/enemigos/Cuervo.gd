@@ -12,7 +12,7 @@ func mover(delta: float) -> void:
 	var dir := global_position.direction_to(objetivo()).rotated(giro)
 	giro = move_toward(giro, 0.0, 0.8 * delta) # la curva se va enderezando
 	velocity = dir * velocidad * ritmo
-	move_and_slide()
+	avanzar()
 
 # Si existe arte/yokais/cuervo.png (2 cuadros de 16x16), lo usa en vez del cuadro.
 # Se llama "Sprite" para que el molde Yokai lo anime y lo voltee solo.
@@ -20,9 +20,10 @@ func poner_dibujo() -> void:
 	var ruta := "res://arte/yokais/cuervo.png"
 	if not ResourceLoader.exists(ruta) or has_node("Sprite"):
 		return
-	var dibujo := Sprite2D.new()
-	dibujo.name = "Sprite"
-	dibujo.texture = load(ruta)
-	dibujo.hframes = 2
-	add_child(dibujo)
+	var nuevo := Sprite2D.new()
+	nuevo.name = "Sprite"
+	nuevo.texture = load(ruta)
+	nuevo.hframes = 2
+	add_child(nuevo)
+	dibujo = nuevo # el molde lo anima con esta variable
 	$ColorRect.visible = false

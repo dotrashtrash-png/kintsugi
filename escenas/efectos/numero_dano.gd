@@ -3,7 +3,7 @@ extends Label
 # Numero de dano que sube y se desvanece encima del yokai (como en Vampire Survivors).
 # Uso: NumeroDano.crear(self, cantidad)  desde recibir_dano() de cualquier enemigo.
 
-const MAXIMO_EN_PANTALLA := 30 # en la Web, mas numeros que esto bajan los FPS
+const MAXIMO_EN_PANTALLA := 20 # en la Web, mas numeros que esto bajan los FPS (al final del run se notaba)
 
 static var vivos := 0 # contador barato (antes se pedia el grupo en cada golpe)
 
