@@ -10,8 +10,13 @@ var cantidad := 1
 var heroe
 @onready var timer: Timer = $Timer
 
+const RECARGA_INICIAL := 1.1 # antes 0.9: era una escopeta andante
+const RECARGA_MINIMA := 0.6 # antes 0.35
+const CANTIDAD_MAXIMA := 4 # cuchillos por tanda como mucho
+
 func _ready() -> void:
 	heroe = get_tree().get_first_node_in_group("jugador")
+	timer.wait_time = RECARGA_INICIAL
 	timer.timeout.connect(_lanzar)
 
 func _lanzar() -> void:
@@ -50,5 +55,5 @@ func subir_nivel() -> void:
 	nivel += 1
 	dano += 1.5
 	if nivel % 2 == 0:
-		cantidad += 1 # un cuchillo mas cada 2 niveles
-	timer.wait_time = maxf(0.35, timer.wait_time * 0.88)
+		cantidad = mini(CANTIDAD_MAXIMA, cantidad + 1) # un cuchillo mas cada 2 niveles
+	timer.wait_time = maxf(RECARGA_MINIMA, timer.wait_time * 0.92)

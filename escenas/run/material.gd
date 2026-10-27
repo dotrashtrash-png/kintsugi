@@ -13,6 +13,7 @@ const COLORES := {
 	"tejas": Color(0.9, 0.5, 0.5),
 	"oro": Color(1, 0.85, 0.3),
 	"onigiri": Color(1, 1, 1),
+	"iman": Color(0.8, 0.3, 0.25),
 }
 
 var heroe
@@ -24,6 +25,12 @@ func _ready() -> void:
 	heroe = get_tree().get_first_node_in_group("jugador")
 	poner_dibujo("res://arte/ui/%s.png" % tipo)
 	body_entered.connect(_on_body_entered)
+	if tipo == "iman":
+		# Late y brilla para que se note entre tanto yokai
+		var latido := create_tween().set_loops()
+		latido.tween_property(self, "scale", Vector2(1.35, 1.35), 0.35).set_trans(Tween.TRANS_SINE)
+		latido.tween_property(self, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_SINE)
+		modulate = Color(1.3, 1.2, 1.2)
 
 
 func _physics_process(delta: float) -> void:
@@ -40,8 +47,15 @@ func _on_body_entered(cuerpo: Node2D) -> void:
 		return
 	recogido = true
 	if tipo == "onigiri":
-		cuerpo.vida = mini(cuerpo.vida_maxima, cuerpo.vida + randi_range(3, 6)) # cura poquito, no se guarda
+		cuerpo.vida = mini(cuerpo.vida_maxima, cuerpo.vida + randi_range(20, 30)) # cura, no se guarda
 		Audio.sfx("nivel")
+		queue_free()
+		return
+	if tipo == "iman":
+		# Imán (muy raro): todas las luces del mapa vuelan al heroe. Solo experiencia.
+		for luz in get_tree().get_nodes_in_group("luces"):
+			luz.atraer_rapido()
+		Audio.sfx("success")
 		queue_free()
 		return
 	var run = get_tree().get_first_node_in_group("run")

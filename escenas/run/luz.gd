@@ -12,7 +12,10 @@ var atraida := false
 var recogida := false
 
 
+var velocidad := VELOCIDAD_IMAN
+
 func _ready() -> void:
+	add_to_group("luces") # el iman las busca por este grupo
 	heroe = get_tree().get_first_node_in_group("jugador")
 	poner_dibujo()
 	# body_entered avisa cuando un cuerpo (el héroe) entra en el círculo.
@@ -26,7 +29,14 @@ func _physics_process(delta: float) -> void:
 	if not atraida and global_position.distance_to(heroe.global_position) < heroe.radio_recoger:
 		atraida = true
 	if atraida:
-		global_position = global_position.move_toward(heroe.global_position, VELOCIDAD_IMAN * delta)
+		global_position = global_position.move_toward(heroe.global_position, velocidad * delta)
+
+
+# La llama el iman: vuela al heroe desde donde este, y cada vez mas rapido
+func atraer_rapido() -> void:
+	atraida = true
+	velocidad = 500.0
+	create_tween().tween_property(self, "velocidad", 1200.0, 1.0)
 
 
 func _on_body_entered(cuerpo: Node2D) -> void:

@@ -15,6 +15,7 @@ const RUTA_LUZ := "res://escenas/run/Luz.tscn"
 const RUTA_MATERIAL := "res://escenas/run/Material.tscn"
 const RUTA_HUMO := "res://escenas/efectos/Humo.tscn"
 const PROBABILIDAD_ONIGIRI := 0.025 # 25 de cada 1000 yokais sueltan un onigiri que cura
+const PROBABILIDAD_IMAN := 0.002 # 2 de cada 1000: un iman que atrae todas las luces del mapa
 const PAUSA_DANO := 0.5 # pega cada medio segundo mientras toca al heroe
 
 # Lista de enemigos compartida por cuadro: las armas la piden muchas
@@ -118,6 +119,11 @@ func morir() -> void:
 		var comida = soltar(RUTA_MATERIAL)
 		if comida:
 			comida.tipo = "onigiri"
+	elif randf() < PROBABILIDAD_IMAN and get_tree().get_nodes_in_group("imanes").is_empty():
+		var iman = soltar(RUTA_MATERIAL)
+		if iman:
+			iman.tipo = "iman"
+			iman.add_to_group("imanes") # nunca hay dos en el mapa a la vez
 	# Si muchos mueren a la vez, no hace falta un humo por cada uno (eran lo que mas pesaba)
 	if humos_vivos < MAXIMO_HUMOS:
 		var humo = soltar(RUTA_HUMO)
