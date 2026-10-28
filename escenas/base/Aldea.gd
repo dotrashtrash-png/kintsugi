@@ -178,9 +178,26 @@ func _on_prueba() -> void:
 
 
 # Solo para probar: borra la partida guardada y recarga la aldea.
+# Pide confirmacion: el primer toque solo avisa, el segundo (antes de 3 s) borra.
+# Asi un clic sin querer no se lleva toda la partida.
+var confirmar_borrar := false
+
 func _on_borrar() -> void:
+	var boton: Button = $UI/BotonBorrar
+	if not confirmar_borrar:
+		confirmar_borrar = true
+		boton.text = "¿Seguro? Toca otra vez"
+		boton.add_theme_color_override("font_color", Color("f06e64"))
+		Audio.sfx("boton")
+		get_tree().create_timer(3.0).timeout.connect(_cancelar_borrar) # si la aldea se va antes, no pasa nada
+		return
 	Estado.reiniciar()
 	get_tree().reload_current_scene()
+
+func _cancelar_borrar() -> void:
+	confirmar_borrar = false
+	$UI/BotonBorrar.text = "Borrar partida"
+	$UI/BotonBorrar.remove_theme_color_override("font_color")
 
 
 func _on_heroe_elegido(id: String) -> void:

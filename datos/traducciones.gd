@@ -56,6 +56,7 @@ const EN := {
 	# ---------- Aldea ----------
 	"Salir a las ruinas": "Head to the ruins",
 	"Borrar partida": "Delete save",
+	"¿Seguro? Toca otra vez": "Sure? Tap again",
 	"+ materiales (prueba)": "+ materials (test)",
 	"Madera %d · Tejas %d · Oro %d · Aldeanos %d": "Wood %d · Tiles %d · Gold %d · Villagers %d",
 	"Madera": "Wood",

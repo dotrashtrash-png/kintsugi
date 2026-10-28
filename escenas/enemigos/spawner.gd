@@ -61,6 +61,11 @@ func _crear_pendientes() -> void:
 	if heroe == null:
 		pendientes.clear()
 		return
+	# Tope duro: los anillos podian pasar el tope y llegar a 186 yokais (bajon de FPS al final).
+	# Se permiten 20 de mas para que el anillo se vea; lo que sobre no sale.
+	if pendientes.size() > 0 and Yokai.todos(get_tree()).size() >= tope + 20:
+		pendientes.clear()
+		return
 	for i in mini(MAXIMO_POR_CUADRO, pendientes.size()):
 		var p: Array = pendientes.pop_front()
 		crear(p[0], heroe.global_position + p[1])
