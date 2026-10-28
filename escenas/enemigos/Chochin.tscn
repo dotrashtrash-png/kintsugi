@@ -14,7 +14,7 @@ collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_vfiqp")
 velocidad = 62.0
-dano = 6
+dano = 8
 fps = 3.0
 
 [node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("2_aw5jn")]

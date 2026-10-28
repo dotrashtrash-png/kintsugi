@@ -12,7 +12,7 @@ collision_mask = 0
 script = ExtResource("1_5uril")
 velocidad = 95.0
 vida = 5
-dano = 3
+dano = 4
 probabilidad_material = 0.0
 fps = 6.0
 

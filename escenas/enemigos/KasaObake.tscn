@@ -15,7 +15,7 @@ motion_mode = 1
 script = ExtResource("1_nil62")
 velocidad = 140.0
 vida = 5
-dano = 4
+dano = 6
 fps = 8.0
 
 [node name="Golpe" parent="." unique_id=1831681398 instance=ExtResource("2_ef7r4")]

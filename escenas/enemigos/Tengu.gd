@@ -8,7 +8,7 @@ const RUTA_DIBUJO := "res://arte/yokais/tengu.png"
 
 @export var vida: int = 200
 @export var velocidad: float = 35.0
-@export var dano: int = 15
+@export var dano: int = 20 # antes 15
 @export var fuerza_viento: float = 420.0 # que tan lejos empuja la rafaga
 @export var alcance_viento: float = 260.0 # mas lejos que esto, la rafaga no llega
 

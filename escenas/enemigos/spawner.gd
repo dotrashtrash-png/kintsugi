@@ -8,7 +8,7 @@ extends Node2D
 @export var distancia: float = 260.0 # a que distancia del heroe aparecen: fuera de la pantalla
 @export var vida_extra_por_minuto: float = 0.4 # vida extra que suma cada minuto...
 @export var vida_extra_acelerada: float = 0.12 # ...y esta crece al cuadrado: minuto 1 x1.5, minuto 3 x3.3, minuto 5 x6
-@export var dano_extra_por_minuto: float = 0.12 # al minuto 5 pegan 60% mas
+@export var dano_extra_por_minuto: float = 0.18 # al minuto 5 pegan 90% mas (antes 60%)
 
 # Minutos en los que un anillo de faroles rodea al heroe
 const MINUTOS_ANILLO := [2.0, 4.0, 5.5]
